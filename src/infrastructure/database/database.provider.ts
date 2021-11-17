@@ -1,5 +1,7 @@
 import * as AWS from 'aws-sdk';
+import { config } from 'src/config';
 import { ServiceConfigurationOptions } from 'aws-sdk/lib/service';
+import { TableName } from 'src/helper/Option';
 
 export const databaseProviders = [
   {
@@ -7,8 +9,8 @@ export const databaseProviders = [
     useFactory: async () => {
       try {
         const serviceConfigOptions: ServiceConfigurationOptions = {
-          region: 'ap-southeast-1',
-          endpoint: 'http://localhost:4566',
+          region: process.env.REGION || config.region,
+          endpoint: process.env.DYNAMOENDPOINT || config.endpoint,
         };
 
         const docClient = new AWS.DynamoDB.DocumentClient(serviceConfigOptions);
@@ -17,7 +19,7 @@ export const databaseProviders = [
         const listTable = await dynamoDb.listTables().promise();
         if (!listTable.TableNames.includes('Users')) {
           const params = {
-            TableName: 'Users',
+            TableName: TableName.User,
             KeySchema: [
               { AttributeName: 'id', KeyType: 'HASH' },
               { AttributeName: 'publicAddress', KeyType: 'RANGE' },

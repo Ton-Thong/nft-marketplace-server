@@ -1,8 +1,9 @@
 import { IsString } from 'class-validator';
 
-export class AddProductDto {
+export class AddUserDto {
     @IsString()
     publicAddress : string;
+    
     @IsString()
     username : string;
 }

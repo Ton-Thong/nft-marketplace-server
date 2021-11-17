@@ -1,8 +1,9 @@
-import { IsString } from 'class-validator';
+;import { IsString } from 'class-validator';
 
-export class CreateTokenDto {
+export class CredentialDto {
     @IsString()
     signature : string;
+    
     @IsString()
     publicAddress : string;
 }

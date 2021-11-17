@@ -1,36 +1,40 @@
 import {
-    BadRequestException,
     Body,
     Controller,
+    Get,
     HttpStatus,
-    InternalServerErrorException,
     Post,
+    Query,
     UsePipes,
     ValidationPipe,
 } from '@nestjs/common';
-import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
-import { ResponseDto } from 'src/dto/response-dto';
-import { MessageLayerDto } from 'src/dto/message-layer-dto';
-import { AddProductDto } from './dto/add-product-dto';
+import { ResponseDto } from 'src/dto/response.dto';
+import { UserDto } from '../../dto/user/user.dto';
+import { AddUserDto } from 'src/dto/user/add-user.dto';
 
-@ApiTags('user')
-@Controller('user')
+@Controller('users')
 @UsePipes(ValidationPipe)
 export class UserController {
     constructor(private userService: UserService) { }
 
-    @Post('/')
-    async addProduct(@Body() user: AddProductDto): Promise<ResponseDto> {
+    @Post()
+    async addUser(@Body() user: AddUserDto): Promise<ResponseDto> {
         try {
-            const result: MessageLayerDto = await this.userService.create(user);
-            if (result.ok) {
-                return new ResponseDto(HttpStatus.CREATED, result.data, result.message);
-            } else {
-                throw new BadRequestException(result.message);
-            }
+            const result: UserDto = await this.userService.create(user);
+            return { statusCode: HttpStatus.CREATED, data: result, message: 'success' };
         } catch (err) {
-            throw new InternalServerErrorException(err.message);
+            throw err;
+        }
+    }
+
+    @Get()
+    async get(@Query('publicAddress') publicAddress: string): Promise<ResponseDto> {
+        try {
+            const result: UserDto = await this.userService.findByPublicAddress(publicAddress);
+            return { statusCode: HttpStatus.OK, data: result, message: 'success' };
+        } catch (err) {
+            throw err;
         }
     }
 }
