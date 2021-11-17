@@ -11,6 +11,8 @@ export const databaseProviders = [
         const serviceConfigOptions: ServiceConfigurationOptions = {
           region: process.env.REGION || config.region,
           endpoint: process.env.DYNAMOENDPOINT || config.endpoint,
+          accessKeyId: config.accessKeyId,
+          secretAccessKey: config.secretAccessKey,
         };
 
         const docClient = new AWS.DynamoDB.DocumentClient(serviceConfigOptions);
