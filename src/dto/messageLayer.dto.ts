@@ -1,6 +1,6 @@
 
 export class MessageLayerDto {
-  ok: boolean;
-  data: any;
-  message: string;
+  public ok: boolean;
+  public data: any;
+  public message: string;
 }

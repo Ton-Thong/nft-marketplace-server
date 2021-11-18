@@ -5,7 +5,7 @@ export class ResponseDto {
     this.message = message;
   }
 
-  statusCode: number;
-  data: any;
-  message: string;
+  public statusCode: number;
+  public data: any;
+  public message: string;
 }

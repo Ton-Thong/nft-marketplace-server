@@ -2,8 +2,10 @@ import * as AWS from 'aws-sdk';
 import { config } from 'src/config';
 import { ServiceConfigurationOptions } from 'aws-sdk/lib/service';
 import { TableName } from 'src/helper/Option';
+import { v4 as uuid } from 'uuid';
+import { CreateTableInput } from 'aws-sdk/clients/dynamodb';
 
-export const databaseProviders = [
+export const AWSProviders = [
   {
     provide: 'DynamoDb',
     useFactory: async () => {
@@ -20,7 +22,7 @@ export const databaseProviders = [
 
         const listTable = await dynamoDb.listTables().promise();
         if (!listTable.TableNames.includes('Users')) {
-          const params = {
+          const params : CreateTableInput = {
             TableName: TableName.User,
             KeySchema: [
               { AttributeName: 'id', KeyType: 'HASH' },
@@ -45,4 +47,18 @@ export const databaseProviders = [
       }
     },
   },
+  {
+    provide: 'S3',
+    useFactory: async() => {
+      try {
+        return new AWS.S3({
+          region: config.region,
+          accessKeyId: config.accessKeyId,
+          secretAccessKey: config.secretAccessKey,
+        })
+      } catch(err) {
+        throw err;
+      }
+    }
+  }
 ];

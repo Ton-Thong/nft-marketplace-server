@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { DatabaseModule } from 'src/infrastructure/database/database.modules';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
@@ -8,10 +7,11 @@ import { UserService } from '../user/user.service';
 import { UserRepository } from '../user/user.repository';
 import { AuthJwtStrategy } from './auth.jwt.strategy';
 import { config } from 'src/config';
+import { AWSModules } from 'src/infrastructure/AWS/aws.modules';
 
 @Module({
     imports: [
-        DatabaseModule,
+        AWSModules,
         PassportModule.register({ defaultStrategy: 'jwt' }),
         JwtModule.register({ secret: process.env.JWTKEY || config.secret, signOptions: { expiresIn: config.expire } })
     ],

@@ -15,4 +15,5 @@ export const config = {
 	expire: 3600,
 	accessKeyId: 'AKIAZD6OMECZXBBDIM3I',
 	secretAccessKey: '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',
+	bucketname: 'nft-asset-toodation',
 };
