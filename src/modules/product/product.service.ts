@@ -7,6 +7,7 @@ import { FileService } from "../miscellaneous/file.service";
 import { ProductRepository } from "./product.repository";
 import { BucketName } from "src/helper/Option";
 import { Product } from "src/models/product.model";
+import { User } from "src/models/user.model";
 
 @Injectable()
 export class ProductService {
@@ -29,5 +30,17 @@ export class ProductService {
     const p: Product = result.data
     p.imageName = await this.fileService.getSignedUrlGetObject(BucketName.Product, p.imageName);
     return p
+  }
+
+  async getAll(): Promise<Array<Product>> {
+    const result = await this.productRepository.getAll();
+    if(!result.ok) return null;
+
+    const products: Array<Product> = result.data;
+    products.forEach(async (_, index) => {
+      products[index].imageName = await this.fileService.getSignedUrlGetObject(BucketName.Product, products[index].imageName);
+    })
+
+    return products;
   }
 }

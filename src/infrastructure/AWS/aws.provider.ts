@@ -2,7 +2,6 @@ import * as AWS from 'aws-sdk';
 import { config } from 'src/config';
 import { ServiceConfigurationOptions } from 'aws-sdk/lib/service';
 import { TableName } from 'src/helper/Option';
-import { v4 as uuid } from 'uuid';
 import { CreateTableInput } from 'aws-sdk/clients/dynamodb';
 
 export const AWSProviders = [

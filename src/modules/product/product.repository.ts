@@ -7,8 +7,6 @@ import { AddProductDto } from "src/dto/product/add-product.dto";
 import { UserDto } from "src/dto/user/user.dto";
 import { BucketName, TableName } from "src/helper/Option";
 import { Product } from "src/models/product.model";
-import { FileService } from "../miscellaneous/file.service";
-
 
 @Injectable()
 export class ProductRepository {
@@ -48,6 +46,19 @@ export class ProductRepository {
             }
 
             return { ok: true, data: result.Item, message: `success` };
+        } catch(err) {
+            throw err;
+        }
+    }
+
+    async getAll(): Promise<MessageLayerDto> {
+        try {
+            const result = await this.docClient.scan({ TableName: TableName.Product }).promise();
+            if(!result ||  result.Count <= 0) {
+                return { ok: false, data: null, message: `error` };    
+            }
+
+            return { ok: true, data: result.Items, message: `success` };
         } catch(err) {
             throw err;
         }

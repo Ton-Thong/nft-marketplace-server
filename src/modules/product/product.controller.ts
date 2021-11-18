@@ -40,4 +40,19 @@ export class ProductController {
             throw err;
         }
     }
+
+    @Get('/getProductAll')
+    @UseGuards(AuthGuard())
+    async getProductAll(): Promise<ResponseDto> {
+        try {
+            const result = await this.productService.getAll();
+            if(!result) {
+                throw new NotFoundException();
+            }
+            
+            return { statusCode: HttpStatus.OK, data: result,  message: 'success' }
+        } catch(err) {
+            throw err;
+        }
+    }
 }

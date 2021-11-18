@@ -1,5 +1,4 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { v4 as uuid } from 'uuid';
 import * as AWS from 'aws-sdk';
 
 @Injectable()
