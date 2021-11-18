@@ -1,6 +1,6 @@
 export class Product {
     constructor() {
-        this.createdDate = new Date();
+        this.createdDate = new Date().toLocaleString();
         this.currentPrice = 0;
         this.lastPrice = 0;
         this.sellStatus = false;
@@ -16,6 +16,6 @@ export class Product {
     public currentPrice: number;
     public owner: string;
     public createdBy: string;
-    public createdDate: Date;
+    public createdDate: string;
     public contractAddress: string;
 }

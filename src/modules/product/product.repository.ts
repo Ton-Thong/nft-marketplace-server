@@ -39,7 +39,7 @@ export class ProductRepository {
     async get(id: string): Promise<MessageLayerDto> {
         try {
             const result = await this.docClient.get({
-                TableName: TableName.User,
+                TableName: TableName.Product,
                 Key: { id }
             }).promise()
 
