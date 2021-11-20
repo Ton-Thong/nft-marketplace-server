@@ -2,14 +2,14 @@ import { IsNumber, IsString, IsUUID, isUUID } from 'class-validator';
 
 export class UserDto {
     @IsUUID()
-    id : string;
+    id: string;
 
     @IsString()
-    publicAddress : string;
-    
+    publicAddress: string;
+
     @IsString()
-    username : string;
+    username: string;
 
     @IsNumber()
-    nonce : number;
+    nonce: number;
 }

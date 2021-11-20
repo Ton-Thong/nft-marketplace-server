@@ -51,9 +51,9 @@ export const AWSProviders = [
     useFactory: async() => {
       try {
         return new AWS.S3({
-          region: config.region,
-          accessKeyId: config.accessKeyId,
-          secretAccessKey: config.secretAccessKey,
+          endpoint: config.endpoint_space,
+          accessKeyId:  config.accessKeyId_space,
+          secretAccessKey: config.secretAccessKey_space,
         })
       } catch(err) {
         throw err;
