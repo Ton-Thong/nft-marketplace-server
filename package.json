@@ -29,6 +29,7 @@
     "@nestjs/passport": "^8.0.1",
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/platform-fastify": "^8.2.0",
+    "@openzeppelin/contracts": "^4.3.3",
     "@types/aws-sdk": "^2.7.0",
     "@types/passport-jwt": "^3.0.6",
     "@types/uuid": "^8.3.3",

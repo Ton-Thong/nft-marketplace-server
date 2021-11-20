@@ -13,7 +13,7 @@ export class AuthController {
     async signin(@Body() credentialDto: CredentialDto): Promise<ResponseDto> {
         try {
             const result: string = await this.authService.createToken(credentialDto);
-            return { statusCode: HttpStatus.OK, data: result, message: 'success' };
+            return { statusCode: HttpStatus.CREATED, data: result, message: 'success' };
         } catch(err) {
             throw err;
         }

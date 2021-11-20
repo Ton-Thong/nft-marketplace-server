@@ -4,12 +4,13 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   try {
-    const app = await NestFactory.create<NestFastifyApplication>(
-      AppModule,
-      new FastifyAdapter(),
-    );
+    const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter());
+    app.enableCors({
+      allowedHeaders: "*",
+      origin: "*"
+    });
     await app.listen(process.env.PORT || 8080, '0.0.0.0');
-  } catch(err) {
+  } catch (err) {
     console.log(err);
   }
 }
