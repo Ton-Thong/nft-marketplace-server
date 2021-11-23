@@ -32,10 +32,10 @@ export class UserRepository {
             const result = await this.docClient.get({
                 TableName: TableName.User,
                 Key: { id, publicAddress }
-            }).promise()
+            }).promise();
 
             if (Object.keys(result).length == 0) {
-                return { ok: false, data: null, message: `User with publicAddress ${publicAddress} is not found in database` }
+                return { ok: false, data: null, message: `User with publicAddress ${publicAddress} is not found in database` };
             }
 
             return { ok: true, data: result.Item, message: `success` };

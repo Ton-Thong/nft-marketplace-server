@@ -24,11 +24,9 @@ export class UserService {
 
   async findByPublicAddress(publicAddress: string): Promise<UserDto> {
     const result: MessageLayerDto = await this.userRepository.findByPublicAddress(publicAddress);
-    if (result.ok) {
-      return result.data[0]
-    } else {
-      return null;
-    }
+    if (!result.ok) return null
+    
+    return result.data[0]
   }
 
   async updateNonce(user: UserDto): Promise<void> {

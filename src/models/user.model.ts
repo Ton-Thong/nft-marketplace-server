@@ -1,7 +1,7 @@
 export class User {
-    publicAddress : string;
-    nonce : number;
-    username : string;
-    avatar : string;
-    createDate: Date;
+    public publicAddress : string;
+    public nonce : number;
+    public username : string;
+    public avatar : string;
+    public createDate: Date;
 }

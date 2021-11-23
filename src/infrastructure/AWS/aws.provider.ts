@@ -2,7 +2,6 @@ import * as AWS from 'aws-sdk';
 import { config } from 'src/config';
 import { ServiceConfigurationOptions } from 'aws-sdk/lib/service';
 import { TableName } from 'src/helper/Option';
-import { CreateTableInput } from 'aws-sdk/clients/dynamodb';
 
 export const AWSProviders = [
   {
@@ -20,8 +19,8 @@ export const AWSProviders = [
         const dynamoDb = new AWS.DynamoDB(serviceConfigOptions);
 
         const listTable = await dynamoDb.listTables().promise();
-        if (!listTable.TableNames.includes('Users')) {
-          const params : CreateTableInput = {
+        if (!listTable.TableNames.includes(TableName.User)) {
+          await dynamoDb.createTable({
             TableName: TableName.User,
             KeySchema: [
               { AttributeName: 'id', KeyType: 'HASH' },
@@ -35,9 +34,39 @@ export const AWSProviders = [
               ReadCapacityUnits: 5,
               WriteCapacityUnits: 5,
             },
-          };
+          }).promise();
+        }
 
-          await dynamoDb.createTable(params).promise();
+        if (!listTable.TableNames.includes(TableName.Product)) {
+          await dynamoDb.createTable({
+            TableName: TableName.Product,
+            KeySchema: [
+              { AttributeName: 'id', KeyType: 'HASH' },
+            ],
+            AttributeDefinitions: [
+              { AttributeName: 'id', AttributeType: 'S' },
+            ],
+            ProvisionedThroughput: {
+              ReadCapacityUnits: 5,
+              WriteCapacityUnits: 5,
+            },
+          }).promise();
+        }
+
+        if (!listTable.TableNames.includes(TableName.Collection)) {
+          await dynamoDb.createTable({
+            TableName: TableName.Collection,
+            KeySchema: [
+              { AttributeName: 'id', KeyType: 'HASH' },
+            ],
+            AttributeDefinitions: [
+              { AttributeName: 'id', AttributeType: 'S' },
+            ],
+            ProvisionedThroughput: {
+              ReadCapacityUnits: 5,
+              WriteCapacityUnits: 5,
+            },
+          }).promise();
         }
 
         return docClient;
@@ -48,14 +77,14 @@ export const AWSProviders = [
   },
   {
     provide: 'S3',
-    useFactory: async() => {
+    useFactory: async () => {
       try {
         return new AWS.S3({
           endpoint: config.endpoint_space,
-          accessKeyId:  config.accessKeyId_space,
+          accessKeyId: config.accessKeyId_space,
           secretAccessKey: config.secretAccessKey_space,
         })
-      } catch(err) {
+      } catch (err) {
         throw err;
       }
     }

@@ -18,7 +18,10 @@ export class ProductRepository {
             product.id = id;
             product.name = p.name;
             product.description = p.description;
-            product.imageName = p.imageName;
+            product.fileName = p.fileName;
+            product.fileType = p.fileType;
+            product.collectionId = p.collectionId,
+            product.collectionName = p.collectionName,
             product.cid = p.cid;
             product.createdBy = u.id;
             product.owner = u.id;

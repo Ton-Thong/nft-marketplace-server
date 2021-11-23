@@ -1,6 +1,6 @@
 export class Product {
     constructor() {
-        this.createdDate = new Date().toLocaleString();
+        this.createdDate = new Date().toLocaleString("en-US", {timeZone: "Asia/Bangkok"});
         this.currentPrice = 0;
         this.lastPrice = 0;
         this.sellStatus = false;
@@ -9,7 +9,10 @@ export class Product {
 
     public id: string;
     public name: string;
-    public imageName: string;
+    public fileName: string;
+    public fileType: string;
+    public collectionId: string;
+    public collectionName: string;
     public description: string;
     public sellStatus: boolean;
     public lastPrice: number;

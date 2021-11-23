@@ -14,11 +14,11 @@ export class ProductService {
   constructor(private productRepository: ProductRepository, private fileService: FileService) { }
 
   async create(product: AddProductDto, user: UserDto): Promise<AddProductResponseDto> {
-    product.imageName = `${uuid()}-${product.imageName}`;
+    product.fileName = `${uuid()}-${product.fileName}`;
     const result = await this.productRepository.create(product, user);
     if (!result.ok) return null;
 
-    const putSignedUrl = await this.fileService.getSignedUrlPutObject(config.bucketname, product.imageName, product.imageType);    
+    const putSignedUrl = await this.fileService.getSignedUrlPutObject(config.bucketname, product.fileName, product.fileName);    
     await axios({
       method: 'post',
       url: `https://ipfs.infura.io:5001/api/v0/pin/add?arg=${product.cid}`,
@@ -30,14 +30,12 @@ export class ProductService {
     return { id: result.data, s3Url: putSignedUrl };
   }
   
-
-  
   async get(id: string): Promise<Product> {
     const result = await this.productRepository.get(id)
     if (!result.ok) return null;
 
     const p: Product = result.data
-    p.imageName = await this.fileService.getSignedUrlGetObject(config.bucketname, p.imageName);
+    p.fileName = await this.fileService.getSignedUrlGetObject(config.bucketname, p.fileName);
     return p
   }
 
@@ -47,9 +45,9 @@ export class ProductService {
 
     const products: Array<Product> = result.data;
     products.forEach(async (_, index) => {
-      products[index].imageName = await this.fileService.getSignedUrlGetObject(config.bucketname, products[index].imageName);
+      products[index].fileName = await this.fileService.getSignedUrlGetObject(config.bucketname, products[index].fileName);
     })
 
-    return products;
+    return products.sort((a, b) => (a.createdDate > b.createdDate ? -1 : 1));
   }
 }

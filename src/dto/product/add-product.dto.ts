@@ -6,9 +6,13 @@ export class AddProductDto {
     @IsString()
     public description: string;
     @IsString()
-    public imageName: string;
+    public collectionId: string;
     @IsString()
-    public imageType: string;
+    public collectionName: string;
+    @IsString()
+    public fileName: string;
+    @IsString()
+    public fileType: string;
     @IsString()
     public cid: string;
 }

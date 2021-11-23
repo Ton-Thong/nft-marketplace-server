@@ -10,7 +10,6 @@ import { JwtModule } from '@nestjs/jwt';
 import { config } from 'src/config';
 import { AWSModules } from 'src/infrastructure/AWS/aws.modules';
 import { FileService } from '../miscellaneous/file.service';
-import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
