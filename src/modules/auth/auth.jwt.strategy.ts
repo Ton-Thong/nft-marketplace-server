@@ -13,7 +13,7 @@ export class AuthJwtStrategy extends PassportStrategy(Strategy) {
         }) 
     }
 
-    async validate(token) {
+    async validate(token) { //Performance Issue - Query per Request
         const { id, publicAddress } = token.payload;
         const user = await this.userService.get(id, publicAddress);
 

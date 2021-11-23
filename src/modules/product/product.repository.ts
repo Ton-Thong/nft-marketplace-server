@@ -1,5 +1,4 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { HttpService } from '@nestjs/axios';
 import * as AWS from 'aws-sdk';
 import { v4 as uuid } from 'uuid';
 import { MessageLayerDto } from "src/dto/messageLayer.dto";
@@ -20,6 +19,7 @@ export class ProductRepository {
             product.name = p.name;
             product.description = p.description;
             product.imageName = p.imageName;
+            product.cid = p.cid;
             product.createdBy = u.id;
             product.owner = u.id;
 
@@ -46,7 +46,7 @@ export class ProductRepository {
             }
 
             return { ok: true, data: result.Item, message: `success` };
-        } catch(err) {
+        } catch (err) {
             throw err;
         }
     }
@@ -54,12 +54,12 @@ export class ProductRepository {
     async getAll(): Promise<MessageLayerDto> {
         try {
             const result = await this.docClient.scan({ TableName: TableName.Product }).promise();
-            if(!result ||  result.Count <= 0) {
-                return { ok: false, data: null, message: `error` };    
+            if (!result || result.Count <= 0) {
+                return { ok: false, data: null, message: `error` };
             }
 
             return { ok: true, data: result.Items, message: `success` };
-        } catch(err) {
+        } catch (err) {
             throw err;
         }
     }

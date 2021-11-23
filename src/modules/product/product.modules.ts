@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { HttpModule } from '@nestjs/axios';
 import { ProductController } from './product.controller';
 import { ProductService } from './product.service';
 import { ProductRepository } from './product.repository';
@@ -11,11 +10,11 @@ import { JwtModule } from '@nestjs/jwt';
 import { config } from 'src/config';
 import { AWSModules } from 'src/infrastructure/AWS/aws.modules';
 import { FileService } from '../miscellaneous/file.service';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
-    AWSModules, 
-    HttpModule,
+    AWSModules,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({ secret: process.env.JWTKEY || config.secret, signOptions: { expiresIn: config.expire } })],
   controllers: [ProductController],

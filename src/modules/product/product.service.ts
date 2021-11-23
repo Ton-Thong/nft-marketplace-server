@@ -7,6 +7,7 @@ import { FileService } from "../miscellaneous/file.service";
 import { ProductRepository } from "./product.repository";
 import { Product } from "src/models/product.model";
 import { config } from 'src/config';
+import axios from 'axios';
 
 @Injectable()
 export class ProductService {
@@ -14,14 +15,23 @@ export class ProductService {
 
   async create(product: AddProductDto, user: UserDto): Promise<AddProductResponseDto> {
     product.imageName = `${uuid()}-${product.imageName}`;
-    const putSignedUrl = await this.fileService.getSignedUrlPutObject(config.bucketname, product.imageName, product.imageType);
-
     const result = await this.productRepository.create(product, user);
     if (!result.ok) return null;
 
-    return { id: result.data, s3Url: putSignedUrl }
-  }
+    const putSignedUrl = await this.fileService.getSignedUrlPutObject(config.bucketname, product.imageName, product.imageType);    
+    await axios({
+      method: 'post',
+      url: `https://ipfs.infura.io:5001/api/v0/pin/add?arg=${product.cid}`,
+      headers: { 
+        'Authorization': 'Basic ' + Buffer.from('21JHQo2z5YLW3utjGHgUBKKFFCC' + ':' + '401752d012872f280605878a73d6e34d').toString('base64')
+      }
+    });
 
+    return { id: result.data, s3Url: putSignedUrl };
+  }
+  
+
+  
   async get(id: string): Promise<Product> {
     const result = await this.productRepository.get(id)
     if (!result.ok) return null;

@@ -18,4 +18,5 @@ export class Product {
     public createdBy: string;
     public createdDate: string;
     public contractAddress: string;
+    public cid: string;
 }

@@ -9,4 +9,6 @@ export class AddProductDto {
     public imageName: string;
     @IsString()
     public imageType: string;
+    @IsString()
+    public cid: string;
 }
