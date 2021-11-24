@@ -6,7 +6,6 @@ import { UserDto } from "src/dto/user/user.dto";
 import { FileService } from "../miscellaneous/file.service";
 import { ProductRepository } from "./product.repository";
 import { Product } from "src/models/product.model";
-import { config } from 'src/config';
 import axios from 'axios';
 
 @Injectable()
@@ -18,7 +17,7 @@ export class ProductService {
     const result = await this.productRepository.create(product, user);
     if (!result.ok) return null;
 
-    const putSignedUrl = await this.fileService.getSignedUrlPutObject(config.bucketname, product.fileName, product.fileName);    
+    const putSignedUrl = await this.fileService.getSignedUrlPutObject(process.env.S3_BUCKETNAME, product.fileName, product.fileName);    
     await axios({
       method: 'post',
       url: `https://ipfs.infura.io:5001/api/v0/pin/add?arg=${product.cid}`,
@@ -35,7 +34,7 @@ export class ProductService {
     if (!result.ok) return null;
 
     const p: Product = result.data
-    p.fileName = await this.fileService.getSignedUrlGetObject(config.bucketname, p.fileName);
+    p.fileName = await this.fileService.getSignedUrlGetObject(process.env.S3_BUCKETNAME, p.fileName);
     return p
   }
 
@@ -45,7 +44,7 @@ export class ProductService {
 
     const products: Array<Product> = result.data;
     products.forEach(async (_, index) => {
-      products[index].fileName = await this.fileService.getSignedUrlGetObject(config.bucketname, products[index].fileName);
+      products[index].fileName = await this.fileService.getSignedUrlGetObject(process.env.S3_BUCKETNAME, products[index].fileName);
     })
 
     return products.sort((a, b) => (a.createdDate > b.createdDate ? -1 : 1));

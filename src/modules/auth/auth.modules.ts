@@ -6,18 +6,13 @@ import { AuthController } from './auth.controller';
 import { UserService } from '../user/user.service';
 import { UserRepository } from '../user/user.repository';
 import { AuthJwtStrategy } from './auth.jwt.strategy';
-import { config } from 'src/config';
+
 import { AWSModules } from 'src/infrastructure/AWS/aws.modules';
 
 @Module({
-    imports: [
-        AWSModules,
-        PassportModule.register({ defaultStrategy: 'jwt' }),
-        JwtModule.register({ secret: process.env.JWTKEY || config.secret, signOptions: { expiresIn: config.expire } })
-    ],
+    imports: [AWSModules],
     controllers: [AuthController],
-    providers: [AuthService, UserService, UserRepository, AuthJwtStrategy],
-    exports: [AuthJwtStrategy, PassportModule]
+    providers: [AuthService, UserService, UserRepository, AuthJwtStrategy]
 })
 
 export class AuthModule { } 

@@ -4,7 +4,7 @@ import { AddCollectionDto } from "src/dto/collection/add-collection.dto";
 import { CollectionDto } from "src/dto/collection/collection.dto";
 import { MessageLayerDto } from "src/dto/messageLayer.dto";
 import { UserDto } from "src/dto/user/user.dto";
-import { TableName } from "src/helper/Option";
+import { TableName } from "src/helper/TableName";
 import { Collection } from "src/models/collection.model";
 import { v4 as uuid } from 'uuid';
 

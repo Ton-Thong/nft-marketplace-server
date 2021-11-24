@@ -1,7 +1,6 @@
 import * as AWS from 'aws-sdk';
-import { config } from 'src/config';
 import { ServiceConfigurationOptions } from 'aws-sdk/lib/service';
-import { TableName } from 'src/helper/Option';
+import { TableName } from 'src/helper/TableName';
 
 export const AWSProviders = [
   {
@@ -9,10 +8,10 @@ export const AWSProviders = [
     useFactory: async () => {
       try {
         const serviceConfigOptions: ServiceConfigurationOptions = {
-          region: process.env.REGION || config.region,
-          endpoint: process.env.DYNAMOENDPOINT || config.endpoint,
-          accessKeyId: config.accessKeyId,
-          secretAccessKey: config.secretAccessKey,
+          region: process.env.AWS_REGION,
+          endpoint: process.env.AWS_ENDPOINT,
+          accessKeyId: process.env.AWS_ACCESSKEYID,
+          secretAccessKey: process.env.AWS_SECRETACCESSKEY,
         };
 
         const docClient = new AWS.DynamoDB.DocumentClient(serviceConfigOptions);
@@ -80,9 +79,9 @@ export const AWSProviders = [
     useFactory: async () => {
       try {
         return new AWS.S3({
-          endpoint: config.endpoint_space,
-          accessKeyId: config.accessKeyId_space,
-          secretAccessKey: config.secretAccessKey_space,
+          endpoint: process.env.S3_ENDPOINT,
+          accessKeyId: process.env.S3_ACCESSKEYID,
+          secretAccessKey: process.env.S3_SECRETACCESSKEY,
         })
       } catch (err) {
         throw err;

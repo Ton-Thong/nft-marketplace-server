@@ -12,7 +12,7 @@ async function bootstrap() {
     app.register(compression, { encodings: ['gzip', 'deflate'] });
     app.enableCors({ allowedHeaders: "*", origin: "*" });
 
-    await app.listen(process.env.PORT || 8080, '0.0.0.0');
+    await app.listen(process.env.PORT, process.env.HOST);
   } catch (err) {
     console.log(err);
   }

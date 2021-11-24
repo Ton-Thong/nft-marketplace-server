@@ -4,7 +4,7 @@ import { v4 as uuid } from 'uuid';
 import { MessageLayerDto } from "src/dto/messageLayer.dto";
 import { AddProductDto } from "src/dto/product/add-product.dto";
 import { UserDto } from "src/dto/user/user.dto";
-import { TableName } from "src/helper/Option";
+import { TableName } from "src/helper/TableName";
 import { Product } from "src/models/product.model";
 
 @Injectable()
