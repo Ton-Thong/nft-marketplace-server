@@ -3,8 +3,8 @@ import { MessageLayerDto } from "src/dto/messageLayer.dto";
 import { v4 as uuid } from 'uuid';
 import * as AWS from 'aws-sdk';
 import { TableName } from "src/helper/TableName";
-import { UserDto } from "../../dto/user/user.dto";
-import { AddUserDto } from "src/dto/user/add-user.dto";
+import { UserDto } from "./dto/user.dto";
+import { AddUserDto } from "src/modules/user/dto/add-user.dto";
 
 @Injectable()
 export class UserRepository {

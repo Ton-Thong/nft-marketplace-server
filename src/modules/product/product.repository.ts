@@ -2,10 +2,10 @@ import { Inject, Injectable } from "@nestjs/common";
 import * as AWS from 'aws-sdk';
 import { v4 as uuid } from 'uuid';
 import { MessageLayerDto } from "src/dto/messageLayer.dto";
-import { AddProductDto } from "src/dto/product/add-product.dto";
-import { UserDto } from "src/dto/user/user.dto";
+import { AddProductDto } from "src/modules/product/dto/add-product.dto";
 import { TableName } from "src/helper/TableName";
 import { Product } from "src/models/product.model";
+import { UserDto } from "../user/dto/user.dto";
 
 @Injectable()
 export class ProductRepository {

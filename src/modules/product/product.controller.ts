@@ -1,7 +1,7 @@
 import { BadRequestException, Body, Controller, Get, HttpStatus, NotFoundException, ParseUUIDPipe, Post, Query, Req, Res, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import { AddProductResponseDto } from "src/dto/product/add-product-response.dto";
-import { AddProductDto } from "src/dto/product/add-product.dto";
+import { AddProductResponseDto } from "src/modules/product/dto/add-product-response.dto";
+import { AddProductDto } from "src/modules/product/dto/add-product.dto";
 import { ResponseDto } from "src/dto/response.dto";
 import { Product } from "src/models/product.model";
 import { ProductService } from "./product.service";

@@ -1,12 +1,12 @@
 import { Injectable } from "@nestjs/common";
 import { v4 as uuid } from 'uuid';
-import { AddProductResponseDto } from "src/dto/product/add-product-response.dto";
-import { AddProductDto } from "src/dto/product/add-product.dto";
-import { UserDto } from "src/dto/user/user.dto";
+import { AddProductResponseDto } from "src/modules/product/dto/add-product-response.dto";
+import { AddProductDto } from "src/modules/product/dto/add-product.dto";
 import { FileService } from "../miscellaneous/file.service";
 import { ProductRepository } from "./product.repository";
 import { Product } from "src/models/product.model";
 import axios from 'axios';
+import { UserDto } from "../user/dto/user.dto";
 
 @Injectable()
 export class ProductService {

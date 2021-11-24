@@ -2,8 +2,8 @@ import { BadRequestException, Injectable, NotFoundException, UnauthorizedExcepti
 import { JwtService } from "@nestjs/jwt";
 import { recoverPersonalSignature } from "eth-sig-util";
 import { bufferToHex } from "ethereumjs-util";
-import { CredentialDto } from "../../dto/auth/credential.dto";
-import { UserDto } from "../../dto/user/user.dto";
+import { CredentialDto } from "./dto/credential.dto";
+import { UserDto } from "../user/dto/user.dto";
 import { UserService } from "../user/user.service";
 
 @Injectable()

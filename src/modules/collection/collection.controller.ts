@@ -1,10 +1,10 @@
 import { BadRequestException, Body, Controller, Delete, Get, HttpStatus, NotFoundException, ParseUUIDPipe, Post, Put, Query, Req, Res, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import { AddCollectionDto } from "src/dto/collection/add-collection.dto";
-import { CollectionDto } from "src/dto/collection/collection.dto";
 import { ResponseDto } from "src/dto/response.dto";
 import { Collection } from "src/models/collection.model";
 import { CollectionService } from "./collection.service";
+import { AddCollectionDto } from "./dto/add-collection.dto";
+import { CollectionDto } from "./dto/collection.dto";
 
 @Controller('collections')
 @UsePipes(ValidationPipe)

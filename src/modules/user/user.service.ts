@@ -1,7 +1,7 @@
 import { ConflictException, Injectable } from "@nestjs/common";
 import { MessageLayerDto } from "src/dto/messageLayer.dto";
-import { AddUserDto } from "src/dto/user/add-user.dto";
-import { UserDto } from "../../dto/user/user.dto";
+import { AddUserDto } from "src/modules/user/dto/add-user.dto";
+import { UserDto } from "./dto/user.dto";
 import { UserRepository } from "./user.repository";
 
 @Injectable()

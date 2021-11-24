@@ -10,8 +10,8 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ResponseDto } from 'src/dto/response.dto';
-import { UserDto } from '../../dto/user/user.dto';
-import { AddUserDto } from 'src/dto/user/add-user.dto';
+import { UserDto } from './dto/user.dto';
+import { AddUserDto } from 'src/modules/user/dto/add-user.dto';
 
 @Controller('users')
 @UsePipes(ValidationPipe)

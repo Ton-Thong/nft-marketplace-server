@@ -1,9 +1,9 @@
 import { Injectable } from "@nestjs/common";
-import { AddCollectionDto } from "src/dto/collection/add-collection.dto";
-import { CollectionDto } from "src/dto/collection/collection.dto";
-import { UserDto } from "src/dto/user/user.dto";
 import { Collection } from "src/models/collection.model";
+import { UserDto } from "../user/dto/user.dto";
 import { CollectionRepository } from "./collection.repository";
+import { AddCollectionDto } from "./dto/add-collection.dto";
+import { CollectionDto } from "./dto/collection.dto";
 
 @Injectable()
 export class CollectionService {

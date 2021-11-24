@@ -1,12 +1,12 @@
 import { Inject, Injectable } from "@nestjs/common";
 import * as AWS from 'aws-sdk';
-import { AddCollectionDto } from "src/dto/collection/add-collection.dto";
-import { CollectionDto } from "src/dto/collection/collection.dto";
 import { MessageLayerDto } from "src/dto/messageLayer.dto";
-import { UserDto } from "src/dto/user/user.dto";
 import { TableName } from "src/helper/TableName";
 import { Collection } from "src/models/collection.model";
 import { v4 as uuid } from 'uuid';
+import { UserDto } from "../user/dto/user.dto";
+import { AddCollectionDto } from "./dto/add-collection.dto";
+import { CollectionDto } from "./dto/collection.dto";
 
 @Injectable()
 export class CollectionRepository {
