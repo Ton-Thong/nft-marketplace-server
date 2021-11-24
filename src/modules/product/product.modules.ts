@@ -4,11 +4,12 @@ import { ProductService } from './product.service';
 import { ProductRepository } from './product.repository';
 import { AWSModules } from 'src/infrastructure/AWS/aws.modules';
 import { FileService } from '../miscellaneous/file.service';
+import { IpfsService } from '../miscellaneous/ipfs.service';
 
 @Module({
   imports: [AWSModules],
   controllers: [ProductController],
-  providers: [ProductService, ProductRepository, FileService],
+  providers: [ProductService, ProductRepository, FileService, IpfsService],
 })
 
 export class ProductModule { }

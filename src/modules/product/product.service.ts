@@ -7,24 +7,19 @@ import { ProductRepository } from "./product.repository";
 import { Product } from "src/models/product.model";
 import axios from 'axios';
 import { UserDto } from "../user/dto/user.dto";
+import { IpfsService } from "../miscellaneous/ipfs.service";
 
 @Injectable()
 export class ProductService {
-  constructor(private productRepository: ProductRepository, private fileService: FileService) { }
+  constructor(private productRepository: ProductRepository, private fileService: FileService, private ipfsService: IpfsService) { }
 
   async create(product: AddProductDto, user: UserDto): Promise<AddProductResponseDto> {
     product.fileName = `${uuid()}-${product.fileName}`;
     const result = await this.productRepository.create(product, user);
     if (!result.ok) return null;
 
-    const putSignedUrl = await this.fileService.getSignedUrlPutObject(process.env.S3_BUCKETNAME, product.fileName, product.fileName);    
-    await axios({
-      method: 'post',
-      url: `https://ipfs.infura.io:5001/api/v0/pin/add?arg=${product.cid}`,
-      headers: { 
-        'Authorization': 'Basic ' + Buffer.from('21JHQo2z5YLW3utjGHgUBKKFFCC' + ':' + '401752d012872f280605878a73d6e34d').toString('base64')
-      }
-    });
+    const putSignedUrl = await this.fileService.getSignedUrlPutObject(process.env.S3_BUCKETNAME, product.fileName, product.fileName);
+    this.ipfsService.pinCid([product.cid, product.metadata]);
 
     return { id: result.data, s3Url: putSignedUrl };
   }

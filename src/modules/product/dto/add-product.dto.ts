@@ -15,4 +15,6 @@ export class AddProductDto {
     public fileType: string;
     @IsString()
     public cid: string;
+    @IsString()
+    public metadata: string;
 }

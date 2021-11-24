@@ -87,5 +87,5 @@ export const AWSProviders = [
         throw err;
       }
     }
-  }
+  },
 ];

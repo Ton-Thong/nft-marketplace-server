@@ -1,4 +1,4 @@
-;import { IsString } from 'class-validator';
+;import { IsBoolean, IsString } from 'class-validator';
 
 export class CredentialDto {
     @IsString()
@@ -6,4 +6,7 @@ export class CredentialDto {
     
     @IsString()
     publicAddress : string;
+
+    @IsBoolean()
+    forceTest: boolean;
 }

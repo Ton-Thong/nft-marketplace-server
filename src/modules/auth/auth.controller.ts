@@ -18,7 +18,7 @@ export class AuthController {
             throw err;
         }
     }
-
+    
     @Get('')
     @UseGuards(AuthGuard())
     async get() {
