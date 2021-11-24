@@ -5,7 +5,6 @@ import { AddProductDto } from "src/modules/product/dto/add-product.dto";
 import { FileService } from "../miscellaneous/file.service";
 import { ProductRepository } from "./product.repository";
 import { Product } from "src/models/product.model";
-import axios from 'axios';
 import { UserDto } from "../user/dto/user.dto";
 import { IpfsService } from "../miscellaneous/ipfs.service";
 
@@ -13,13 +12,13 @@ import { IpfsService } from "../miscellaneous/ipfs.service";
 export class ProductService {
   constructor(private productRepository: ProductRepository, private fileService: FileService, private ipfsService: IpfsService) { }
 
-  async create(product: AddProductDto, user: UserDto): Promise<AddProductResponseDto> {
-    product.fileName = `${uuid()}-${product.fileName}`;
-    const result = await this.productRepository.create(product, user);
+  async create(p: AddProductDto, user: UserDto): Promise<AddProductResponseDto> {
+    p.fileName = `${uuid()}-${p.fileName}`;
+    const result = await this.productRepository.create(p, user);
     if (!result.ok) return null;
 
-    const putSignedUrl = await this.fileService.getSignedUrlPutObject(process.env.S3_BUCKETNAME, product.fileName, product.fileName);
-    this.ipfsService.pinCid([product.cid, product.metadata]);
+    const putSignedUrl = await this.fileService.getSignedUrlPutObject(process.env.S3_BUCKETNAME, p.fileName, p.fileType);
+    this.ipfsService.pinCid([p.cid, p.metadata]);
 
     return { id: result.data, s3Url: putSignedUrl };
   }

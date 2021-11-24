@@ -5,12 +5,12 @@ import * as AWS from 'aws-sdk';
 export class FileService {
     constructor(@Inject('S3') private s3: AWS.S3) { }
 
-    async getSignedUrlPutObject(bucketName: string, objectName: string, imageType: string): Promise<string> {
+    async getSignedUrlPutObject(bucketName: string, objectName: string, objectType: string): Promise<string> {
         try {
             return await this.s3.getSignedUrlPromise('putObject', {
                 Bucket: bucketName,
                 Key: `${objectName}`,
-                ContentType: imageType,
+                ContentType: objectType,
                 Expires: 3600,
             });
         } catch(err) {
