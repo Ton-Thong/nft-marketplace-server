@@ -9,11 +9,10 @@ import { CollectionModule } from './modules/collection/collection.modules';
 import { ProductModule } from './modules/product/product.modules';
 import { UserModule } from './modules/user/user.modules';
 
-console.log(jwt.secret)
 @Global()
 @Module({
   imports: [
-    ConfigModule.forRoot({ envFilePath: './config/.development.env'}),
+    ConfigModule.forRoot({ envFilePath: './config/.env'}),
     UserModule, 
     ProductModule,
     CollectionModule,
