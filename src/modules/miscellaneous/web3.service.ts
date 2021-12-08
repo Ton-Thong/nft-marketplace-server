@@ -1,32 +1,21 @@
-// import { Inject, Injectable, Scope } from "@nestjs/common";
-// import { ethers } from 'ethers';
-// import * as MyNFT from "../artifacts/contracts/RuNFT.sol/RuNFT.json";
-// const contract = require("../artifacts/contracts/RuNFT.sol/RuNFT.json")
+import { Inject, Injectable, Scope } from "@nestjs/common";
+import { ethers } from 'ethers';
+import { Provider } from "src/infrastructure/Web3/web3.provider";
+const  MyNFT = require("../../artifacts/contracts/RuNFT.sol/RuNFT.json");
 
-// @Injectable({ scope: Scope.REQUEST })
-// export class Web3Service {
-//     constructor(@Inject('Alchemy') private provider : ethers.providers.AlchemyProvider) { }
+@Injectable({ scope: Scope.REQUEST })
+export class Web3Service {
+    constructor(@Inject(Provider.Alchemy) private signer : ethers.Wallet) { }
 
+    async mintNFT(recipient: string, tokenURI: string) {
+        try { 
+            const contract = new ethers.Contract(process.env.ONTRACT_MINTNFT, MyNFT.abi, this.signer)
+            const tx = await contract.mintNFT(recipient, tokenURI);
+            const receipt = await tx.wait();
 
-//     async mintNFT(recipient: string, tokenURI: string) {
-//         try { 
-            
-//             const { CONTRACT_MINT_NFT, CONTRACT_PRIVATE } = process.env;
-//             const nftContract = new ethers.Contract(CONTRACT_MINT_NFT, MyNFT, this.provider.getSigner())
-//             const signer = this.provider.getSigner();
-//             const nonce = await this.provider.getTransactionCount(recipient, 'latest');
-
-//             const tx = {
-//                 'from': recipient,
-//                 'to': CONTRACT_MINT_NFT,
-//                 'nonce': nonce,
-//                 'gas': 500000,
-//                 'data': nftContract.methods.mintNFT(recipient, tokenURI).encodeABI()
-//             };
-
-//             const signed = signer.signTransaction(tx);
-//         } catch(err) {
-//             throw err;
-//         }
-//     }
-// }
+            return receipt;
+        } catch(err) {
+            throw err;
+        }
+    }
+}

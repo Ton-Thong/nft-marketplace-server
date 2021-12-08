@@ -22,7 +22,7 @@ export class CollectionController {
 
             return { statusCode: HttpStatus.CREATED, data: result, message: 'success' };
         } catch (err) {
-            throw err;
+            throw new BadRequestException(err.message);
         }
     }
 
@@ -37,7 +37,7 @@ export class CollectionController {
 
             return { statusCode: HttpStatus.OK, data: result, message: 'success' }
         } catch (err) {
-            throw err;
+            throw new BadRequestException(err.message);
         }
     }
 
@@ -52,7 +52,7 @@ export class CollectionController {
 
             return { statusCode: HttpStatus.OK, data: result, message: 'success' };
         } catch (err) {
-            throw err;
+            throw new BadRequestException(err.message);
         }
     }
 
@@ -67,7 +67,7 @@ export class CollectionController {
 
             return { statusCode: HttpStatus.OK, data: ok, message: 'success' };
         } catch (err) {
-            throw err;
+            throw new BadRequestException(err.message);
         }
     }
 
@@ -80,9 +80,9 @@ export class CollectionController {
                 throw new BadRequestException();
             }
 
-            return { statusCode: HttpStatus.OK, data: null, message: 'success' };
+            return { statusCode: HttpStatus.OK, data: ok, message: 'success' };
         } catch (err) {
-            throw err;
+            throw new BadRequestException(err.message);
         }
     }
 }

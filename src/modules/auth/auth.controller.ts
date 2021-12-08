@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Post, Req, Res, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Get, HttpStatus, Post, Req, Res, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { ResponseDto } from "src/dto/response.dto";
 import { CredentialDto } from "./dto/credential.dto";
@@ -15,7 +15,7 @@ export class AuthController {
             const result: string = await this.authService.createToken(credentialDto);
             return { statusCode: HttpStatus.CREATED, data: result, message: 'success' };
         } catch(err) {
-            throw err;
+            throw new BadRequestException(err.message);
         }
     }
     

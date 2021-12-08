@@ -16,13 +16,11 @@ export class ProductController {
     async addProduct(@Body() product: AddProductDto, @Req() req): Promise<ResponseDto> {
         try {
             const result: AddProductResponseDto = await this.productService.create(product, req.user);
-            if(!result) {
-                throw new BadRequestException();
-            }
-
+            if(!result) throw new BadRequestException();
+            
             return { statusCode: HttpStatus.CREATED, data: result,  message: 'success' }
         } catch (err) {
-            throw err;
+            throw new BadRequestException(err.message);
         }
     }
 
@@ -31,13 +29,11 @@ export class ProductController {
     async getProduct(@Query('id', ParseUUIDPipe) id: string): Promise<ResponseDto> {
         try {
             const result: Product = await this.productService.get(id);
-            if(!result) {
-                throw new NotFoundException();
-            }
+            if(!result) throw new NotFoundException();
 
             return { statusCode: HttpStatus.OK, data: result,  message: 'success' }
         } catch(err) {
-            throw err;
+            throw new BadRequestException(err.message);
         }
     }
 
@@ -46,13 +42,11 @@ export class ProductController {
     async getProductAll(): Promise<ResponseDto> {
         try {
             const result = await this.productService.getAll();
-            if(!result) {
-                throw new NotFoundException();
-            }
+            if(!result) throw new NotFoundException();
             
             return { statusCode: HttpStatus.OK, data: result,  message: 'success' }
         } catch(err) {
-            throw err;
+            throw new BadRequestException(err.message);
         }
     }
 }
