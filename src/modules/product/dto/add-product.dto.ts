@@ -17,4 +17,6 @@ export class AddProductDto {
     public cid: string;
     @IsString()
     public metadata: string;
+    @IsString()
+    public publicAddress: string;
 }

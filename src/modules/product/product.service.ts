@@ -22,9 +22,9 @@ export class ProductService {
     if (!result.ok) return null;
 
     const [signedUrl] = await Promise.all([
-      await this.fileService.getSignedUrlPutObject(this.busketName, p.fileName, p.fileType),
-      await this.ipfsService.pinCid([p.cid, p.metadata]),
-      await this.web3service.mintNFT(u.publicAddress, p.cid),
+      this.fileService.getSignedUrlPutObject(this.busketName, p.fileName, p.fileType),
+      this.ipfsService.pinCid([p.cid, p.metadata]),
+      this.web3service.mintNFT(p.publicAddress, p.cid),
     ]);
 
     return { id: result.data, s3Url: signedUrl};

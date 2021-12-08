@@ -14,13 +14,13 @@ export const Web3Providers = [
   {
     provide: Provider.Alchemy,
     scope: Scope.DEFAULT,
-    useFactory: () : ethers.Wallet => {
+    useFactory: async () : Promise<ethers.Wallet> => {
       try {
           const provider : ethers.providers.AlchemyProvider = new ethers.providers.AlchemyProvider(process.env.CONTRACT_NETWORK, process.env.CONTRACT_ALCHEMYKEY);
           return getSigner(provider);
       } catch(err) {
           throw err;
-      }  
+      }
     }
   },
 ];

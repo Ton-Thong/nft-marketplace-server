@@ -8,12 +8,10 @@ export class Web3Service {
     constructor(@Inject(Provider.Alchemy) private signer : ethers.Wallet) { }
 
     async mintNFT(recipient: string, tokenURI: string) {
-        try { 
-            const contract = new ethers.Contract(process.env.ONTRACT_MINTNFT, MyNFT.abi, this.signer)
+        try {             
+            const contract: ethers.Contract = new ethers.Contract(process.env.CONTRACT_MINTNFT, MyNFT.abi, this.signer)
             const tx = await contract.mintNFT(recipient, tokenURI);
-            const receipt = await tx.wait();
-
-            return receipt;
+            return await tx.wait();
         } catch(err) {
             throw err;
         }
