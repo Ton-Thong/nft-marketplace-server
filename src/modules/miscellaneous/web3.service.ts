@@ -9,7 +9,7 @@ export class Web3Service {
 
     async mintNFT(recipient: string, tokenURI: string) {
         try {             
-            const contract: ethers.Contract = new ethers.Contract(process.env.CONTRACT_MINTNFT, MyNFT.abi, this.signer)
+            const contract: ethers.Contract = new ethers.Contract(process.env.CONTRACT_RUNFT, MyNFT.abi, this.signer)
             const tx = await contract.mintNFT(recipient, tokenURI);
             return await tx.wait();
         } catch(err) {
