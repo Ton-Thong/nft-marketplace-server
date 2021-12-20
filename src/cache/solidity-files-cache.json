@@ -2,11 +2,19 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/home/ton/nft-marketplace-server/src/contracts/RuNFT.sol": {
+<<<<<<< Updated upstream
       "lastModificationDate": 1638716626671,
       "contentHash": "bd9e2de2c271a12fa8f0e88538dc4b5d",
       "sourceName": "contracts/RuNFT.sol",
       "solcConfig": {
         "version": "0.8.0",
+=======
+      "lastModificationDate": 1638697166211,
+      "contentHash": "b30d803a8c70ecfb0bf0f3ba2f081615",
+      "sourceName": "contracts/RuNFT.sol",
+      "solcConfig": {
+        "version": "0.8.10",
+>>>>>>> Stashed changes
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -35,18 +43,30 @@
         "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol"
       ],
       "versionPragmas": [
+<<<<<<< Updated upstream
         "^0.8.0"
+=======
+        "^0.8.10"
+>>>>>>> Stashed changes
       ],
       "artifacts": [
         "RuNFT"
       ]
     },
     "/home/ton/nft-marketplace-server/node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol": {
+<<<<<<< Updated upstream
       "lastModificationDate": 1638715894931,
       "contentHash": "81722bd5f5980edd45a9a72c4119225a",
       "sourceName": "@openzeppelin/contracts/token/ERC721/ERC721.sol",
       "solcConfig": {
         "version": "0.8.0",
+=======
+      "lastModificationDate": 1638695772751,
+      "contentHash": "81722bd5f5980edd45a9a72c4119225a",
+      "sourceName": "@openzeppelin/contracts/token/ERC721/ERC721.sol",
+      "solcConfig": {
+        "version": "0.8.10",
+>>>>>>> Stashed changes
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -85,11 +105,19 @@
       ]
     },
     "/home/ton/nft-marketplace-server/node_modules/@openzeppelin/contracts/utils/Counters.sol": {
+<<<<<<< Updated upstream
       "lastModificationDate": 1638715894891,
       "contentHash": "a21834c04c11733a9018196d6b1b0e89",
       "sourceName": "@openzeppelin/contracts/utils/Counters.sol",
       "solcConfig": {
         "version": "0.8.0",
+=======
+      "lastModificationDate": 1638695772621,
+      "contentHash": "a21834c04c11733a9018196d6b1b0e89",
+      "sourceName": "@openzeppelin/contracts/utils/Counters.sol",
+      "solcConfig": {
+        "version": "0.8.10",
+>>>>>>> Stashed changes
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -120,11 +148,19 @@
       ]
     },
     "/home/ton/nft-marketplace-server/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
+<<<<<<< Updated upstream
       "lastModificationDate": 1638715894891,
       "contentHash": "cbba874af15bc1c65a1c82aebec1a0fe",
       "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
       "solcConfig": {
         "version": "0.8.0",
+=======
+      "lastModificationDate": 1638695772621,
+      "contentHash": "cbba874af15bc1c65a1c82aebec1a0fe",
+      "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
+      "solcConfig": {
+        "version": "0.8.10",
+>>>>>>> Stashed changes
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -157,11 +193,19 @@
       ]
     },
     "/home/ton/nft-marketplace-server/node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol": {
+<<<<<<< Updated upstream
       "lastModificationDate": 1638715894931,
       "contentHash": "1744bec5bc5b6d27a7719cb8d4b5852f",
       "sourceName": "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol",
       "solcConfig": {
         "version": "0.8.0",
+=======
+      "lastModificationDate": 1638695772931,
+      "contentHash": "1744bec5bc5b6d27a7719cb8d4b5852f",
+      "sourceName": "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol",
+      "solcConfig": {
+        "version": "0.8.10",
+>>>>>>> Stashed changes
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -194,11 +238,19 @@
       ]
     },
     "/home/ton/nft-marketplace-server/node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol": {
+<<<<<<< Updated upstream
       "lastModificationDate": 1638715894931,
       "contentHash": "937105c04c9b4b689f8ee2d6d161994d",
       "sourceName": "@openzeppelin/contracts/token/ERC721/IERC721.sol",
       "solcConfig": {
         "version": "0.8.0",
+=======
+      "lastModificationDate": 1638695772751,
+      "contentHash": "937105c04c9b4b689f8ee2d6d161994d",
+      "sourceName": "@openzeppelin/contracts/token/ERC721/IERC721.sol",
+      "solcConfig": {
+        "version": "0.8.10",
+>>>>>>> Stashed changes
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -231,11 +283,19 @@
       ]
     },
     "/home/ton/nft-marketplace-server/node_modules/@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol": {
+<<<<<<< Updated upstream
       "lastModificationDate": 1638715894931,
       "contentHash": "c327b62ee5bcacfdd977bc3888fba3a4",
       "sourceName": "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol",
       "solcConfig": {
         "version": "0.8.0",
+=======
+      "lastModificationDate": 1638695772751,
+      "contentHash": "c327b62ee5bcacfdd977bc3888fba3a4",
+      "sourceName": "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol",
+      "solcConfig": {
+        "version": "0.8.10",
+>>>>>>> Stashed changes
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -266,11 +326,19 @@
       ]
     },
     "/home/ton/nft-marketplace-server/node_modules/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol": {
+<<<<<<< Updated upstream
       "lastModificationDate": 1638715894931,
       "contentHash": "a17d56fe0dfcceb68cd8a527b934b0ae",
       "sourceName": "@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol",
       "solcConfig": {
         "version": "0.8.0",
+=======
+      "lastModificationDate": 1638695772931,
+      "contentHash": "a17d56fe0dfcceb68cd8a527b934b0ae",
+      "sourceName": "@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol",
+      "solcConfig": {
+        "version": "0.8.10",
+>>>>>>> Stashed changes
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -303,11 +371,19 @@
       ]
     },
     "/home/ton/nft-marketplace-server/node_modules/@openzeppelin/contracts/utils/Address.sol": {
+<<<<<<< Updated upstream
       "lastModificationDate": 1638715894891,
       "contentHash": "a8d6f1154bf88980c18dd20fb009967d",
       "sourceName": "@openzeppelin/contracts/utils/Address.sol",
       "solcConfig": {
         "version": "0.8.0",
+=======
+      "lastModificationDate": 1638695772621,
+      "contentHash": "a8d6f1154bf88980c18dd20fb009967d",
+      "sourceName": "@openzeppelin/contracts/utils/Address.sol",
+      "solcConfig": {
+        "version": "0.8.10",
+>>>>>>> Stashed changes
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -338,11 +414,19 @@
       ]
     },
     "/home/ton/nft-marketplace-server/node_modules/@openzeppelin/contracts/utils/Context.sol": {
+<<<<<<< Updated upstream
       "lastModificationDate": 1638715894891,
       "contentHash": "a06a83834de6f8eb27f6ed608d030ac2",
       "sourceName": "@openzeppelin/contracts/utils/Context.sol",
       "solcConfig": {
         "version": "0.8.0",
+=======
+      "lastModificationDate": 1638695772621,
+      "contentHash": "a06a83834de6f8eb27f6ed608d030ac2",
+      "sourceName": "@openzeppelin/contracts/utils/Context.sol",
+      "solcConfig": {
+        "version": "0.8.10",
+>>>>>>> Stashed changes
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -373,11 +457,19 @@
       ]
     },
     "/home/ton/nft-marketplace-server/node_modules/@openzeppelin/contracts/utils/Strings.sol": {
+<<<<<<< Updated upstream
       "lastModificationDate": 1638715894891,
       "contentHash": "babfde9e032d8044f461325c13ca07d7",
       "sourceName": "@openzeppelin/contracts/utils/Strings.sol",
       "solcConfig": {
         "version": "0.8.0",
+=======
+      "lastModificationDate": 1638695772621,
+      "contentHash": "babfde9e032d8044f461325c13ca07d7",
+      "sourceName": "@openzeppelin/contracts/utils/Strings.sol",
+      "solcConfig": {
+        "version": "0.8.10",
+>>>>>>> Stashed changes
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -408,11 +500,19 @@
       ]
     },
     "/home/ton/nft-marketplace-server/node_modules/@openzeppelin/contracts/utils/introspection/ERC165.sol": {
+<<<<<<< Updated upstream
       "lastModificationDate": 1638715894931,
       "contentHash": "31c485b4e552cc1bdeb99edb8303011e",
       "sourceName": "@openzeppelin/contracts/utils/introspection/ERC165.sol",
       "solcConfig": {
         "version": "0.8.0",
+=======
+      "lastModificationDate": 1638695772751,
+      "contentHash": "31c485b4e552cc1bdeb99edb8303011e",
+      "sourceName": "@openzeppelin/contracts/utils/introspection/ERC165.sol",
+      "solcConfig": {
+        "version": "0.8.10",
+>>>>>>> Stashed changes
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -445,11 +545,19 @@
       ]
     },
     "/home/ton/nft-marketplace-server/node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol": {
+<<<<<<< Updated upstream
       "lastModificationDate": 1638715894931,
       "contentHash": "caf880149ceb95d7355b976d61c278a8",
       "sourceName": "@openzeppelin/contracts/utils/introspection/IERC165.sol",
       "solcConfig": {
         "version": "0.8.0",
+=======
+      "lastModificationDate": 1638695772751,
+      "contentHash": "caf880149ceb95d7355b976d61c278a8",
+      "sourceName": "@openzeppelin/contracts/utils/introspection/IERC165.sol",
+      "solcConfig": {
+        "version": "0.8.10",
+>>>>>>> Stashed changes
         "settings": {
           "optimizer": {
             "enabled": false,

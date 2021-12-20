@@ -1,5 +1,9 @@
 // SPDX-License-Identifier: MIT
+<<<<<<< Updated upstream
 pragma solidity ^0.8.0;
+=======
+pragma solidity ^0.8.10;
+>>>>>>> Stashed changes
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
@@ -12,7 +16,13 @@ contract RuNFT is ERC721URIStorage, Ownable {
 
     constructor() ERC721("RuNFT", "NFT") {}
 
+<<<<<<< Updated upstream
     function mintNFT(address recipient, string memory tokenURI) public onlyOwner returns (uint256)
+=======
+    function mintNFT(address recipient, string memory tokenURI)
+        public onlyOwner
+        returns (uint256)
+>>>>>>> Stashed changes
     {
         _tokenIds.increment();
 
@@ -22,4 +32,8 @@ contract RuNFT is ERC721URIStorage, Ownable {
 
         return newItemId;
     }
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes

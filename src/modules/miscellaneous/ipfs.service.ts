@@ -1,7 +1,14 @@
+<<<<<<< Updated upstream
 import { Injectable } from "@nestjs/common";
 import axios from "axios";
 
 @Injectable()
+=======
+import { Injectable, Scope } from "@nestjs/common";
+import axios from "axios";
+
+@Injectable({ scope: Scope.REQUEST })
+>>>>>>> Stashed changes
 export class IpfsService {
     private basicAuth: string;
 

@@ -1,4 +1,5 @@
 import { Inject, Injectable, Scope } from "@nestjs/common";
+<<<<<<< Updated upstream
 import { ethers } from 'ethers';
 import { Provider } from "src/infrastructure/Web3/web3.provider";
 const  MyNFT = require("../../artifacts/contracts/RuNFT.sol/RuNFT.json");
@@ -15,5 +16,16 @@ export class Web3Service {
         } catch(err) {
             throw err;
         }
+=======
+import { ethers } from "ethers";
+
+@Injectable({ scope: Scope.REQUEST })
+export class Web3Service {
+    constructor(@Inject('Alchemy') private provider: ethers.providers.AlchemyProvider) {}
+
+    async mintNFT() {
+        const signed = this.provider.getSigner();
+        console.log(signed);
+>>>>>>> Stashed changes
     }
 }

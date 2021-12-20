@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import { Scope } from '@nestjs/common';
 import { ethers } from 'ethers';
 
@@ -24,3 +25,22 @@ export const Web3Providers = [
     }
   },
 ];
+=======
+import { Scope } from "@nestjs/common";
+import { ethers } from "ethers";
+
+export const Web3Provider = [
+    {
+        provide: 'Alchemy',
+        scope: Scope.REQUEST,
+        useFactory: async () => {
+            try {
+                const { CONTRACT_NETWORK, CONTRACT_NODE  } = process.env
+                return new ethers.providers.AlchemyProvider(CONTRACT_NETWORK, CONTRACT_NODE);
+            } catch(err) {
+                throw err;
+            }
+        }
+    }
+]
+>>>>>>> Stashed changes

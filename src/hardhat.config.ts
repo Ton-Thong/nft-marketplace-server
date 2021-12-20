@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 require('dotenv').config();
 require("@nomiclabs/hardhat-ethers");
 
@@ -12,3 +13,21 @@ module.exports = {
       }
    },
 }
+=======
+const path = require('path/posix');
+require('dotenv').config({ path: path.resolve(__dirname, '../config/.env') });
+require("@nomiclabs/hardhat-ethers");
+
+const { CONTRACT_NODE, CONTRACT_PRIVATE, CONTRACT_NETWORK } = process.env;
+module.exports = {
+   solidity: "0.8.10",
+   defaultNetwork: CONTRACT_NETWORK,
+   networks: {
+      hardhat: {},
+      ropsten: {
+         url: CONTRACT_NODE,
+         accounts: [`0x${CONTRACT_PRIVATE}`]
+      }
+   },
+}
+>>>>>>> Stashed changes
