@@ -26,31 +26,21 @@ export class ProductService {
   }
 
   public async create(p: AddProductDto, u: UserDto): Promise<AddProductResponseDto> {
-    const verified: MessageLayerDto = await this.verifyBilling(p.txHash, u.publicAddress);
+    const verified: MessageLayerDto = await this.orderService.verifyBilling(p.txHash, u.publicAddress);
     if (!verified.ok) throw new BadRequestException();
 
     const billingSuccess: MessageLayerDto = await this.orderService.updateMintBilling(verified.data.id, BillingStatus.Success);
     if (!billingSuccess.ok) throw new BadRequestException()
 
     p.fileName = `${uuid()}-${p.fileName}`;
-    const [signedUrl, _, nftTxHash] = await Promise.all([
+    const [signedUrl, _, minted] = await Promise.all([
       this.fileService.getSignedUrlPutObject(this.busketName, p.fileName, p.fileType),
       this.ipfsService.pinCid([p.cid, p.metadata]),
-      this.web3service.mintNFT(u.publicAddress, p.cid)
+      this.web3service.mintNFT(u.publicAddress, p.metadata)
     ]);
 
-    const result = await this.productRepository.create(p, u, nftTxHash);
+    const result = await this.productRepository.create(p, u, minted.transactionHash);
     return { id: result.data, s3Url: signedUrl };
-  }
-
-  private async verifyBilling(txHash: string, callerAddress: string): Promise<MessageLayerDto> {
-    const [transac, blockTimeStamp]: [ethers.providers.TransactionResponse, number] = await Promise.all([
-      this.web3service.getTransaction(txHash),
-      this.web3service.getBlock(txHash)
-    ]);
-
-    const receiveEther: string = ethers.utils.formatEther(transac.value._hex);
-    return await this.orderService.getMintBilling(receiveEther, callerAddress, blockTimeStamp);
   }
 
   public async get(id: string): Promise<Product> {

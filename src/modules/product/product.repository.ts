@@ -20,9 +20,9 @@ export class ProductRepository {
             product.description = p.description;
             product.fileName = p.fileName;
             product.fileType = p.fileType;
-            product.collectionId = p.collectionId,
-                product.collectionName = p.collectionName,
-                product.cid = p.cid;
+            product.collectionId = p.collectionId;
+            product.collectionName = p.collectionName;
+            product.cid = p.cid;
             product.nftTxHash = nftTxHash;
             product.createdBy = u.id;
             product.owner = u.id;

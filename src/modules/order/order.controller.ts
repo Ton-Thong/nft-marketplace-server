@@ -10,9 +10,9 @@ export class OrderController {
 
     @Get()
     @UseGuards(AuthGuard())
-    public async getBillingById(@Query('id', ParseUUIDPipe) id: string): Promise<ResponseDto> {
+    public async getMintBillingById(@Query('id', ParseUUIDPipe) id: string): Promise<ResponseDto> {
         try {
-            const result = await this.orderService.getBillingById(id);
+            const result = await this.orderService.getMintBillingById(id);
             if (!result) throw new BadRequestException();
 
             return { statusCode: HttpStatus.OK, data: result, message: 'success' }

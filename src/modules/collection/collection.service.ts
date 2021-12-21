@@ -9,35 +9,35 @@ import { CollectionDto } from "./dto/collection.dto";
 export class CollectionService {
   constructor(private collectionRepository: CollectionRepository) { }
 
-  async create(c: AddCollectionDto, u: UserDto): Promise<Collection> {
+  public async create(c: AddCollectionDto, u: UserDto): Promise<Collection> {
     const result = await this.collectionRepository.create(c, u);
     if(!result.ok) return null;
 
     return result.data;
   }
 
-  async getById(id: string): Promise<Collection> {
+  public async getById(id: string): Promise<Collection> {
       const result = await this.collectionRepository.getById(id);
       if(!result.ok) return null;
 
       return result.data;
   }
 
-  async getAllฺByUser(u: UserDto): Promise<Array<Collection>> {
+  public async getAllฺByUser(u: UserDto): Promise<Array<Collection>> {
       const result = await this.collectionRepository.getAllฺByUser(u);
       if(!result.ok) return null;
 
       return result.data
   }
   
-  async updateCollectionName(uc: CollectionDto): Promise<boolean> {
+  public async updateCollectionName(uc: CollectionDto): Promise<boolean> {
       const result = await this.collectionRepository.updateCollectionName(uc);
       if(!result.ok) return null;
 
       return result.data;
   }
 
-  async delete(c: CollectionDto): Promise<boolean> {
+  public async delete(c: CollectionDto): Promise<boolean> {
       const result = await this.collectionRepository.delete(c);
       return result.ok;
   }

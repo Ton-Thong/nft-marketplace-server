@@ -8,7 +8,7 @@ import { UserRepository } from "./user.repository";
 export class UserService {
   constructor(private userRepository: UserRepository) { }
 
-  async create(user: AddUserDto): Promise<UserDto> {
+  public async create(user: AddUserDto): Promise<UserDto> {
     const { publicAddress } = user;
     const result = await this.userRepository.findByPublicAddress(publicAddress);
     if (result.ok) {
@@ -18,18 +18,18 @@ export class UserService {
     return (await this.userRepository.create(user)).data;
   }
 
-  async get(id: string, publicAddress: string): Promise<MessageLayerDto> {
+  public async get(id: string, publicAddress: string): Promise<MessageLayerDto> {
     return await this.userRepository.get(id, publicAddress);
   }
 
-  async findByPublicAddress(publicAddress: string): Promise<UserDto> {
+  public async findByPublicAddress(publicAddress: string): Promise<UserDto> {
     const result: MessageLayerDto = await this.userRepository.findByPublicAddress(publicAddress);
     if (!result.ok) return null
     
     return result.data[0]
   }
 
-  async updateNonce(user: UserDto): Promise<void> {
+  public async updateNonce(user: UserDto): Promise<void> {
     await this.userRepository.updateNonce(user);
   }
 }
