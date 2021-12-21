@@ -15,7 +15,7 @@ contract RuNFTMarket is ReentrancyGuard {
     //people have to pay to puy their NFT on this marketplace
     uint256 listingPrice = 0.025 ether;
 
-    constructor(){
+    constructor() {
         owner = payable(msg.sender);
     }
 

@@ -45,6 +45,7 @@
     "@nestjs/cli": "^8.0.0",
     "@nestjs/schematics": "^8.0.0",
     "@nestjs/testing": "^8.0.0",
+    "@nomiclabs/hardhat-ethers": "^2.0.3",
     "@openzeppelin/contracts": "^4.4.0",
     "@types/express": "^4.17.13",
     "@types/jest": "^27.0.1",
