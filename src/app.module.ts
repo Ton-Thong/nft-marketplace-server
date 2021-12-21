@@ -5,6 +5,7 @@ import { PassportModule } from '@nestjs/passport';
 import { AppController } from './app.controller';
 import { jwt } from './modules/auth/auth.jwt.config';
 import { AuthModule } from './modules/auth/auth.modules';
+import { BillingModule } from './modules/billing/billing.modules';
 import { CollectionModule } from './modules/collection/collection.modules';
 import { OrderModule } from './modules/order/order.modules';
 import { ProductModule } from './modules/product/product.modules';
@@ -18,6 +19,7 @@ import { UserModule } from './modules/user/user.modules';
     ProductModule,
     OrderModule,
     CollectionModule,
+    BillingModule,
     AuthModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({ secret: String(jwt.secret), signOptions: { expiresIn: jwt.expire } })],
