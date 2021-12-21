@@ -68,6 +68,22 @@ export const AWSProviders = [
           }).promise();
         }
 
+        if(!listTable.TableNames.includes(TableName.Billing)) {
+          await dynamoDb.createTable({
+            TableName: TableName.Billing,
+            KeySchema: [
+              { AttributeName: 'id', KeyType: 'HASH' },
+            ],
+            AttributeDefinitions: [
+              { AttributeName: 'id', AttributeType: 'S' },
+            ],
+            ProvisionedThroughput: {
+              ReadCapacityUnits: 5,
+              WriteCapacityUnits: 5,
+            },
+          }).promise();
+        }
+
         return docClient;
       } catch (err) {
         throw err;

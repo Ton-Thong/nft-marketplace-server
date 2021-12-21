@@ -11,7 +11,7 @@ import { UserDto } from "../user/dto/user.dto";
 export class ProductRepository {
     constructor(@Inject('DynamoDb') private docClient: AWS.DynamoDB.DocumentClient) { }
 
-    async create(p: AddProductDto, u: UserDto): Promise<MessageLayerDto> {
+    async create(p: AddProductDto, u: UserDto, nftTxHash: string): Promise<MessageLayerDto> {
         try {
             const id = uuid();
             const product = new Product();
@@ -21,8 +21,9 @@ export class ProductRepository {
             product.fileName = p.fileName;
             product.fileType = p.fileType;
             product.collectionId = p.collectionId,
-            product.collectionName = p.collectionName,
-            product.cid = p.cid;
+                product.collectionName = p.collectionName,
+                product.cid = p.cid;
+            product.nftTxHash = nftTxHash;
             product.createdBy = u.id;
             product.owner = u.id;
 

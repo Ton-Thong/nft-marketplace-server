@@ -22,4 +22,5 @@ export class Product {
     public createdDate: string;
     public contractAddress: string;
     public cid: string;
+    public nftTxHash: string;
 }

@@ -6,6 +6,7 @@ import { AppController } from './app.controller';
 import { jwt } from './modules/auth/auth.jwt.config';
 import { AuthModule } from './modules/auth/auth.modules';
 import { CollectionModule } from './modules/collection/collection.modules';
+import { OrderModule } from './modules/order/order.modules';
 import { ProductModule } from './modules/product/product.modules';
 import { UserModule } from './modules/user/user.modules';
 
@@ -15,6 +16,7 @@ import { UserModule } from './modules/user/user.modules';
     ConfigModule.forRoot({ envFilePath: './config/.env'}),
     UserModule, 
     ProductModule,
+    OrderModule,
     CollectionModule,
     AuthModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),

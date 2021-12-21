@@ -18,5 +18,5 @@ export class AddProductDto {
     @IsString()
     public metadata: string;
     @IsString()
-    public publicAddress: string;
+    public txHash: string;
 }
