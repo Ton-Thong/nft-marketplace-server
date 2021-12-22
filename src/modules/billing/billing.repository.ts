@@ -73,6 +73,7 @@ export class BillingRepository {
             return { ok: true, data: result, message: `success` };
         } catch (err) {
             throw err;
+     
         }
     }
 

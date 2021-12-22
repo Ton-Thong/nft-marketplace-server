@@ -23,16 +23,12 @@ export class BillingService {
         const transac = await this.web3service.getTransaction(txHash);
         const blockTimeStamp: number = await this.web3service.getBlock(txHash);
 
-        if (transac.from != callerAddress) {
+        if (transac.from.localeCompare(callerAddress, undefined, { sensitivity: 'accent' })) {
             throw new BadRequestException("Caller address is not owner of transaction.");
         }
 
         const receiveEther: string = ethers.utils.formatEther(transac.value._hex);
         return await this.billingRepository.getMintBilling(receiveEther, callerAddress, blockTimeStamp);
-    }
-
-    public async updateMintBilling(id: string, status: string): Promise<MessageLayerDto> {
-        return await this.billingRepository.updateMintBilling(id, status);
     }
 
     public async getMintBillingById(id: string): Promise<MessageLayerDto> {
@@ -44,5 +40,9 @@ export class BillingService {
         } catch (err) {
             throw err;
         }
+    }
+
+    public async updateMintBilling(id: string, status: string): Promise<MessageLayerDto> {
+        return await this.billingRepository.updateMintBilling(id, status);
     }
 }
