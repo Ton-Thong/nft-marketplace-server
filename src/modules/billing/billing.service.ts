@@ -1,4 +1,4 @@
-import { Injectable, Scope } from "@nestjs/common";
+import { BadRequestException, Injectable, Scope } from "@nestjs/common";
 import { ethers } from "ethers";
 import { MessageLayerDto } from "src/dto/messageLayer.dto";
 import { Web3Service } from "../miscellaneous/web3.service";
@@ -20,10 +20,12 @@ export class BillingService {
     }
 
     public async verifyBilling(txHash: string, callerAddress: string): Promise<MessageLayerDto> {
-        const [transac, blockTimeStamp]: [ethers.providers.TransactionResponse, number] = await Promise.all([
-            this.web3service.getTransaction(txHash),
-            this.web3service.getBlock(txHash)
-        ]);
+        const transac = await this.web3service.getTransaction(txHash);
+        const blockTimeStamp: number = await this.web3service.getBlock(txHash);
+
+        if (transac.from != callerAddress) {
+            throw new BadRequestException("Caller address is not owner of transaction.");
+        }
 
         const receiveEther: string = ethers.utils.formatEther(transac.value._hex);
         return await this.billingRepository.getMintBilling(receiveEther, callerAddress, blockTimeStamp);

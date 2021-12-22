@@ -46,7 +46,7 @@ export class BillingRepository {
                     ':callerAddress': callerAddress,
                     ':txFee': txFee,
                     ':blockTimeStamp': blockTimeStamp,
-                    ':status': BillingStatus.Success,
+                    ':status': BillingStatus.Pending,
                 }
             }).promise();
 
