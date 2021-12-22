@@ -35,7 +35,7 @@ export class ProductService {
     const [signedUrl, _, minted] = await Promise.all([
       this.fileService.getSignedUrlPutObject(this.busketName, p.fileName, p.fileType),
       this.ipfsService.pinCid([p.cid, p.metadata]),
-      this.web3service.mintNFT(u.publicAddress, p.metadata)
+      this.web3service.mintNFT(u.publicAddress, p.metadata + "/metadata.json")
     ]);
 
     const result = await this.productRepository.create(p, u, minted.transactionHash);
