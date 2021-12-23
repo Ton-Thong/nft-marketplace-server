@@ -4,12 +4,12 @@ import { recoverPersonalSignature } from "eth-sig-util";
 import { bufferToHex } from "ethereumjs-util";
 import { CredentialDto } from "./dto/credential.dto";
 import { UserDto } from "../user/dto/user.dto";
-import { UserServiceInterface } from "../user/interface/user.service.interface";
+import { IUserService } from "../user/interface/user.service.interface";
 import { ServiceInterface } from "src/helper/service-interface";
 
 @Injectable()
 export class AuthService {
-    constructor(private jwtService: JwtService, @Inject(ServiceInterface.UserServiceInterface) private userService: UserServiceInterface) { }
+    constructor(private jwtService: JwtService, @Inject(ServiceInterface.IUserService) private userService: IUserService) { }
 
     async createToken(credentialDto: CredentialDto) {
         const { signature, publicAddress, forceTest } = credentialDto;

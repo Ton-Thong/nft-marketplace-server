@@ -3,13 +3,15 @@ import { ScanResponse } from "dynamoose/dist/DocumentRetriever";
 import { MessageLayerDtoT } from "src/dto/messageLayer.dto";
 import { User, UserModel } from "src/models/user.model";
 import { AddUserDto } from "./dto/add-user.dto";
-import { UserDaoInterface } from "./interface/user.dao.interface";
 import { v4 as uuid } from 'uuid';
 import { UserDto } from "./dto/user.dto";
+import { DaoInterface } from "src/helper/dao-interface";
+import { IUserDao } from "./interface/user.dao.interface";
 
 @Injectable({ scope: Scope.REQUEST })
-class UserDao implements UserDaoInterface {
-    constructor(private userModel: UserModel) { }
+class UserDao implements IUserDao {
+    constructor(private readonly userModel: UserModel) { }
+
     public async createUser(u: AddUserDto): Promise<MessageLayerDtoT<User>> {
         const { publicAddress, username } = u;
         const nonce: number = Math.floor(Math.random() * 10000);
@@ -29,11 +31,11 @@ class UserDao implements UserDaoInterface {
     }
 
     public async getByPublicAddress(publicAddress: string): Promise<MessageLayerDtoT<User>> {
-        const user: ScanResponse<User> = await this.userModel.client.scan("publicAddress").eq(publicAddress).exec();
-        if (!user || user.count <= 0) {
+        const users: ScanResponse<User> = await this.userModel.client.scan("publicAddress").eq(publicAddress).exec();
+        if (!users || users.count <= 0) {
             return { ok: false, data: null, message: `User with publicAddress ${publicAddress} is not found in database` };
         }
-        return { ok: true, data: user[0], message: `success` };
+        return { ok: true, data: users[0], message: `success` };
     }
 
     public async updateNonce(u: UserDto) {
@@ -42,4 +44,7 @@ class UserDao implements UserDaoInterface {
     }
 }
 
-export const UserDaoProvider = { provide: "UserDaoInterface", useClass: UserDao }
+export const UserDaoProvider = {
+    provide: DaoInterface.IUserDao,
+    useClass: UserDao
+}

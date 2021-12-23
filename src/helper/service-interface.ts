@@ -1,3 +1,4 @@
 export enum ServiceInterface {
-    UserServiceInterface = 'UserServiceInterface',
+  ICollectionService = "ICollectionService",
+  IUserService = "IUserService"
 }

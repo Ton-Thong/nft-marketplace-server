@@ -1,15 +1,16 @@
-import { BadRequestException, Body, Controller, Delete, Get, HttpStatus, NotFoundException, ParseUUIDPipe, Post, Put, Query, Req, Res, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Get, HttpStatus, Inject, NotFoundException, ParseUUIDPipe, Post, Put, Query, Req, Res, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { ResponseDto } from "src/dto/response.dto";
+import { ServiceInterface } from "src/helper/service-interface";
 import { Collection } from "src/models/collection.model";
-import { CollectionService } from "./collection.service";
 import { AddCollectionDto } from "./dto/add-collection.dto";
 import { CollectionDto } from "./dto/collection.dto";
+import { ICollectionService } from "./interface/collection.service.interface";
 
 @Controller('collections')
 @UsePipes(ValidationPipe)
 export class CollectionController {
-    constructor(private collectionService: CollectionService) { }
+    constructor(@Inject(ServiceInterface.ICollectionService) private collectionService: ICollectionService) { }
 
     @Post()
     @UseGuards(AuthGuard())
@@ -60,12 +61,8 @@ export class CollectionController {
     @UseGuards(AuthGuard())
     async updateCollectionName(@Body() uc: CollectionDto): Promise<ResponseDto> {
         try {
-            const ok: boolean = await this.collectionService.updateCollectionName(uc);
-            if (!ok) {
-                throw new BadRequestException();
-            }
-
-            return { statusCode: HttpStatus.OK, data: ok, message: 'success' };
+            await this.collectionService.updateCollectionName(uc);
+            return { statusCode: HttpStatus.OK, data: true, message: 'success' };
         } catch (err) {
             throw new BadRequestException(err.message);
         }
@@ -75,12 +72,8 @@ export class CollectionController {
     @UseGuards(AuthGuard())
     async deleteCollection(@Body() collection: CollectionDto): Promise<ResponseDto> {
         try {
-            const ok: boolean = await this.collectionService.delete(collection);
-            if (!ok) {
-                throw new BadRequestException();
-            }
-
-            return { statusCode: HttpStatus.OK, data: ok, message: 'success' };
+            await this.collectionService.delete(collection);
+            return { statusCode: HttpStatus.OK, data: true, message: 'success' };
         } catch (err) {
             throw new BadRequestException(err.message);
         }

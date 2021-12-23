@@ -1,3 +1,4 @@
 export enum DaoInterface {
-    UserDaoInterface = 'UserDaoInterface',
+    ICollectionDao = "ICollectionDao",
+    IUserDao = "IUserDao"
 }

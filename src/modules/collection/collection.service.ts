@@ -1,44 +1,48 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable, Scope } from "@nestjs/common";
+import { DaoInterface } from "src/helper/dao-interface";
+import { ServiceInterface } from "src/helper/service-interface";
 import { Collection } from "src/models/collection.model";
 import { UserDto } from "../user/dto/user.dto";
-import { CollectionRepository } from "./collection.repository";
 import { AddCollectionDto } from "./dto/add-collection.dto";
 import { CollectionDto } from "./dto/collection.dto";
+import { ICollectionDao } from "./interface/collection.dao.interface";
+import { ICollectionService } from "./interface/collection.service.interface";
 
-@Injectable()
-export class CollectionService {
-  constructor(private collectionRepository: CollectionRepository) { }
+@Injectable({ scope: Scope.REQUEST })
+class CollectionService implements ICollectionService {
+  constructor(@Inject(DaoInterface.ICollectionDao) private readonly collectionDao: ICollectionDao) { }
 
   public async create(c: AddCollectionDto, u: UserDto): Promise<Collection> {
-    const result = await this.collectionRepository.create(c, u);
-    if(!result.ok) return null;
+    const result = await this.collectionDao.createCollection(c, u);
+    if (!result.ok) return null;
 
     return result.data;
   }
 
   public async getById(id: string): Promise<Collection> {
-      const result = await this.collectionRepository.getById(id);
-      if(!result.ok) return null;
+    const result = await this.collectionDao.getCollectionById(id);
+    if (!result.ok) return null;
 
-      return result.data;
+    return result.data;
   }
 
   public async getAllฺByUser(u: UserDto): Promise<Array<Collection>> {
-      const result = await this.collectionRepository.getAllฺByUser(u);
-      if(!result.ok) return null;
+    const result = await this.collectionDao.getCollectionAllByUser(u);
+    if (!result.ok) return null;
 
-      return result.data
-  }
-  
-  public async updateCollectionName(uc: CollectionDto): Promise<boolean> {
-      const result = await this.collectionRepository.updateCollectionName(uc);
-      if(!result.ok) return null;
-
-      return result.data;
+    return result.data
   }
 
-  public async delete(c: CollectionDto): Promise<boolean> {
-      const result = await this.collectionRepository.delete(c);
-      return result.ok;
+  public async updateCollectionName(uc: CollectionDto): Promise<void> {
+    await this.collectionDao.updateCollectionName(uc);
   }
+
+  public async delete(c: CollectionDto): Promise<void> {
+    await this.collectionDao.deleteColletion(c);
+  }
+}
+
+export const CollectionServiceProvider = {
+  provide: ServiceInterface.ICollectionService,
+  useClass: CollectionService
 }

@@ -2,13 +2,13 @@ import { Body, Controller, Get, HttpStatus, Inject, Post, Query, UsePipes, Valid
 import { ResponseDto } from 'src/dto/response.dto';
 import { UserDto } from './dto/user.dto';
 import { AddUserDto } from 'src/modules/user/dto/add-user.dto';
-import { UserServiceInterface } from './interface/user.service.interface';
 import { ServiceInterface } from 'src/helper/service-interface';
+import { IUserService } from './interface/user.service.interface';
 
 @Controller('users')
 @UsePipes(ValidationPipe)
 export class UserController {
-    constructor(@Inject(ServiceInterface.UserServiceInterface) private readonly userService: UserServiceInterface) { }
+    constructor(@Inject(ServiceInterface.IUserService) private readonly userService: IUserService) { }
 
     @Post()
     async addUser(@Body() user: AddUserDto): Promise<ResponseDto> {
