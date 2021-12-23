@@ -4,7 +4,6 @@ import { MessageLayerDtoT } from "src/dto/messageLayer.dto";
 import { BillingStatus } from "src/helper/billing-status";
 import { DaoInterface } from "src/helper/dao-interface";
 import { ServiceInterface } from "src/helper/service-interface";
-import { Billing } from "src/models/billing.model";
 import { NFT } from "src/models/nft.model";
 import { IBillingService } from "../billing/interfaces/billing.service.interface";
 import { FileService } from "../miscellaneous/file.service";
@@ -17,6 +16,7 @@ import { NFTDto } from "./dto/nft.dto";
 import { INFTDao } from "./interface/nft.dao.interface";
 import { INFTService } from "./interface/nft.service.interface";
 import { BillingDto } from "../billing/dto/billing.dto";
+import { AddNFTDto } from "./dto/add-nft.dto";
 
 @Injectable({ scope: Scope.REQUEST })
 class NFTService implements INFTService {
@@ -30,22 +30,26 @@ class NFTService implements INFTService {
         this.busketName = process.env.S3_BUCKETNAME;
     }
 
-    public async createNFT(p: AddProductDto, u: UserDto): Promise<AddNFTResponseDto> {
-        if(!p.forceTest) {
-            const verified: MessageLayerDtoT<BillingDto> = await this.billingService.verifyBilling(p.txHash, u.publicAddress);
+    public async createNFT(n: AddNFTDto, u: UserDto): Promise<AddNFTResponseDto> {
+        if(!n.forceTest) {
+            const verified: MessageLayerDtoT<BillingDto> = await this.billingService.verifyBilling(n.txHash, u.publicAddress);
             if (!verified.ok) throw new BadRequestException("Transaction is not valid.");
     
             await this.billingService.updateMintBilling(verified.data.id, BillingStatus.Success);
         }
 
-        p.fileName = `${uuid()}-${p.fileName}`;
+        n.fileName = `${uuid()}-${n.fileName}`;
         const [signedUrl, _, minted] = await Promise.all([
-            this.fileService.getSignedUrlPutObject(this.busketName, p.fileName, p.fileType),
-            this.ipfsService.pinCid([p.cid, p.metadata]),
-            this.web3service.mintNFT(u.publicAddress, p.metadata + "/metadata.json")
+            this.fileService.getSignedUrlPutObject(this.busketName, n.fileName, n.fileType),
+            this.ipfsService.pinCid([n.cid, n.metadata]),
+            this.web3service.mintNFT(u.publicAddress, n.metadata + "/metadata.json")
         ]);
+        
+        const event = minted.events[0];
+        const value = event.args[2];
+        const tokenId: number = value.toNumber();
+        const nft: MessageLayerDtoT<NFT> = await this.nftDao.createNFT(n, u, minted.transactionHash, tokenId);
 
-        const nft: MessageLayerDtoT<NFT> = await this.nftDao.createNFT(p, u, minted.transactionHash);
         return { id: nft.data.id, s3Url: signedUrl };
     }
 

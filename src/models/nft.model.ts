@@ -19,6 +19,7 @@ export class NFT extends Document {
     public contractAddress: string;
     public cid: string;
     public nftTxHash: string;
+    public tokenId: string;
 }
 
 @Injectable({ scope: Scope.REQUEST })
@@ -43,5 +44,6 @@ export class NFTModel {
         "contractAddress": String,
         "cid": String,
         "nftTxHash": String,
+        "tokenId": String,
     })
 }

@@ -11,7 +11,7 @@ import { ScanResponse } from "dynamoose/dist/DocumentRetriever";
 @Injectable({ scope: Scope.REQUEST })
 class NFTDao implements INFTDao {
     constructor(private readonly nftModel: NFTModel) { }
-    public async createNFT(p: AddNFTDto, u: UserDto, nftTxHash: string): Promise<MessageLayerDtoT<NFT>> {
+    public async createNFT(p: AddNFTDto, u: UserDto, nftTxHash: string, tokenId: number): Promise<MessageLayerDtoT<NFT>> {
         const id = uuid();
         const newNFT = {
             id,

@@ -4,7 +4,7 @@ import { UserDto } from "src/modules/user/dto/user.dto";
 import { AddNFTDto } from "../dto/add-nft.dto";
 
 export interface INFTDao {
-    createNFT(p: AddNFTDto, u: UserDto, nftTxHash: string): Promise<MessageLayerDtoT<NFT>>;
+    createNFT(p: AddNFTDto, u: UserDto, nftTxHash: string, tokenId: number): Promise<MessageLayerDtoT<NFT>>;
     getNFTById(id: string): Promise<MessageLayerDtoT<NFT>>;
     getNFTAll(): Promise<MessageLayerDtoT<NFT[]>>
 }
