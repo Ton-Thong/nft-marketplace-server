@@ -1,14 +1,15 @@
-import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
+import { BadRequestException, Inject, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { recoverPersonalSignature } from "eth-sig-util";
 import { bufferToHex } from "ethereumjs-util";
 import { CredentialDto } from "./dto/credential.dto";
 import { UserDto } from "../user/dto/user.dto";
-import { UserService } from "../user/user.service";
+import { UserServiceInterface } from "../user/interface/user.service.interface";
+import { ServiceInterface } from "src/helper/service-interface";
 
 @Injectable()
 export class AuthService {
-    constructor(private jwtService: JwtService, private userService: UserService) { }
+    constructor(private jwtService: JwtService, @Inject(ServiceInterface.UserServiceInterface) private userService: UserServiceInterface) { }
 
     async createToken(credentialDto: CredentialDto) {
         const { signature, publicAddress, forceTest } = credentialDto;
@@ -17,18 +18,18 @@ export class AuthService {
         }
 
         try {
-            const user: UserDto = await this.userService.findByPublicAddress(publicAddress);
+            const user: UserDto = await this.userService.getByPublicAddress(publicAddress);
             if (!user) {
                 throw new UnauthorizedException(`User with publicAddress ${publicAddress} is not found in database`)
             }
 
-            if(!forceTest) {
+            if (!forceTest) {
                 const msgBufferHex = bufferToHex(Buffer.from(`I am signing my one-time nonce: ${user.nonce}`, 'utf8'));
                 const address = recoverPersonalSignature({
                     data: msgBufferHex,
                     sig: signature,
                 });
-    
+
                 if (address.toLowerCase() !== publicAddress.toLowerCase()) {
                     throw new UnauthorizedException('Signature verification failed');
                 }

@@ -9,8 +9,8 @@ import { UserDto } from "../user/dto/user.dto";
 import { IpfsService } from "../miscellaneous/ipfs.service";
 import { Web3Service } from "../miscellaneous/web3.service";
 import { MessageLayerDto } from "src/dto/messageLayer.dto";
-import { BillingStatus } from "src/helper/BillingStatus";
 import { BillingService } from "../billing/billing.service";
+import { BillingStatus } from "src/helper/billing-status";
 
 @Injectable({ scope: Scope.REQUEST })
 export class ProductService {

@@ -1,6 +1,6 @@
 import * as AWS from 'aws-sdk';
 import { ServiceConfigurationOptions } from 'aws-sdk/lib/service';
-import { TableName } from 'src/helper/TableName';
+import { TableName } from 'src/helper/table-name';
 
 export const AWSProviders = [
   {

@@ -1,27 +1,19 @@
-import {
-    Body,
-    Controller,
-    Get,
-    HttpStatus,
-    Post,
-    Query,
-    UsePipes,
-    ValidationPipe,
-} from '@nestjs/common';
-import { UserService } from './user.service';
+import { Body, Controller, Get, HttpStatus, Inject, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ResponseDto } from 'src/dto/response.dto';
 import { UserDto } from './dto/user.dto';
 import { AddUserDto } from 'src/modules/user/dto/add-user.dto';
+import { UserServiceInterface } from './interface/user.service.interface';
+import { ServiceInterface } from 'src/helper/service-interface';
 
 @Controller('users')
 @UsePipes(ValidationPipe)
 export class UserController {
-    constructor(private userService: UserService) { }
+    constructor(@Inject(ServiceInterface.UserServiceInterface) private readonly userService: UserServiceInterface) { }
 
     @Post()
     async addUser(@Body() user: AddUserDto): Promise<ResponseDto> {
         try {
-            const result: UserDto = await this.userService.create(user);
+            const result: UserDto = await this.userService.createUser(user);
             return { statusCode: HttpStatus.CREATED, data: result, message: 'success' };
         } catch (err) {
             throw err;
@@ -31,7 +23,7 @@ export class UserController {
     @Get()
     async get(@Query('publicAddress') publicAddress: string): Promise<ResponseDto> {
         try {
-            const result: UserDto = await this.userService.findByPublicAddress(publicAddress);
+            const result: UserDto = await this.userService.getByPublicAddress(publicAddress);
             return { statusCode: HttpStatus.OK, data: result, message: 'success' };
         } catch (err) {
             throw err;

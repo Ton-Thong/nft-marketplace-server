@@ -1,4 +1,5 @@
-import { BillingStatus } from "src/helper/BillingStatus";
+import { BillingStatus } from "src/helper/billing-status";
+
 
 export class Billing {
     constructor() {
