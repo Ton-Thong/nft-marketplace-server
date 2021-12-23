@@ -11,6 +11,9 @@ export class Billing extends Document {
     public timeStamp: number = Math.floor(Date.now() / 1000);
     public createdBy: string;
     public createdDate: string = new Date().toLocaleString("en-US", { timeZone: "Asia/Bangkok" });
+
+    //field reference to NFT
+    //bield billing category
 }
 
 @Injectable({ scope: Scope.REQUEST })

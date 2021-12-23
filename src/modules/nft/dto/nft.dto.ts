@@ -15,7 +15,6 @@ export class NFTDto {
         this.owner = n.owner;
         this.createdBy = n.createdBy;
         this.createdDate = n.createdDate;
-        this.contractAddress = n.contractAddress;
         this.cid = n.cid;
         this.nftTxHash = n.nftTxHash;
     }
@@ -33,7 +32,6 @@ export class NFTDto {
     public owner: string;
     public createdBy: string;
     public createdDate: string = new Date().toLocaleString("en-US", { timeZone: "Asia/Bangkok" });
-    public contractAddress: string;
     public cid: string;
     public nftTxHash: string;
 }

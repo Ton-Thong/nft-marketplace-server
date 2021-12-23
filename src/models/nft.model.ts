@@ -16,10 +16,10 @@ export class NFT extends Document {
     public owner: string;
     public createdBy: string;
     public createdDate: string = new Date().toLocaleString("en-US", { timeZone: "Asia/Bangkok" });
-    public contractAddress: string;
     public cid: string;
+    public metadata:string;
     public nftTxHash: string;
-    public tokenId: string;
+    public tokenId: number;
 }
 
 @Injectable({ scope: Scope.REQUEST })
@@ -35,15 +35,27 @@ export class NFTModel {
         "collectionId": String,
         "collectionName": String,
         "description": String,
-        "sellStatus": Boolean,
-        "lastPrice": Number,
-        "currentPrice": Number,
+        "sellStatus": {
+            "type": Boolean,
+            "default": false
+        },
+        "lastPrice": {
+            "type": Number,
+            "default": 0,
+        },
+        "currentPrice": {
+            "type": Number,
+            "default": 0,
+        },
         "owner": String,
         "createdBy": String,
-        "createdDate": String,
-        "contractAddress": String,
+        "createdDate": {
+            "type": String,
+            "default": new Date().toLocaleString("en-US", { timeZone: "Asia/Bangkok" })
+        },
         "cid": String,
+        "metadata": String,
         "nftTxHash": String,
-        "tokenId": String,
+        "tokenId": Number,
     })
 }

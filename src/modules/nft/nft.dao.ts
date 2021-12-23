@@ -19,6 +19,7 @@ class NFTDao implements INFTDao {
             nftTxHash: nftTxHash,
             createdBy: u.id,
             owner: u.id,
+            tokenId: tokenId,
         }
 
         const nft: NFT = await this.nftModel.client.create(newNFT);
