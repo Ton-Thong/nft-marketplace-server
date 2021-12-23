@@ -1,6 +1,6 @@
 import { IsBoolean, IsString } from "class-validator";
 
-export class AddProductDto {
+export class AddNFTDto {
     @IsString()
     public name: string;
     @IsString()

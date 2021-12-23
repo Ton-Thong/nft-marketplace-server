@@ -9,7 +9,7 @@ export class UserDto {
         this.username = username;
         this.nonce = nonce;
     }
-    
+
     @IsUUID()
     id: string;
 

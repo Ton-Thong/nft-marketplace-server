@@ -4,9 +4,9 @@ import { AddCollectionDto } from "../dto/add-collection.dto";
 import { CollectionDto } from "../dto/collection.dto";
 
 export interface ICollectionService {
-    create(c: AddCollectionDto, u: UserDto): Promise<Collection>;
-    getById(id: string): Promise<Collection>;
-    getAllฺByUser(u: UserDto): Promise<Array<Collection>>;
+    createCollection(c: AddCollectionDto, u: UserDto): Promise<CollectionDto>;
+    getCollectionById(id: string): Promise<CollectionDto>;
+    getCollectionAllฺByUser(u: UserDto): Promise<Array<CollectionDto>>;
     updateCollectionName(uc: CollectionDto): Promise<void>;
-    delete(c: CollectionDto): Promise<void>;
+    deleteCollection(c: CollectionDto): Promise<void>;
 }

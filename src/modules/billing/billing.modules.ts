@@ -3,13 +3,14 @@ import { AWSModules } from 'src/infrastructure/AWS/aws.modules';
 import { Web3Modules } from 'src/infrastructure/Web3/web3.modules';
 import { Web3Service } from '../miscellaneous/web3.service';
 import { BillingController } from './billing.controller';
-import { BillingService } from './billing.service';
-import { BillingRepository } from './billing.repository';
+import {BillingServiceProvider } from './billing.service';
+import { BillingDaoProvider } from './billing.dao';
+import { BillingModel } from 'src/models/billing.model';
 
 @Module({
   imports: [AWSModules, Web3Modules],
   controllers: [BillingController],
-  providers: [BillingService, BillingRepository, Web3Service],
+  providers: [Web3Service, BillingModel, BillingServiceProvider, BillingDaoProvider],
 })
 
 export class BillingModule { }

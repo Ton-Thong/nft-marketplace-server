@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, Scope } from "@nestjs/common";
+import { BadRequestException, Inject, Injectable, Scope } from "@nestjs/common";
 import { v4 as uuid } from 'uuid';
 import { AddProductResponseDto } from "src/modules/product/dto/add-product-response.dto";
 import { AddProductDto } from "src/modules/product/dto/add-product.dto";
@@ -9,18 +9,19 @@ import { UserDto } from "../user/dto/user.dto";
 import { IpfsService } from "../miscellaneous/ipfs.service";
 import { Web3Service } from "../miscellaneous/web3.service";
 import { MessageLayerDto } from "src/dto/messageLayer.dto";
-import { BillingService } from "../billing/billing.service";
 import { BillingStatus } from "src/helper/billing-status";
+import { ServiceInterface } from "src/helper/service-interface";
+import { IBillingService } from "../billing/interfaces/billing.service.interface";
 
 @Injectable({ scope: Scope.REQUEST })
 export class ProductService {
-  private busketName: string;
+  private readonly busketName: string;
   constructor(
-    private productRepository: ProductRepository,
-    private billingService: BillingService,
-    private fileService: FileService,
-    private ipfsService: IpfsService,
-    private web3service: Web3Service) {
+    private readonly productRepository: ProductRepository,
+    @Inject(ServiceInterface.IBillingService) private readonly billingService: IBillingService,
+    private readonly fileService: FileService,
+    private readonly ipfsService: IpfsService,
+    private readonly web3service: Web3Service) {
     this.busketName = process.env.S3_BUCKETNAME;
   }
 
@@ -28,8 +29,7 @@ export class ProductService {
     const verified: MessageLayerDto = await this.billingService.verifyBilling(p.txHash, u.publicAddress);
     if (!verified.ok) throw new BadRequestException("Transaction is not valid.");
 
-    const billingSuccess: MessageLayerDto = await this.billingService.updateMintBilling(verified.data.id, BillingStatus.Success);
-    if (!billingSuccess.ok) throw new BadRequestException("Update mint billing failure");
+    await this.billingService.updateMintBilling(verified.data.id, BillingStatus.Success);
 
     p.fileName = `${uuid()}-${p.fileName}`;
     const [signedUrl, _, minted] = await Promise.all([

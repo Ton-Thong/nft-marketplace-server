@@ -26,7 +26,6 @@ class UserService implements IUserService {
   public async getByKey(id: string, publicAddress: string): Promise<UserDto> {
     const result: MessageLayerDtoT<User> = await this.userDao.getByKey(id, publicAddress);
     if (!result.ok) {
-      
       throw new NotFoundException(result.message);
     }
 

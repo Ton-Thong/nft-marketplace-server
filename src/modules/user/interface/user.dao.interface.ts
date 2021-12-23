@@ -7,5 +7,5 @@ export interface IUserDao {
     createUser(u: AddUserDto): Promise<MessageLayerDtoT<User>>;
     getByKey(id: string, publicAddress: string): Promise<MessageLayerDtoT<User>>;
     getByPublicAddress(publicAddress: string): Promise<MessageLayerDtoT<User>>;
-    updateNonce(u: UserDto);
+    updateNonce(u: UserDto): Promise<void>;
 }

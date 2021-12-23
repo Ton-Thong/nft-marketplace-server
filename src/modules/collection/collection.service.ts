@@ -1,4 +1,5 @@
-import { Inject, Injectable, NotFoundException, Scope } from "@nestjs/common";
+import { BadRequestException, Inject, Injectable, NotFoundException, Scope } from "@nestjs/common";
+import { MessageLayerDtoT } from "src/dto/messageLayer.dto";
 import { DaoInterface } from "src/helper/dao-interface";
 import { ServiceInterface } from "src/helper/service-interface";
 import { Collection } from "src/models/collection.model";
@@ -12,32 +13,32 @@ import { ICollectionService } from "./interface/collection.service.interface";
 class CollectionService implements ICollectionService {
   constructor(@Inject(DaoInterface.ICollectionDao) private readonly collectionDao: ICollectionDao) { }
 
-  public async create(c: AddCollectionDto, u: UserDto): Promise<Collection> {
-    const result = await this.collectionDao.createCollection(c, u);
-    if (!result.ok) return null;
+  public async createCollection(c: AddCollectionDto, u: UserDto): Promise<CollectionDto> {
+    const result: MessageLayerDtoT<Collection> = await this.collectionDao.createCollection(c, u);
+    if (!result.ok) throw new BadRequestException("Cannot create collection.");
 
-    return result.data;
+    return new CollectionDto(result.data);
   }
 
-  public async getById(id: string): Promise<Collection> {
+  public async getCollectionById(id: string): Promise<CollectionDto> {
     const result = await this.collectionDao.getCollectionById(id);
-    if (!result.ok) throw new NotFoundException(`Collection key is not found in database`);
+    if (!result.ok) throw new NotFoundException(result.message);
 
-    return result.data;
+    return new CollectionDto(result.data);
   }
 
-  public async getAllฺByUser(u: UserDto): Promise<Array<Collection>> {
+  public async getCollectionAllฺByUser(u: UserDto): Promise<Array<CollectionDto>> {
     const result = await this.collectionDao.getCollectionAllByUser(u);
-    if (!result.ok) return null;
+    if (!result.ok) throw new NotFoundException(result.message)
 
-    return result.data
+    return result.data.map(x => new CollectionDto(x));
   }
 
   public async updateCollectionName(uc: CollectionDto): Promise<void> {
     await this.collectionDao.updateCollectionName(uc);
   }
 
-  public async delete(c: CollectionDto): Promise<void> {
+  public async deleteCollection(c: CollectionDto): Promise<void> {
     await this.collectionDao.deleteColletion(c);
   }
 }

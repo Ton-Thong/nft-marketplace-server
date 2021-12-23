@@ -51,4 +51,7 @@ class CollectionDao implements ICollectionDao {
     }
 }
 
-export const CollectionDaoProvider = { provide: DaoInterface.ICollectionDao, useClass: CollectionDao }
+export const CollectionDaoProvider = {
+    provide: DaoInterface.ICollectionDao,
+    useClass: CollectionDao
+}

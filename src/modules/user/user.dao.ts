@@ -18,7 +18,6 @@ class UserDao implements IUserDao {
         const newUser = { id: uuid(), publicAddress, username, nonce }
 
         const user: User = await this.userModel.client.create(newUser);
-
         return { ok: true, data: user, message: 'success' };
     }
 

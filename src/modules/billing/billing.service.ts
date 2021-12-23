@@ -1,25 +1,30 @@
-import { BadRequestException, Injectable, Scope } from "@nestjs/common";
+import { BadRequestException, Inject, Injectable, NotFoundException, Scope } from "@nestjs/common";
 import { ethers } from "ethers";
-import { MessageLayerDto } from "src/dto/messageLayer.dto";
+import { MessageLayerDtoT } from "src/dto/messageLayer.dto";
+import { DaoInterface } from "src/helper/dao-interface";
+import { ServiceInterface } from "src/helper/service-interface";
+import { Billing } from "src/models/billing.model";
 import { Web3Service } from "../miscellaneous/web3.service";
 import { UserDto } from "../user/dto/user.dto";
-import { BillingRepository } from "./billing.repository";
+import { BillingDto } from "./dto/billing.dto";
+import { IBillingDao } from "./interfaces/billing.dao.interface";
+import { IBillingService } from "./interfaces/billing.service.interface";
 
 @Injectable({ scope: Scope.REQUEST })
-export class BillingService {
-    constructor(private billingRepository: BillingRepository, private web3service: Web3Service) { }
+class BillingService implements IBillingService {
+    constructor(@Inject(DaoInterface.IBillingDao) private readonly billingDao: IBillingDao, private readonly web3service: Web3Service) { }
 
     public async createMintBilling(cid: string, u: UserDto): Promise<string> {
         try {
             const txFee: string = await this.web3service.getMintBilling(u.publicAddress, cid);
-            await this.billingRepository.createMintBilling(txFee, u);
+            await this.billingDao.createMintBilling(txFee, u);
             return txFee;
         } catch (err) {
             throw err;
         }
     }
 
-    public async verifyBilling(txHash: string, callerAddress: string): Promise<MessageLayerDto> {
+    public async verifyBilling(txHash: string, callerAddress: string): Promise<MessageLayerDtoT<BillingDto>> {
         const transac = await this.web3service.getTransaction(txHash);
         const blockTimeStamp: number = await this.web3service.getBlock(txHash);
 
@@ -28,21 +33,28 @@ export class BillingService {
         }
 
         const receiveEther: string = ethers.utils.formatEther(transac.value._hex);
-        return await this.billingRepository.getMintBilling(receiveEther, callerAddress, blockTimeStamp);
+        const billing: MessageLayerDtoT<Billing> = await this.billingDao.getMintBilling(receiveEther, callerAddress, blockTimeStamp);
+
+        return { ok: billing.ok, data: new BillingDto(billing.data), message: billing.message };
     }
 
-    public async getMintBillingById(id: string): Promise<MessageLayerDto> {
+    public async getMintBillingById(id: string): Promise<BillingDto> {
         try {
-            const result: MessageLayerDto = await this.billingRepository.getBillingById(id);
-            if (!result.ok) return null;
+            const result: MessageLayerDtoT<Billing> = await this.billingDao.getBillingById(id);
+            if (!result.ok) throw new NotFoundException(result.message);
 
-            return result.data;
+            return new BillingDto(result.data);
         } catch (err) {
             throw err;
         }
     }
 
-    public async updateMintBilling(id: string, status: string): Promise<MessageLayerDto> {
-        return await this.billingRepository.updateMintBilling(id, status);
+    public async updateMintBilling(id: string, status: string): Promise<void> {
+        await this.billingDao.updateMintBilling(id, status);
     }
+}
+
+export const BillingServiceProvider = {
+    provide: ServiceInterface.IBillingService,
+    useClass: BillingService
 }
