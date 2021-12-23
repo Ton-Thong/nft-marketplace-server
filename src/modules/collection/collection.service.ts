@@ -1,4 +1,4 @@
-import { Inject, Injectable, Scope } from "@nestjs/common";
+import { Inject, Injectable, NotFoundException, Scope } from "@nestjs/common";
 import { DaoInterface } from "src/helper/dao-interface";
 import { ServiceInterface } from "src/helper/service-interface";
 import { Collection } from "src/models/collection.model";
@@ -21,7 +21,7 @@ class CollectionService implements ICollectionService {
 
   public async getById(id: string): Promise<Collection> {
     const result = await this.collectionDao.getCollectionById(id);
-    if (!result.ok) return null;
+    if (!result.ok) throw new NotFoundException(`Collection key is not found in database`);
 
     return result.data;
   }

@@ -10,7 +10,7 @@ export class Collection extends Document {
 
 @Injectable({ scope: Scope.REQUEST })
 export class CollectionModel {
-    public client = dynamoose.model<Collection>("Users", {
+    public client = dynamoose.model<Collection>("Collections", {
         "id": {
             "type": String,
             "hashKey": true,

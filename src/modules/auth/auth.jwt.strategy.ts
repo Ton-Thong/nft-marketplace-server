@@ -4,19 +4,18 @@ import { ExtractJwt, Strategy } from "passport-jwt";
 import { ServiceInterface } from "src/helper/service-interface";
 import { IUserService } from "../user/interface/user.service.interface";
 
-@Injectable()
 export class AuthJwtStrategy extends PassportStrategy(Strategy) {
-    constructor(@Inject(ServiceInterface.IUserService) private userService: IUserService) {
+    constructor() {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            ignoreExpiration: false,
             secretOrKey: process.env.JWT_SECRET
         })
     }
 
     async validate(token) { //Performance Issue - Query per Request
         try {
-            const { id, publicAddress } = token.payload;
-            return await this.userService.getByKey(id, publicAddress);
+            return token.payload;
         } catch (err) {
             throw new UnauthorizedException(err.message);
         }

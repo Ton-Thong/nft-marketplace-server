@@ -32,13 +32,9 @@ export class CollectionController {
     async getCollection(@Query('id', ParseUUIDPipe) id: string): Promise<ResponseDto> {
         try {
             const result: Collection = await this.collectionService.getById(id);
-            if (!result) {
-                throw new NotFoundException();
-            }
-
             return { statusCode: HttpStatus.OK, data: result, message: 'success' }
         } catch (err) {
-            throw new BadRequestException(err.message);
+            throw err;
         }
     }
 
