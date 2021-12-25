@@ -2,6 +2,7 @@ import { Injectable, Scope } from "@nestjs/common";
 import { BillingStatus } from "src/helper/billing-status";
 import * as dynamoose from "dynamoose";
 import { Document } from "dynamoose/dist/Document";
+import { TableName } from "src/helper/table-name";
 
 export class Billing extends Document {
     public id: string;
@@ -18,7 +19,7 @@ export class Billing extends Document {
 
 @Injectable({ scope: Scope.REQUEST })
 export class BillingModel {
-    public client = dynamoose.model<Billing>("Billings", {
+    public client = dynamoose.model<Billing>(TableName.Billing, {
         "id": {
             "type": String,
             "hashKey": true,

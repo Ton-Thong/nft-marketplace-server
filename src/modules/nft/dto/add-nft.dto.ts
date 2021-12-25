@@ -1,11 +1,11 @@
-import { IsBoolean, IsString } from "class-validator";
+import { IsBoolean, IsString, IsUUID } from "class-validator";
 
 export class AddNFTDto {
     @IsString()
     public name: string;
     @IsString()
     public description: string;
-    @IsString()
+    @IsUUID()
     public collectionId: string;
     @IsString()
     public collectionName: string;

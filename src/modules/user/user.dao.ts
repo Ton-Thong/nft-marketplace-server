@@ -15,14 +15,14 @@ class UserDao implements IUserDao {
     public async createUser(u: AddUserDto): Promise<MessageLayerDtoT<User>> {
         const { publicAddress, username } = u;
         const nonce: number = Math.floor(Math.random() * 10000);
-        const newUser = { id: uuid(), publicAddress, username, nonce }
+        const newUser = ({ id: uuid(), publicAddress, username, nonce });
 
         const user: User = await this.userModel.client.create(newUser);
         return { ok: true, data: user, message: 'success' };
     }
 
-    public async getByKey(id: string, publicAddress: string): Promise<MessageLayerDtoT<User>> {
-        const user: User = await this.userModel.client.get({ id, publicAddress });
+    public async getByKey(id: string): Promise<MessageLayerDtoT<User>> {
+        const user: User = await this.userModel.client.get({ id });
         if (!user) {
             return { ok: false, data: null, message: `User key is not found in database` };
         }

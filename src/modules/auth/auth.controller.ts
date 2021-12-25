@@ -15,7 +15,7 @@ export class AuthController {
             const result: string = await this.authService.createToken(credentialDto);
             return { statusCode: HttpStatus.CREATED, data: result, message: 'success' };
         } catch(err) {
-            throw new BadRequestException(err.message);
+            throw err;
         }
     }
     

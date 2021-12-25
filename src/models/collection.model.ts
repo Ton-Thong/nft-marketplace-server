@@ -1,6 +1,7 @@
 import { Injectable, Scope } from "@nestjs/common";
 import * as dynamoose from "dynamoose";
 import { Document } from "dynamoose/dist/Document";
+import { TableName } from "src/helper/table-name";
 
 export class Collection extends Document {
     public id: string;
@@ -10,7 +11,7 @@ export class Collection extends Document {
 
 @Injectable({ scope: Scope.REQUEST })
 export class CollectionModel {
-    public client = dynamoose.model<Collection>("Collections", {
+    public client = dynamoose.model<Collection>(TableName.Collection, {
         "id": {
             "type": String,
             "hashKey": true,

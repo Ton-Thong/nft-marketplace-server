@@ -12,7 +12,9 @@ import { IBillingService } from "./interfaces/billing.service.interface";
 
 @Injectable({ scope: Scope.REQUEST })
 class BillingService implements IBillingService {
-    constructor(@Inject(DaoInterface.IBillingDao) private readonly billingDao: IBillingDao, private readonly web3service: Web3Service) { }
+    constructor(
+        @Inject(DaoInterface.IBillingDao) private readonly billingDao: IBillingDao, 
+        private readonly web3service: Web3Service) { }
 
     public async createMintBilling(cid: string, u: UserDto): Promise<string> {
         try {

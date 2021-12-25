@@ -8,9 +8,15 @@ const MyNFT = require("../../artifacts/contracts/RuNFT.sol/RuNFT.json");
 @Injectable({ scope: Scope.REQUEST })
 export class Web3Service {
     constructor(
-        @Inject(Signer.Alchemy) private signer: ethers.Wallet, 
+        @Inject(Signer.Alchemy) private signer: ethers.Wallet,
         @Inject(Provider.Alchemy) private provider: ethers.providers.AlchemyProvider) { }
 
+    /**
+    @Dev
+    * Parameter:
+    * `tokenURI` is cid of ipfs protocol must not exist.
+    * `publicAddress` is to address cannot be the zero address.
+    */
     public async mintNFT(publicAddress: string, tokenURI: string) {
         try {
             const contract: ethers.Contract = new ethers.Contract(process.env.CONTRACT_RUNFT, MyNFT.abi, this.signer)
@@ -30,7 +36,7 @@ export class Web3Service {
             throw err;
         }
     }
-
+    
     public async getTransaction(txHash: string): Promise<ethers.providers.TransactionResponse> {
         try {
             return await this.provider.getTransaction(txHash);
@@ -38,6 +44,7 @@ export class Web3Service {
             throw err;
         }
     }
+
 
     public async getMintBilling(publicAddress: string, tokenURI): Promise<string> {
         try {

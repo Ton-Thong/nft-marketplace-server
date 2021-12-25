@@ -3,6 +3,7 @@ import * as helmet from 'helmet';
 import compression from 'fastify-compress';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
+import * as dynamoose from "dynamoose";
 
 async function bootstrap() {
   try {

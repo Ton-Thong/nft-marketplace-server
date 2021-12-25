@@ -1,6 +1,7 @@
 import * as dynamoose from "dynamoose";
 import {Document} from "dynamoose/dist/Document";
 import { Injectable, Scope } from "@nestjs/common";
+import { TableName } from "src/helper/table-name";
 
 export class NFT extends Document {
     public id: string;
@@ -24,7 +25,7 @@ export class NFT extends Document {
 
 @Injectable({ scope: Scope.REQUEST })
 export class NFTModel {
-    public client = dynamoose.model<NFT>("Products", {
+    public client = dynamoose.model<NFT>(TableName.Product, {
         "id": {
             "type": String,
             "hashKey": true,

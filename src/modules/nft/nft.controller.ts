@@ -24,7 +24,6 @@ export class NFTController {
     }
 
     @Get()
-    @UseGuards(AuthGuard())
     async getProduct(@Query('id', ParseUUIDPipe) id: string): Promise<ResponseDtoT<NFTDto>> {
         try {
             const nftDto: NFTDto = await this.nftService.getNFT(id);
@@ -35,7 +34,6 @@ export class NFTController {
     }
 
     @Get('/getNFTAll')
-    @UseGuards(AuthGuard())
     async getProductAll(): Promise<ResponseDtoT<Array<NFTDto>>> {
         try {
             const nftDtos: Array<NFTDto> = await this.nftService.getNFTAll();

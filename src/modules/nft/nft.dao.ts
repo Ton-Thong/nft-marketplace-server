@@ -12,7 +12,7 @@ import { ScanResponse } from "dynamoose/dist/DocumentRetriever";
 class NFTDao implements INFTDao {
     constructor(private readonly nftModel: NFTModel) { }
     public async createNFT(p: AddNFTDto, u: UserDto, nftTxHash: string, tokenId: number): Promise<MessageLayerDtoT<NFT>> {
-        const id = uuid();
+        const id = (uuid()).toString();
         const newNFT = {
             id,
             ...p,
