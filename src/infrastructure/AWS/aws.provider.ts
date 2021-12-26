@@ -1,5 +1,5 @@
 import * as AWS from 'aws-sdk';
-import { ServiceConfigurationOptions } from 'aws-sdk/lib/service';
+import * as dynamoose from "dynamoose";
 import { TableName } from 'src/helper/table-name';
 
 export const AWSProviders = [
@@ -7,19 +7,16 @@ export const AWSProviders = [
     provide: 'DynamoDb',
     useFactory: async () => {
       try {
-        const serviceConfigOptions: ServiceConfigurationOptions = {
+        const ddb = new dynamoose.aws.sdk.DynamoDB({
           region: process.env.AWS_REGION,
           endpoint: process.env.AWS_ENDPOINT,
           accessKeyId: process.env.AWS_ACCESSKEYID,
           secretAccessKey: process.env.AWS_SECRETACCESSKEY,
-        };
+        });
 
-        const docClient = new AWS.DynamoDB.DocumentClient(serviceConfigOptions);
-        const dynamoDb = new AWS.DynamoDB(serviceConfigOptions);
-
-        const listTable = await dynamoDb.listTables().promise();
+        const listTable = await ddb.listTables().promise();
         if (!listTable.TableNames.includes(TableName.User)) {
-          await dynamoDb.createTable({
+          await ddb.createTable({
             TableName: TableName.User,
             KeySchema: [
               { AttributeName: 'id', KeyType: 'HASH' },
@@ -37,7 +34,7 @@ export const AWSProviders = [
         }
 
         if (!listTable.TableNames.includes(TableName.Product)) {
-          await dynamoDb.createTable({
+          await ddb.createTable({
             TableName: TableName.Product,
             KeySchema: [
               { AttributeName: 'id', KeyType: 'HASH' },
@@ -53,7 +50,7 @@ export const AWSProviders = [
         }
 
         if (!listTable.TableNames.includes(TableName.Collection)) {
-          await dynamoDb.createTable({
+          await ddb.createTable({
             TableName: TableName.Collection,
             KeySchema: [
               { AttributeName: 'id', KeyType: 'HASH' },
@@ -69,7 +66,7 @@ export const AWSProviders = [
         }
 
         if(!listTable.TableNames.includes(TableName.Billing)) {
-          await dynamoDb.createTable({
+          await ddb.createTable({
             TableName: TableName.Billing,
             KeySchema: [
               { AttributeName: 'id', KeyType: 'HASH' },
@@ -84,7 +81,7 @@ export const AWSProviders = [
           }).promise();
         }
 
-        return docClient;
+        dynamoose.aws.ddb.set(ddb);
       } catch (err) {
         throw err;
       }

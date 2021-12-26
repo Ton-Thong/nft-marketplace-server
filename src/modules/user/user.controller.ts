@@ -11,11 +11,10 @@ export class UserController {
     constructor(@Inject(ServiceInterface.IUserService) private readonly userService: IUserService) { }
 
     @Post()
-    public async createUser(@Body() user: AddUserDto): Promise<ResponseDtoT<string>> {
+    public async createUser(@Body() user: AddUserDto): Promise<ResponseDtoT<UserDto>> {
         try {
-            return { statusCode: HttpStatus.CREATED, data: user.publicAddress, message: 'success' };
-            //const result: UserDto = await this.userService.createUser(user);
-            //return { statusCode: HttpStatus.CREATED, data: result, message: 'success' };
+            const result: UserDto = await this.userService.createUser(user);
+            return { statusCode: HttpStatus.CREATED, data: result, message: 'success' };
         } catch (err) {
             throw err;
         }
