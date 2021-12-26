@@ -32,8 +32,8 @@ class UserDao implements IUserDao {
     }
 
     public async getByPublicAddress(publicAddress: string): Promise<MessageLayerDtoT<User>> {
-        const c: Condition = new dynamoose.Condition().where("publicAddress").eq(publicAddress);
-        const users: ScanResponse<User> = await this.userModel.client.scan(c).limit(1).exec();
+        const users: ScanResponse<User> = await this.userModel.client.scan("publicAddress").eq(publicAddress).exec();
+        console.log(users);
         if (!users || users.count <= 0) {
             return { ok: false, data: null, message: `User with publicAddress ${publicAddress} is not found in database` };
         }
