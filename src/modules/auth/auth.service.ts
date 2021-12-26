@@ -1,4 +1,4 @@
-import { BadRequestException, Inject, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
+import { BadRequestException, Inject, Injectable, NotFoundException, Scope, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { recoverPersonalSignature } from "eth-sig-util";
 import { bufferToHex } from "ethereumjs-util";
@@ -7,7 +7,7 @@ import { UserDto } from "../user/dto/user.dto";
 import { IUserService } from "../user/interface/user.service.interface";
 import { ServiceInterface } from "src/helper/service-interface";
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST})
 export class AuthService {
     constructor(private jwtService: JwtService, @Inject(ServiceInterface.IUserService) private userService: IUserService) { }
 

@@ -2828,7 +2828,7 @@ duplexify@^4.1.1:
     readable-stream "^3.1.1"
     stream-shift "^1.0.0"
 
-dynamoose@^2.8.3:
+dynamoose@2.8.3:
   version "2.8.3"
   resolved "https://registry.yarnpkg.com/dynamoose/-/dynamoose-2.8.3.tgz#a490f7f4969f86a928c486cb84c2780bdce8d1e5"
   integrity sha512-fq3A307HjYkTmPeyya7tRlQhhcq2gYqxng7vEmiviNKenurw+NbdA8Krer+YmfmAPMalTZ4CqXRGJiYkGmanyA==

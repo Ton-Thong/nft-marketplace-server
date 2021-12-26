@@ -7,6 +7,8 @@ import { v4 as uuid } from 'uuid';
 import { UserDto } from "./dto/user.dto";
 import { DaoInterface } from "src/helper/dao-interface";
 import { IUserDao } from "./interface/user.dao.interface";
+import { Condition } from "dynamoose/dist/Condition";
+import * as dynamoose from "dynamoose";
 
 @Injectable({ scope: Scope.REQUEST })
 class UserDao implements IUserDao {
@@ -30,7 +32,8 @@ class UserDao implements IUserDao {
     }
 
     public async getByPublicAddress(publicAddress: string): Promise<MessageLayerDtoT<User>> {
-        const users: ScanResponse<User> = await this.userModel.client.scan("publicAddress").eq(publicAddress).exec();
+        const c: Condition = new dynamoose.Condition().where("publicAddress").eq(publicAddress);
+        const users: ScanResponse<User> = await this.userModel.client.scan(c).limit(1).exec();
         if (!users || users.count <= 0) {
             return { ok: false, data: null, message: `User with publicAddress ${publicAddress} is not found in database` };
         }
