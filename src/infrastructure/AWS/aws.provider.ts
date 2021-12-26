@@ -1,5 +1,4 @@
 import * as AWS from 'aws-sdk';
-import * as dynamoose from "dynamoose";
 import { ServiceConfigurationOptions } from 'aws-sdk/lib/service';
 import { TableName } from 'src/helper/table-name';
 
@@ -15,16 +14,20 @@ export const AWSProviders = [
           secretAccessKey: process.env.AWS_SECRETACCESSKEY,
         };
 
-        const dynamoDb = new dynamoose.aws.sdk.DynamoDB(serviceConfigOptions);
+        const docClient = new AWS.DynamoDB.DocumentClient(serviceConfigOptions);
+        const dynamoDb = new AWS.DynamoDB(serviceConfigOptions);
+
         const listTable = await dynamoDb.listTables().promise();
         if (!listTable.TableNames.includes(TableName.User)) {
           await dynamoDb.createTable({
             TableName: TableName.User,
             KeySchema: [
               { AttributeName: 'id', KeyType: 'HASH' },
+              { AttributeName: 'publicAddress', KeyType: 'RANGE' },
             ],
             AttributeDefinitions: [
               { AttributeName: 'id', AttributeType: 'S' },
+              { AttributeName: 'publicAddress', AttributeType: 'S' },
             ],
             ProvisionedThroughput: {
               ReadCapacityUnits: 5,
@@ -65,7 +68,7 @@ export const AWSProviders = [
           }).promise();
         }
 
-        if (!listTable.TableNames.includes(TableName.Billing)) {
+        if(!listTable.TableNames.includes(TableName.Billing)) {
           await dynamoDb.createTable({
             TableName: TableName.Billing,
             KeySchema: [
@@ -81,7 +84,7 @@ export const AWSProviders = [
           }).promise();
         }
 
-        dynamoose.aws.ddb.set(dynamoDb);
+        return docClient;
       } catch (err) {
         throw err;
       }
