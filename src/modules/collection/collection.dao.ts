@@ -11,10 +11,10 @@ import { DaoInterface } from "src/helper/dao-interface";
 
 @Injectable({ scope: Scope.REQUEST })
 class CollectionDao implements ICollectionDao {
-    constructor(private readonly collectionModel: CollectionModel) { }
+    constructor() { }
 
     public async createCollection(c: AddCollectionDto, u: UserDto): Promise<MessageLayerDtoT<Collection>> {
-        const collection: Collection = await this.collectionModel.client.create({
+        const collection: Collection = await CollectionModel.create({
             id: uuid(),
             name: c.name,
             createdBy: u.id
@@ -24,7 +24,7 @@ class CollectionDao implements ICollectionDao {
     }
 
     public async getCollectionById(id: string): Promise<MessageLayerDtoT<Collection>> {
-        const collection: Collection = await this.collectionModel.client.get({ id });
+        const collection: Collection = await CollectionModel.get({ id });
         if (!collection) {
             return { ok: false, data: null, message: `Collection key is not found in database` };
         }
@@ -32,8 +32,7 @@ class CollectionDao implements ICollectionDao {
     }
 
     public async getCollectionAllByUser(u: UserDto): Promise<MessageLayerDtoT<Collection[]>> {
-        const collections: ScanResponse<Collection> = await this.collectionModel.client
-            .scan("createdBy").eq(u.id).exec();
+        const collections: ScanResponse<Collection> = await CollectionModel.scan("createdBy").eq(u.id).exec();
 
         return !collections || collections.count <= 0
             ? { ok: false, data: null, message: 'Collections is not found in database' }
@@ -42,12 +41,12 @@ class CollectionDao implements ICollectionDao {
 
     public async updateCollectionName(c: CollectionDto): Promise<void> {
         const { id, name } = c
-        await this.collectionModel.client.update({ id }, { name });
+        await CollectionModel.update({ id }, { name });
     }
 
     public async deleteColletion(c: CollectionDto): Promise<void> {
         const { id } = c;
-        await this.collectionModel.client.delete(id);
+        await CollectionModel.delete(id);
     }
 }
 

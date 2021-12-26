@@ -7,10 +7,9 @@ import { AddNFTDto } from "./dto/add-nft.dto";
 import { INFTDao } from "./interface/nft.dao.interface";
 import { v4 as uuid } from 'uuid';
 import { ScanResponse } from "dynamoose/dist/DocumentRetriever";
-
 @Injectable({ scope: Scope.REQUEST })
 class NFTDao implements INFTDao {
-    constructor(private readonly nftModel: NFTModel) { }
+    constructor() { }
     public async createNFT(p: AddNFTDto, u: UserDto, nftTxHash: string, tokenId: number): Promise<MessageLayerDtoT<NFT>> {
         const id = (uuid()).toString();
         const newNFT = {
@@ -22,12 +21,12 @@ class NFTDao implements INFTDao {
             tokenId: tokenId,
         }
 
-        const nft: NFT = await this.nftModel.client.create(newNFT);
+        const nft: NFT = await NFTModel.create(newNFT);
         return { ok: true, data: nft, message: 'success' };
     }
 
     public async getNFTById(id: string): Promise<MessageLayerDtoT<NFT>> {
-        const nft: NFT = await this.nftModel.client.get({ id });
+        const nft: NFT = await NFTModel.get({ id });
         if (!nft) {
             return { ok: false, data: null, message: `NFT key is not found in database` };
         }
@@ -35,7 +34,7 @@ class NFTDao implements INFTDao {
     }
 
     public async getNFTAll(): Promise<MessageLayerDtoT<NFT[]>> {
-        const nfts: ScanResponse<NFT> = await this.nftModel.client.scan().exec()
+        const nfts: ScanResponse<NFT> = await NFTModel.scan().exec()
 
         return !nfts || nfts.count <= 0
             ? { ok: false, data: null, message: 'NFT is not found in database' }

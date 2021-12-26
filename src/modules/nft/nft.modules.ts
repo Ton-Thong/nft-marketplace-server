@@ -13,9 +13,9 @@ import { NFTDaoProvider } from './nft.dao';
 import { NFTModel } from 'src/models/nft.model';
 
 @Module({
-  imports: [AWSModules, Web3Modules],
+  imports: [AWSModules, Web3Modules, NFTModel],
   controllers: [NFTController],
-  providers: [FileService, IpfsService, Web3Service, BillingModel, NFTModel, NFTServiceProvider, NFTDaoProvider,  BillingServiceProvider, BillingDaoProvider],
+  providers: [FileService, IpfsService, Web3Service, BillingModel, NFTServiceProvider, NFTDaoProvider,  BillingServiceProvider, BillingDaoProvider],
 })
 
 export class NFTModule { }

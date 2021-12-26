@@ -23,40 +23,37 @@ export class NFT extends Document {
     public tokenId: number;
 }
 
-@Injectable({ scope: Scope.REQUEST })
-export class NFTModel {
-    public client = dynamoose.model<NFT>(TableName.Product, {
-        "id": {
-            "type": String,
-            "hashKey": true,
-        },
-        "name": String,
-        "fileName": String,
-        "fileType": String,
-        "collectionId": String,
-        "collectionName": String,
-        "description": String,
-        "sellStatus": {
-            "type": Boolean,
-            "default": false
-        },
-        "lastPrice": {
-            "type": Number,
-            "default": 0,
-        },
-        "currentPrice": {
-            "type": Number,
-            "default": 0,
-        },
-        "owner": String,
-        "createdBy": String,
-        "createdDate": {
-            "type": String,
-            "default": new Date().toLocaleString("en-US", { timeZone: "Asia/Bangkok" })
-        },
-        "cid": String,
-        "metadata": String,
-        "nftTxHash": String,
-        "tokenId": Number,
-    })
-}
+export const NFTModel = dynamoose.model<NFT>(TableName.Product, {
+    "id": {
+        "type": String,
+        "hashKey": true,
+    },
+    "name": String,
+    "fileName": String,
+    "fileType": String,
+    "collectionId": String,
+    "collectionName": String,
+    "description": String,
+    "sellStatus": {
+        "type": Boolean,
+        "default": false
+    },
+    "lastPrice": {
+        "type": Number,
+        "default": 0,
+    },
+    "currentPrice": {
+        "type": Number,
+        "default": 0,
+    },
+    "owner": String,
+    "createdBy": String,
+    "createdDate": {
+        "type": String,
+        "default": new Date().toLocaleString("en-US", { timeZone: "Asia/Bangkok" })
+    },
+    "cid": String,
+    "metadata": String,
+    "nftTxHash": String,
+    "tokenId": Number,
+})

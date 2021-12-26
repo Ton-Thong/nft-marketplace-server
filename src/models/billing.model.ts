@@ -17,18 +17,15 @@ export class Billing extends Document {
     //bield billing category
 }
 
-@Injectable({ scope: Scope.REQUEST })
-export class BillingModel {
-    public client = dynamoose.model<Billing>(TableName.Billing, {
-        "id": {
-            "type": String,
-            "hashKey": true,
-        },
-        "txFee": String,
-        "callerAddress": String,
-        "status": String,
-        "timeStamp": Number,
-        "createdBy": String,
-        "createdDate": String,
-    })
-}
+export const BillingModel = dynamoose.model<Billing>(TableName.Billing, {
+    "id": {
+        "type": String,
+        "hashKey": true,
+    },
+    "txFee": String,
+    "callerAddress": String,
+    "status": String,
+    "timeStamp": Number,
+    "createdBy": String,
+    "createdDate": String,
+})

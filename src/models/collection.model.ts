@@ -9,14 +9,11 @@ export class Collection extends Document {
     public createdBy: string;
 }
 
-@Injectable({ scope: Scope.REQUEST })
-export class CollectionModel {
-    public client = dynamoose.model<Collection>(TableName.Collection, {
-        "id": {
-            "type": String,
-            "hashKey": true,
-        },
-        "name": String,
-        "createdBy": String,
-    })
-}
+export const CollectionModel = dynamoose.model<Collection>(TableName.Collection, {
+    "id": {
+        "type": String,
+        "hashKey": true,
+    },
+    "name": String,
+    "createdBy": String,
+})

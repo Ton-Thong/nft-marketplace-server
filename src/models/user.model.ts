@@ -11,16 +11,13 @@ export class User extends Document {
     public avatar: string;
 }
 
-@Injectable({ scope: Scope.REQUEST })
-export class UserModel {
-    public client = dynamoose.model<User>(TableName.User, {
-        "id": {
-            "type": String,
-            "hashKey": true,
-        },
-        "publicAddress": String,
-        "nonce": Number,
-        "username": String,
-        "avatar": String,
-    })
-}
+export const UserModel = dynamoose.model<User>(TableName.User, {
+    "id": {
+        "type": String,
+        "hashKey": true,
+    },
+    "publicAddress": String,
+    "nonce": Number,
+    "username": String,
+    "avatar": String,
+});

@@ -6,9 +6,9 @@ import { CollectionDaoProvider } from './collection.dao';
 import { CollectionServiceProvider } from './collection.service';
 
 @Module({
-  imports: [AWSModules],
+  imports: [AWSModules, CollectionModel],
   controllers: [CollectionController],
-  providers: [CollectionServiceProvider, CollectionDaoProvider, CollectionModel],
+  providers: [CollectionServiceProvider, CollectionDaoProvider],
 })
 
 export class CollectionModule { }

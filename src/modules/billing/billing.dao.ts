@@ -11,7 +11,7 @@ import { Injectable, Scope } from "@nestjs/common";
 
 @Injectable({ scope: Scope.REQUEST })
 class BillingDao implements IBillingDao {
-    constructor(private readonly billingModel: BillingModel) { }
+    constructor() { }
 
     public async createMintBilling(txFee: string, u: UserDto): Promise<MessageLayerDtoT<Billing>> {
         const newBilling = {
@@ -24,7 +24,7 @@ class BillingDao implements IBillingDao {
             timeStamp: Math.floor(Date.now() / 1000),
         }
 
-        const billing: Billing = await this.billingModel.client.create(newBilling);
+        const billing: Billing = await BillingModel.create(newBilling);
         return { ok: true, data: billing, message: 'success' };
     }
 
@@ -35,7 +35,7 @@ class BillingDao implements IBillingDao {
             .where("timeStamp").lt(blockTimeStamp).and()
             .where("status").eq(BillingStatus.Pending);
 
-        const billing = await this.billingModel.client.query(c).limit(1).exec();
+        const billing = await BillingModel.query(c).limit(1).exec();
         if (!billing) {
             return { ok: false, data: null, message: `Billing is not found in database` };
         }
@@ -44,11 +44,11 @@ class BillingDao implements IBillingDao {
     }
 
     public async updateMintBilling(id: string, status: string): Promise<void> {
-        await this.billingModel.client.update({ id }, { status });
+        await BillingModel.update({ id }, { status });
     }
 
     public async getBillingById(id: string): Promise<MessageLayerDtoT<Billing>> {
-        const billing: Billing = await this.billingModel.client.get({ id });
+        const billing: Billing = await BillingModel.get({ id });
         if (!billing) {
             return { ok: false, data: null, message: `Billing key is not found in database` };
         }

@@ -34,9 +34,11 @@ class UserService implements IUserService {
 
   public async getByPublicAddress(publicAddress: string): Promise<UserDto> {
     const result: MessageLayerDtoT<User> = await this.userDao.getByPublicAddress(publicAddress);
-    return result.ok
-      ? new UserDto(result.data)
-      : null;
+    if (!result.ok) {
+      throw new NotFoundException(result.message)
+    }
+
+    return new UserDto(result.data)
   }
 
   public async updateNonce(user: UserDto): Promise<void> {
