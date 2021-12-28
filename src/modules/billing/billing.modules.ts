@@ -5,12 +5,11 @@ import { Web3Service } from '../miscellaneous/web3.service';
 import { BillingController } from './billing.controller';
 import {BillingServiceProvider } from './billing.service';
 import { BillingDaoProvider } from './billing.dao';
-import { BillingModel } from 'src/models/billing.model';
 
 @Module({
-  imports: [AWSModules, Web3Modules, BillingModel],
+  imports: [AWSModules, Web3Modules],
   controllers: [BillingController],
   providers: [Web3Service, BillingServiceProvider, BillingDaoProvider],
 })
 
-export class BillingModule { }
+export class BillingModule {}

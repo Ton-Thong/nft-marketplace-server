@@ -1,9 +1,25 @@
-import * as dynamoose from "dynamoose";
-import {Document} from "dynamoose/dist/Document";
-import { Injectable, Scope } from "@nestjs/common";
-import { TableName } from "src/helper/table-name";
+export class NFT {
+    public mapper(n: any) {
+        this.id = n.id;
+        this.name = n.name;
+        this.fileName = n.fileName;
+        this.fileType = n.fileType;
+        this.collectionId = n.collectionId;
+        this.collectionName = n.collectionName;
+        this.description = n.description;
+        this.sellStatus = n.sellStatus;
+        this.lastPrice = n.lastPrice;
+        this.currentPrice = n.currentPrice;
+        this.owner = n.owner;
+        this.createdBy = n.createdBy;
+        this.createdDate = n.createdDate;
+        this.cid = n.cid;
+        this.metadata = n.metadata;
+        this.nftTxHash = n.nftTxHash;
+        this.tokenId = n.tokenId;
+        this.createdDate = n.createdDate;
+    }
 
-export class NFT extends Document {
     public id: string;
     public name: string;
     public fileName: string;
@@ -13,47 +29,12 @@ export class NFT extends Document {
     public description: string;
     public sellStatus: boolean = false;
     public lastPrice: number = 0;
-    public currentPrice: number = 0;
+    public currentPrice: number;
     public owner: string;
     public createdBy: string;
-    public createdDate: string = new Date().toLocaleString("en-US", { timeZone: "Asia/Bangkok" });
+    public createdDate: string;
     public cid: string;
-    public metadata:string;
+    public metadata: string;
     public nftTxHash: string;
     public tokenId: number;
 }
-
-export const NFTModel = dynamoose.model<NFT>(TableName.Product, {
-    "id": {
-        "type": String,
-        "hashKey": true,
-    },
-    "name": String,
-    "fileName": String,
-    "fileType": String,
-    "collectionId": String,
-    "collectionName": String,
-    "description": String,
-    "sellStatus": {
-        "type": Boolean,
-        "default": false
-    },
-    "lastPrice": {
-        "type": Number,
-        "default": 0,
-    },
-    "currentPrice": {
-        "type": Number,
-        "default": 0,
-    },
-    "owner": String,
-    "createdBy": String,
-    "createdDate": {
-        "type": String,
-        "default": new Date().toLocaleString("en-US", { timeZone: "Asia/Bangkok" })
-    },
-    "cid": String,
-    "metadata": String,
-    "nftTxHash": String,
-    "tokenId": Number,
-})

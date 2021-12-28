@@ -1,21 +1,21 @@
 import { MessageLayerDtoT } from "src/dto/messageLayer.dto";
 import { DaoInterface } from "src/helper/dao-interface";
-import { Billing, BillingModel } from "src/models/billing.model";
 import { UserDto } from "../user/dto/user.dto";
 import { IBillingDao } from "./interfaces/billing.dao.interface";
 import { v4 as uuid } from 'uuid';
 import { BillingStatus } from "src/helper/billing-status";
-import * as dynamoose from "dynamoose";
-import { Condition } from "dynamoose/dist/Condition";
-import { Injectable, Scope } from "@nestjs/common";
+import { BillingDto } from "src/modules/billing/dto/billing.dto";
+import { Inject, Injectable, Scope } from "@nestjs/common";
+import { TableName } from "src/helper/table-name";
 
 @Injectable({ scope: Scope.REQUEST })
 class BillingDao implements IBillingDao {
-    constructor() { }
+    constructor(@Inject('DynamoDb') private docClient: AWS.DynamoDB.DocumentClient) { }
 
-    public async createMintBilling(txFee: string, u: UserDto): Promise<MessageLayerDtoT<Billing>> {
+    public async createMintBilling(txFee: string, u: UserDto): Promise<MessageLayerDtoT<BillingDto>> {
+        const id = uuid();
         const newBilling = {
-            id: uuid(),
+            id,
             txFee,
             callerAddress: u.publicAddress,
             status: BillingStatus.Pending,
@@ -24,35 +24,56 @@ class BillingDao implements IBillingDao {
             timeStamp: Math.floor(Date.now() / 1000),
         }
 
-        const billing: Billing = await BillingModel.create(newBilling);
-        return { ok: true, data: billing, message: 'success' };
+        await this.docClient.put({ TableName: TableName.Billing, Item: newBilling }).promise();
+        return { ok: true, data: id, message: 'success' };
     }
 
-    public async getMintBilling(txFee: string, callerAddress: string, blockTimeStamp: number): Promise<MessageLayerDtoT<Billing>> {
-        const c: Condition = new dynamoose.Condition()
-            .where("txFee").eq(txFee)
-            .where("callerAddress").eq(callerAddress).and()
-            .where("timeStamp").lt(blockTimeStamp).and()
-            .where("status").eq(BillingStatus.Pending);
+    public async getMintBilling(txFee: string, callerAddress: string, blockTimeStamp: number): Promise<MessageLayerDtoT<BillingDto>> {
+        const result = await this.docClient.scan({
+            TableName: TableName.Billing,
+            FilterExpression: '#callerAddress = :callerAddress and #txFee = :txFee and #timeStamp <= :blockTimeStamp and #status = :status',
+            ExpressionAttributeNames: {
+                '#callerAddress': 'callerAddress',
+                '#txFee': 'txFee',
+                '#timeStamp': 'timeStamp',
+                '#status': 'status'
+            },
+            ExpressionAttributeValues: {
+                ':callerAddress': callerAddress,
+                ':txFee': txFee,
+                ':blockTimeStamp': blockTimeStamp,
+                ':status': BillingStatus.Pending,
+            }
+        }).promise();
 
-        const billing = await BillingModel.query(c).limit(1).exec();
-        if (!billing) {
-            return { ok: false, data: null, message: `Billing is not found in database` };
+        if (!result || result.Count <= 0) {
+            return { ok: false, data: null, message: `error` };
         }
 
-        return { ok: true, data: billing, message: 'success' };
+        return { ok: true, data: new BillingDto(result.Items[0]), message: 'success' };
+    }
+
+    public async getBillingById(id: string): Promise<MessageLayerDtoT<BillingDto>> {
+        const result = await this.docClient.get({
+            TableName: TableName.Billing,
+            Key: { id }
+        }).promise();
+
+        if (Object.keys(result).length == 0) {
+            return { ok: false, data: null, message: 'success' };
+        }
+
+        return { ok: true, data: new BillingDto(result.Item), message: `success` };
     }
 
     public async updateMintBilling(id: string, status: string): Promise<void> {
-        await BillingModel.update({ id }, { status });
-    }
-
-    public async getBillingById(id: string): Promise<MessageLayerDtoT<Billing>> {
-        const billing: Billing = await BillingModel.get({ id });
-        if (!billing) {
-            return { ok: false, data: null, message: `Billing key is not found in database` };
-        }
-        return { ok: false, data: billing, message: `succes` };
+        await this.docClient.update({
+            TableName: TableName.Billing,
+            Key: { id },
+            UpdateExpression: "set #status = :status",
+            ExpressionAttributeNames: { '#status': 'status' },
+            ExpressionAttributeValues: { ":status": status }
+        }).promise();
     }
 }
 

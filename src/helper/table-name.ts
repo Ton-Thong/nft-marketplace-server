@@ -3,5 +3,4 @@ export enum TableName {
     Product = 'Products',
     Collection = 'Collections',
     Billing = 'Billings',
-    
 }

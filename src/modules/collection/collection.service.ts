@@ -14,21 +14,21 @@ class CollectionService implements ICollectionService {
   constructor(@Inject(DaoInterface.ICollectionDao) private readonly collectionDao: ICollectionDao) { }
 
   public async createCollection(c: AddCollectionDto, u: UserDto): Promise<CollectionDto> {
-    const result: MessageLayerDtoT<Collection> = await this.collectionDao.createCollection(c, u);
+    const result: MessageLayerDtoT<CollectionDto> = await this.collectionDao.createCollection(c, u);
     if (!result.ok) throw new BadRequestException("Cannot create collection.");
 
-    return new CollectionDto(result.data);
+    return result.data;
   }
 
   public async getCollectionById(id: string): Promise<CollectionDto> {
-    const result = await this.collectionDao.getCollectionById(id);
+    const result: MessageLayerDtoT<CollectionDto> = await this.collectionDao.getCollectionById(id);
     if (!result.ok) throw new NotFoundException(result.message);
 
-    return new CollectionDto(result.data);
+    return result.data;
   }
 
   public async getCollectionAllฺByUser(u: UserDto): Promise<Array<CollectionDto>> {
-    const result = await this.collectionDao.getCollectionAllByUser(u);
+    const result: MessageLayerDtoT<Array<CollectionDto>> = await this.collectionDao.getCollectionAllByUser(u);
     if (!result.ok) throw new NotFoundException(result.message)
 
     return result.data.map(x => new CollectionDto(x));

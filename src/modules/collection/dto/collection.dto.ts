@@ -2,7 +2,7 @@ import { IsString } from "class-validator";
 import { Collection } from "src/models/collection.model";
 
 export class CollectionDto {
-    constructor(c: Collection) {
+    constructor(c: any) {
         const { id, name, createdBy } = c;
         this.id = id;
         this.name = name;

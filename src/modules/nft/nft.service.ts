@@ -9,7 +9,6 @@ import { IBillingService } from "../billing/interfaces/billing.service.interface
 import { FileService } from "../miscellaneous/file.service";
 import { IpfsService } from "../miscellaneous/ipfs.service";
 import { Web3Service } from "../miscellaneous/web3.service";
-import { AddProductDto } from "../product/dto/add-product.dto";
 import { UserDto } from "../user/dto/user.dto";
 import { AddNFTResponseDto } from "./dto/add-nft-response.dto";
 import { NFTDto } from "./dto/nft.dto";
@@ -48,23 +47,23 @@ class NFTService implements INFTService {
         const event = minted.events[0];
         const value = event.args[2];
         const tokenId: number = value.toNumber();
-        const nft: MessageLayerDtoT<NFT> = await this.nftDao.createNFT(n, u, minted.transactionHash, tokenId);
+        const nft: MessageLayerDtoT<string> = await this.nftDao.createNFT(n, u, minted.transactionHash, tokenId);
 
-        return { id: nft.data.id, s3Url: signedUrl };
+        return { id: nft.data, s3Url: signedUrl };
     }
 
     public async getNFT(id: string): Promise<NFTDto> {
-        const result: MessageLayerDtoT<NFT> = await this.nftDao.getNFTById(id);
+        const result: MessageLayerDtoT<NFTDto> = await this.nftDao.getNFTById(id);
         if (!result.ok) {
             throw new NotFoundException(result.message);
         }
         const nft: NFT = result.data;
         nft.fileName = await this.fileService.getSignedUrlGetObject(this.busketName, nft.fileName);
-        return new NFTDto(nft);
+        return nft
     }
 
     public async getNFTAll(): Promise<Array<NFTDto>> {
-        const result: MessageLayerDtoT<NFT[]> = await this.nftDao.getNFTAll();
+        const result: MessageLayerDtoT<Array<NFTDto>> = await this.nftDao.getNFTAll();
         if (!result.ok) {
             throw new NotFoundException(result.message);
         }
@@ -74,7 +73,7 @@ class NFTService implements INFTService {
             nfts[index].fileName = await this.fileService.getSignedUrlGetObject(this.busketName, nfts[index].fileName);
         })
 
-        return nfts.sort((a, b) => (a.createdDate > b.createdDate ? -1 : 1)).map(e => new NFTDto(e));
+        return nfts.sort((a, b) => (a.createdDate > b.createdDate ? -1 : 1));
     }
 }
 

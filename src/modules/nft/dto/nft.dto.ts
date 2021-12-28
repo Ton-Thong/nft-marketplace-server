@@ -1,7 +1,12 @@
-import { NFT } from "src/models/nft.model";
-
 export class NFTDto {
-    constructor(n: NFT) {
+    constructor() {
+        this.createdDate = new Date().toLocaleString("en-US", { timeZone: "Asia/Bangkok" });
+        this.currentPrice = 0;
+        this.lastPrice = 0;
+        this.sellStatus = false;
+    }
+
+    public mapper(n: any) {
         this.id = n.id;
         this.name = n.name;
         this.fileName = n.fileName;
@@ -16,9 +21,12 @@ export class NFTDto {
         this.createdBy = n.createdBy;
         this.createdDate = n.createdDate;
         this.cid = n.cid;
+        this.metadata = n.metadata;
         this.nftTxHash = n.nftTxHash;
+        this.tokenId = n.tokenId;
+        this.createdDate = n.createdDate;
     }
-    
+
     public id: string;
     public name: string;
     public fileName: string;
@@ -28,10 +36,12 @@ export class NFTDto {
     public description: string;
     public sellStatus: boolean = false;
     public lastPrice: number = 0;
-    public currentPrice: number = 0;
+    public currentPrice: number;
     public owner: string;
     public createdBy: string;
-    public createdDate: string = new Date().toLocaleString("en-US", { timeZone: "Asia/Bangkok" });
+    public createdDate: string;
     public cid: string;
+    public metadata:string;
     public nftTxHash: string;
+    public tokenId: number;
 }

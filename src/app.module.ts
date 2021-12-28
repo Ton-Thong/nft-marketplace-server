@@ -8,7 +8,6 @@ import { AuthModule } from './modules/auth/auth.modules';
 import { BillingModule } from './modules/billing/billing.modules';
 import { CollectionModule } from './modules/collection/collection.modules';
 import { NFTModule } from './modules/nft/nft.modules';
-import { ProductModule } from './modules/product/product.modules';
 import { UserModule } from './modules/user/user.modules';
 
 @Global()
@@ -16,7 +15,6 @@ import { UserModule } from './modules/user/user.modules';
   imports: [
     ConfigModule.forRoot({ envFilePath: './config/.env'}),
     UserModule, 
-    ProductModule,
     CollectionModule,
     NFTModule,
     BillingModule,

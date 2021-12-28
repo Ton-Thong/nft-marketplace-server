@@ -3,7 +3,6 @@ import { ethers } from "ethers";
 import { MessageLayerDtoT } from "src/dto/messageLayer.dto";
 import { DaoInterface } from "src/helper/dao-interface";
 import { ServiceInterface } from "src/helper/service-interface";
-import { Billing } from "src/models/billing.model";
 import { Web3Service } from "../miscellaneous/web3.service";
 import { UserDto } from "../user/dto/user.dto";
 import { BillingDto } from "./dto/billing.dto";
@@ -13,17 +12,13 @@ import { IBillingService } from "./interfaces/billing.service.interface";
 @Injectable({ scope: Scope.REQUEST })
 class BillingService implements IBillingService {
     constructor(
-        @Inject(DaoInterface.IBillingDao) private readonly billingDao: IBillingDao, 
+        @Inject(DaoInterface.IBillingDao) private readonly billingDao: IBillingDao,
         private readonly web3service: Web3Service) { }
 
     public async createMintBilling(cid: string, u: UserDto): Promise<string> {
-        try {
-            const txFee: string = await this.web3service.getMintBilling(u.publicAddress, cid);
-            await this.billingDao.createMintBilling(txFee, u);
-            return txFee;
-        } catch (err) {
-            throw err;
-        }
+        const txFee: string = await this.web3service.getMintBilling(u.publicAddress, cid);
+        await this.billingDao.createMintBilling(txFee, u);
+        return txFee;
     }
 
     public async verifyBilling(txHash: string, callerAddress: string): Promise<MessageLayerDtoT<BillingDto>> {
@@ -35,20 +30,16 @@ class BillingService implements IBillingService {
         }
 
         const receiveEther: string = ethers.utils.formatEther(transac.value._hex);
-        const billing: MessageLayerDtoT<Billing> = await this.billingDao.getMintBilling(receiveEther, callerAddress, blockTimeStamp);
+        const billing: MessageLayerDtoT<BillingDto> = await this.billingDao.getMintBilling(receiveEther, callerAddress, blockTimeStamp);
 
-        return { ok: billing.ok, data: new BillingDto(billing.data), message: billing.message };
+        return { ok: billing.ok, data: billing.data, message: billing.message };
     }
 
     public async getMintBillingById(id: string): Promise<BillingDto> {
-        try {
-            const result: MessageLayerDtoT<Billing> = await this.billingDao.getBillingById(id);
-            if (!result.ok) throw new NotFoundException(result.message);
+        const result: MessageLayerDtoT<BillingDto> = await this.billingDao.getBillingById(id);
+        if (!result.ok) throw new NotFoundException(result.message);
 
-            return new BillingDto(result.data);
-        } catch (err) {
-            throw err;
-        }
+        return result.data;
     }
 
     public async updateMintBilling(id: string, status: string): Promise<void> {

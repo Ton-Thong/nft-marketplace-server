@@ -35,6 +35,16 @@
     ora "5.4.1"
     rxjs "6.6.7"
 
+"@automapper/classes@^7.1.1":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@automapper/classes/-/classes-7.1.1.tgz#37dc81b8101427d265bb90f57085e30d200ded6a"
+  integrity sha512-Rc015RaCXWnIvXsC2ha/Yi3HTw4Uoi1OWDV0JPrFqPCgT2XEiROGlXGpe1Wow27Rz8S/uU17KjYuS0/dQphYlw==
+
+"@automapper/core@^7.1.1":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@automapper/core/-/core-7.1.1.tgz#2764d77e2ea57faf0715cb1977762496869fc7ce"
+  integrity sha512-mqlASOQ/PPIvKt2LLQpBUt6S8vsRRO45wHIT400tjWMuZ29zV4JCG6XTX93+eftiQTPNtqo/VMW9hyp59c6gzw==
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.12.13", "@babel/code-frame@^7.16.0", "@babel/code-frame@^7.8.3":
   version "7.16.0"
   resolved "https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.16.0.tgz"
@@ -1997,21 +2007,6 @@ aws-sdk@^2.1029.0:
     uuid "3.3.2"
     xml2js "0.4.19"
 
-aws-sdk@^2.968.0:
-  version "2.1048.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1048.0.tgz#02f2f35e0f51dd4510462e05c7a48fd4649d33f8"
-  integrity sha512-mVwWo+Udiuc/yEZ/DgJQGqOEtfiQjgUdtshx/t6ISe3+jW3TF9hUACwADwx2Sr/fuJyyJ3QD5JYLt5Cw35wQpA==
-  dependencies:
-    buffer "4.9.2"
-    events "1.1.1"
-    ieee754 "1.1.13"
-    jmespath "0.15.0"
-    querystring "0.2.0"
-    sax "1.2.1"
-    url "0.10.3"
-    uuid "3.3.2"
-    xml2js "0.4.19"
-
 axios@0.24.0, axios@^0.24.0:
   version "0.24.0"
   resolved "https://registry.npmjs.org/axios/-/axios-0.24.0.tgz"
@@ -2827,16 +2822,6 @@ duplexify@^4.1.1:
     inherits "^2.0.3"
     readable-stream "^3.1.1"
     stream-shift "^1.0.0"
-
-dynamoose@2.8.3:
-  version "2.8.3"
-  resolved "https://registry.yarnpkg.com/dynamoose/-/dynamoose-2.8.3.tgz#a490f7f4969f86a928c486cb84c2780bdce8d1e5"
-  integrity sha512-fq3A307HjYkTmPeyya7tRlQhhcq2gYqxng7vEmiviNKenurw+NbdA8Krer+YmfmAPMalTZ4CqXRGJiYkGmanyA==
-  dependencies:
-    aws-sdk "^2.968.0"
-    js-object-utilities "^2.0.0"
-    source-map-support "^0.5.19"
-    uuid "^8.3.2"
 
 ecdsa-sig-formatter@1.0.11:
   version "1.0.11"
@@ -4793,11 +4778,6 @@ jmespath@0.15.0:
   resolved "https://registry.npmjs.org/jmespath/-/jmespath-0.15.0.tgz"
   integrity sha1-o/Iiqarp+Wb10nx5ZRDigJF2Qhc=
 
-js-object-utilities@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/js-object-utilities/-/js-object-utilities-2.0.0.tgz#79629a32bdcc7a60dced03f669cabc78b35f637c"
-  integrity sha512-d0o5Hnd+9q9mswk8VhU9Fzl+QLce3FvtNlLKV7UTUYjAZuChAKeS/DnuameOpiJAXquqrXLJYUcABxhIWogwpA==
-
 js-sha3@0.8.0:
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/js-sha3/-/js-sha3-0.8.0.tgz#b9b7a5da73afad7dedd0f8c463954cbde6818840"
@@ -6431,7 +6411,7 @@ source-map-support@0.5.20, source-map-support@^0.5.20, source-map-support@^0.5.6
     buffer-from "^1.0.0"
     source-map "^0.6.0"
 
-source-map-support@^0.5.13, source-map-support@^0.5.19:
+source-map-support@^0.5.13:
   version "0.5.21"
   resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.21.tgz#04fe7c7f9e1ed2d662233c28cb2b35b9f63f6e4f"
   integrity sha512-uBHU3L3czsIyYXKX88fdrGovxdSCoTGDRZ6SYXtSRxLZUzHg5P/66Ht6uoUlHu9EZod+inXhKo3qQgwXUT/y1w==

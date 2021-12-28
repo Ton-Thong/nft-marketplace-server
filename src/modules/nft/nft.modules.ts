@@ -6,16 +6,14 @@ import { Web3Modules } from 'src/infrastructure/Web3/web3.modules';
 import { Web3Service } from '../miscellaneous/web3.service';
 import { BillingServiceProvider } from '../billing/billing.service';
 import { BillingDaoProvider } from '../billing/billing.dao';
-import { BillingModel } from 'src/models/billing.model';
 import { NFTController } from './nft.controller';
 import { NFTServiceProvider } from './nft.service';
 import { NFTDaoProvider } from './nft.dao';
-import { NFTModel } from 'src/models/nft.model';
 
 @Module({
-  imports: [AWSModules, Web3Modules, NFTModel],
+  imports: [AWSModules, Web3Modules],
   controllers: [NFTController],
-  providers: [FileService, IpfsService, Web3Service, BillingModel, NFTServiceProvider, NFTDaoProvider,  BillingServiceProvider, BillingDaoProvider],
+  providers: [FileService, IpfsService, Web3Service, NFTServiceProvider, NFTDaoProvider,  BillingServiceProvider, BillingDaoProvider],
 })
 
 export class NFTModule { }

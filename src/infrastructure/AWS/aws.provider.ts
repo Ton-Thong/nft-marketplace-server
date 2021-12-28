@@ -1,22 +1,27 @@
+import { Scope } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
-import * as dynamoose from "dynamoose";
+import { ServiceConfigurationOptions } from 'aws-sdk/lib/service';
 import { TableName } from 'src/helper/table-name';
 
 export const AWSProviders = [
   {
     provide: 'DynamoDb',
+    scope: Scope.REQUEST,
     useFactory: async () => {
       try {
-        const ddb = new dynamoose.aws.sdk.DynamoDB({
+        const serviceConfigOptions: ServiceConfigurationOptions = {
           region: process.env.AWS_REGION,
           endpoint: process.env.AWS_ENDPOINT,
           accessKeyId: process.env.AWS_ACCESSKEYID,
           secretAccessKey: process.env.AWS_SECRETACCESSKEY,
-        });
+        };
 
-        const listTable = await ddb.listTables().promise();
+        const docClient = new AWS.DynamoDB.DocumentClient(serviceConfigOptions);
+        const dynamoDb = new AWS.DynamoDB(serviceConfigOptions);
+
+        const listTable = await dynamoDb.listTables().promise();
         if (!listTable.TableNames.includes(TableName.User)) {
-          await ddb.createTable({
+          await dynamoDb.createTable({
             TableName: TableName.User,
             KeySchema: [
               { AttributeName: 'id', KeyType: 'HASH' },
@@ -34,7 +39,7 @@ export const AWSProviders = [
         }
 
         if (!listTable.TableNames.includes(TableName.Product)) {
-          await ddb.createTable({
+          await dynamoDb.createTable({
             TableName: TableName.Product,
             KeySchema: [
               { AttributeName: 'id', KeyType: 'HASH' },
@@ -50,7 +55,7 @@ export const AWSProviders = [
         }
 
         if (!listTable.TableNames.includes(TableName.Collection)) {
-          await ddb.createTable({
+          await dynamoDb.createTable({
             TableName: TableName.Collection,
             KeySchema: [
               { AttributeName: 'id', KeyType: 'HASH' },
@@ -65,8 +70,8 @@ export const AWSProviders = [
           }).promise();
         }
 
-        if(!listTable.TableNames.includes(TableName.Billing)) {
-          await ddb.createTable({
+        if (!listTable.TableNames.includes(TableName.Billing)) {
+          await dynamoDb.createTable({
             TableName: TableName.Billing,
             KeySchema: [
               { AttributeName: 'id', KeyType: 'HASH' },
@@ -81,7 +86,7 @@ export const AWSProviders = [
           }).promise();
         }
 
-        dynamoose.aws.ddb.set(ddb);
+        return docClient;
       } catch (err) {
         throw err;
       }
@@ -89,6 +94,7 @@ export const AWSProviders = [
   },
   {
     provide: 'S3',
+    scope: Scope.REQUEST,
     useFactory: async () => {
       try {
         return new AWS.S3({

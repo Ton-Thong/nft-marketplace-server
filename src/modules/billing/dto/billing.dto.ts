@@ -1,8 +1,7 @@
 import { IsString } from 'class-validator';
-import { Billing } from 'src/models/billing.model';
 
 export class BillingDto {
-    constructor(b: Billing) {
+    constructor(b: any) {
         const { id, txFee, callerAddress, status, createdBy, createdDate } = b;
         this.id = id;
         this.txFee = txFee;
