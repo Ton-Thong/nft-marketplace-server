@@ -8,6 +8,7 @@ import { ICollectionDao } from "./interface/collection.dao.interface";
 import { v4 as uuid } from 'uuid';
 import { DaoInterface } from "src/helper/dao-interface";
 import { TableName } from "src/helper/table-name";
+import * as AWS from 'aws-sdk';
 
 @Injectable({ scope: Scope.REQUEST })
 class CollectionDao implements ICollectionDao {

@@ -7,6 +7,7 @@ import { BillingStatus } from "src/helper/billing-status";
 import { BillingDto } from "src/modules/billing/dto/billing.dto";
 import { Inject, Injectable, Scope } from "@nestjs/common";
 import { TableName } from "src/helper/table-name";
+import * as AWS from 'aws-sdk';
 
 @Injectable({ scope: Scope.REQUEST })
 class BillingDao implements IBillingDao {

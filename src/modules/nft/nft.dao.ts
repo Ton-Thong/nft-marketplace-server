@@ -1,7 +1,7 @@
 import { Inject, Injectable, Scope } from "@nestjs/common";
 import { MessageLayerDtoT } from "src/dto/messageLayer.dto";
 import { DaoInterface } from "src/helper/dao-interface";
-import { NFT } from "src/models/nft.model";
+import * as AWS from 'aws-sdk';
 import { UserDto } from "../user/dto/user.dto";
 import { AddNFTDto } from "./dto/add-nft.dto";
 import { INFTDao } from "./interface/nft.dao.interface";
