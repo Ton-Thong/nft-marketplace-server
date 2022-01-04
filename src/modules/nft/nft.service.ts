@@ -69,10 +69,10 @@ class NFTService implements INFTService {
             throw new NotFoundException(result.message);
         }
 
-        const nfts = result.data;
-        await nfts.forEach(async (_, index) => {
-            nfts[index].fileName = await this.fileService.getSignedUrlGetObject(this.busketName, nfts[index].fileName);
-        });
+        const nfts = await Promise.all(result.data.map(async (nft) => {
+            nft.fileName = await this.fileService.getSignedUrlGetObject(this.busketName, nft.fileName);
+            return nft;
+        }));
 
         return nfts.sort((a, b) => (a.createdDate > b.createdDate ? -1 : 1));
     }
