@@ -6,9 +6,9 @@ import { UserDto } from "../user/dto/user.dto";
 import { AddNFTDto } from "./dto/add-nft.dto";
 import { INFTDao } from "./interface/nft.dao.interface";
 import { v4 as uuid } from 'uuid';
-
 import { TableName } from "src/helper/table-name";
 import { NFTDto } from "./dto/nft.dto";
+
 @Injectable({ scope: Scope.REQUEST })
 class NFTDao implements INFTDao {
     constructor(@Inject('DynamoDb') private docClient: AWS.DynamoDB.DocumentClient) { }
@@ -69,6 +69,17 @@ class NFTDao implements INFTDao {
 
             return { ok: true, data: nftDtos, message: 'success' }
         }
+    }
+
+    public async updateSellStatus(u: UserDto): Promise<void> {
+        const { id, publicAddress } = u;
+        await this.docClient.update({
+            TableName: TableName.User,
+            Key: { id, publicAddress },
+            UpdateExpression: "set #sellStatus = :s",
+            ExpressionAttributeNames: { '#sellStatus': 'sellStatus' },
+            ExpressionAttributeValues: { ":s": true }
+        });
     }
 }
 

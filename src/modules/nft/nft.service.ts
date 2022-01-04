@@ -16,6 +16,7 @@ import { INFTDao } from "./interface/nft.dao.interface";
 import { INFTService } from "./interface/nft.service.interface";
 import { BillingDto } from "../billing/dto/billing.dto";
 import { AddNFTDto } from "./dto/add-nft.dto";
+import { SellNftDto } from "./dto/sell-nft.dto";
 
 @Injectable({ scope: Scope.REQUEST })
 class NFTService implements INFTService {
@@ -30,10 +31,10 @@ class NFTService implements INFTService {
     }
 
     public async createNFT(n: AddNFTDto, u: UserDto): Promise<AddNFTResponseDto> {
-        if(!n.forceTest) {
+        if (!n.forceTest) {
             const verified: MessageLayerDtoT<BillingDto> = await this.billingService.verifyBilling(n.txHash, u.publicAddress);
             if (!verified.ok) throw new BadRequestException("Transaction is not valid.");
-    
+
             await this.billingService.updateMintBilling(verified.data.id, BillingStatus.Success);
         }
 
@@ -43,7 +44,7 @@ class NFTService implements INFTService {
             this.ipfsService.pinCid([n.cid, n.metadata]),
             this.web3service.mintNFT(u.publicAddress, n.metadata + "/metadata.json")
         ]);
-        
+
         const event = minted.events[0];
         const value = event.args[2];
         const tokenId: number = value.toNumber();
@@ -69,11 +70,29 @@ class NFTService implements INFTService {
         }
 
         const nfts = result.data;
-        nfts.forEach(async (_, index) => {
+        await nfts.forEach(async (_, index) => {
             nfts[index].fileName = await this.fileService.getSignedUrlGetObject(this.busketName, nfts[index].fileName);
-        })
+        });
 
         return nfts.sort((a, b) => (a.createdDate > b.createdDate ? -1 : 1));
+    }
+
+    public async sellNFT(sellNftDto: SellNftDto, u: UserDto): Promise<void> {
+        const { nftId, price } = sellNftDto;
+        console.log(u);
+        const result: MessageLayerDtoT<NFTDto> = await this.nftDao.getNFTById(nftId);
+        console.log(result);
+        if (!result.ok) {
+            throw new BadRequestException(result.message);
+        }
+
+        const nft = result.data;
+        if(nft.owner != u.id) {
+            throw new BadRequestException("");
+        }
+
+        await this.web3service.sellNFT(nft.tokenId, price);
+        await this.nftDao.updateSellStatus(u);
     }
 }
 
