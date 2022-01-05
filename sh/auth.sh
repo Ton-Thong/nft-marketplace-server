@@ -1,0 +1,1 @@
+ docker login -u 5372e6f0636ccde94beec0564f3bf20b0f3ca7ec2d7dc65859f66040e772ac4e -p 5372e6f0636ccde94beec0564f3bf20b0f3ca7ec2d7dc65859f66040e772ac4e registry.digitalocean.com/nft-container

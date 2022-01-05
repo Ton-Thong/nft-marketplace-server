@@ -1,35 +1,52 @@
-import { ConflictException, Injectable } from "@nestjs/common";
-import { MessageLayerDto } from "src/dto/messageLayer.dto";
+import { ConflictException, Inject, Injectable, NotFoundException, Scope } from "@nestjs/common";
+import { MessageLayerDtoT } from "src/dto/messageLayer.dto";
+import { DaoInterface } from "src/helper/dao-interface";
+import { ServiceInterface } from "src/helper/service-interface";
+import { User } from "src/models/user.model";
 import { AddUserDto } from "src/modules/user/dto/add-user.dto";
 import { UserDto } from "./dto/user.dto";
-import { UserRepository } from "./user.repository";
+import { IUserDao } from "./interface/user.dao.interface";
+import { IUserService } from "./interface/user.service.interface";
 
-@Injectable()
-export class UserService {
-  constructor(private userRepository: UserRepository) { }
+@Injectable({ scope: Scope.REQUEST })
+class UserService implements IUserService {
+  constructor(@Inject(DaoInterface.IUserDao) private readonly userDao: IUserDao) { }
 
-  async create(user: AddUserDto): Promise<UserDto> {
+  public async createUser(user: AddUserDto): Promise<UserDto> {
     const { publicAddress } = user;
-    const result = await this.userRepository.findByPublicAddress(publicAddress);
+    const result: MessageLayerDtoT<User> = await this.userDao.getByPublicAddress(publicAddress);
     if (result.ok) {
       throw new ConflictException(`User with publicAddress ${publicAddress} is existing in database`)
     }
 
-    return (await this.userRepository.create(user)).data;
+    const newUser: MessageLayerDtoT<User> = await this.userDao.createUser(user);
+    return new UserDto(newUser.data);
   }
 
-  async get(id: string, publicAddress: string): Promise<MessageLayerDto> {
-    return await this.userRepository.get(id, publicAddress);
+  public async getByKey(id: string, publicAddress: string): Promise<UserDto> {
+    const result: MessageLayerDtoT<User> = await this.userDao.getByKey(id, publicAddress);
+    if (!result.ok) {
+      throw new NotFoundException(result.message);
+    }
+
+    return new UserDto(result.data);
   }
 
-  async findByPublicAddress(publicAddress: string): Promise<UserDto> {
-    const result: MessageLayerDto = await this.userRepository.findByPublicAddress(publicAddress);
-    if (!result.ok) return null
-    
-    return result.data[0]
+  public async getByPublicAddress(publicAddress: string): Promise<UserDto> {
+    const result: MessageLayerDtoT<User> = await this.userDao.getByPublicAddress(publicAddress);
+    if (!result.ok) {
+      throw new NotFoundException(result.message)
+    }
+
+    return new UserDto(result.data)
   }
 
-  async updateNonce(user: UserDto): Promise<void> {
-    await this.userRepository.updateNonce(user);
+  public async updateNonce(user: UserDto): Promise<void> {
+    await this.userDao.updateNonce(user);
   }
+}
+
+export const UserServiceProvider = {
+  provide: ServiceInterface.IUserService,
+  useClass: UserService
 }

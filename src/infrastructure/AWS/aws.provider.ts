@@ -1,10 +1,12 @@
+import { Scope } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
 import { ServiceConfigurationOptions } from 'aws-sdk/lib/service';
-import { TableName } from 'src/helper/TableName';
+import { TableName } from 'src/helper/table-name';
 
 export const AWSProviders = [
   {
     provide: 'DynamoDb',
+    scope: Scope.REQUEST,
     useFactory: async () => {
       try {
         const serviceConfigOptions: ServiceConfigurationOptions = {
@@ -68,6 +70,22 @@ export const AWSProviders = [
           }).promise();
         }
 
+        if (!listTable.TableNames.includes(TableName.Billing)) {
+          await dynamoDb.createTable({
+            TableName: TableName.Billing,
+            KeySchema: [
+              { AttributeName: 'id', KeyType: 'HASH' },
+            ],
+            AttributeDefinitions: [
+              { AttributeName: 'id', AttributeType: 'S' },
+            ],
+            ProvisionedThroughput: {
+              ReadCapacityUnits: 5,
+              WriteCapacityUnits: 5,
+            },
+          }).promise();
+        }
+
         return docClient;
       } catch (err) {
         throw err;
@@ -76,6 +94,7 @@ export const AWSProviders = [
   },
   {
     provide: 'S3',
+    scope: Scope.REQUEST,
     useFactory: async () => {
       try {
         return new AWS.S3({

@@ -35,6 +35,16 @@
     ora "5.4.1"
     rxjs "6.6.7"
 
+"@automapper/classes@^7.1.1":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@automapper/classes/-/classes-7.1.1.tgz#37dc81b8101427d265bb90f57085e30d200ded6a"
+  integrity sha512-Rc015RaCXWnIvXsC2ha/Yi3HTw4Uoi1OWDV0JPrFqPCgT2XEiROGlXGpe1Wow27Rz8S/uU17KjYuS0/dQphYlw==
+
+"@automapper/core@^7.1.1":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@automapper/core/-/core-7.1.1.tgz#2764d77e2ea57faf0715cb1977762496869fc7ce"
+  integrity sha512-mqlASOQ/PPIvKt2LLQpBUt6S8vsRRO45wHIT400tjWMuZ29zV4JCG6XTX93+eftiQTPNtqo/VMW9hyp59c6gzw==
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.12.13", "@babel/code-frame@^7.16.0", "@babel/code-frame@^7.8.3":
   version "7.16.0"
   resolved "https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.16.0.tgz"
@@ -1105,6 +1115,11 @@
   dependencies:
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
+
+"@nomiclabs/hardhat-ethers@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@nomiclabs/hardhat-ethers/-/hardhat-ethers-2.0.3.tgz#06e20a57274f6ce3148132910e723948a711edf1"
+  integrity sha512-IJ0gBotVtO7YyLZyHNgbxzskUtFok+JkRlKPo8YELqj1ms9XL6Qm3vsfsGdZr22wnJeVEF5TQPotKuwQk21Dag==
 
 "@nuxtjs/opencollective@0.3.2":
   version "0.3.2"

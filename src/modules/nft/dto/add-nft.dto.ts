@@ -1,11 +1,11 @@
-import { IsString } from "class-validator";
+import { IsBoolean, IsString, IsUUID } from "class-validator";
 
-export class AddProductDto {
+export class AddNFTDto {
     @IsString()
     public name: string;
     @IsString()
     public description: string;
-    @IsString()
+    @IsUUID()
     public collectionId: string;
     @IsString()
     public collectionName: string;
@@ -18,5 +18,7 @@ export class AddProductDto {
     @IsString()
     public metadata: string;
     @IsString()
-    public publicAddress: string;
+    public txHash: string;
+    @IsBoolean()
+    public forceTest: boolean;
 }
