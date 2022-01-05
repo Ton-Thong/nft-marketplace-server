@@ -20,7 +20,7 @@ export class FileService {
 
     async getSignedUrlGetObject(bucketName: string, objectName: string): Promise<string> {
         try {
-            return await this.s3.getSignedUrlPromise('getObject', {
+            return this.s3.getSignedUrlPromise('getObject', {
                 Bucket: bucketName,
                 Key: `${objectName}`,
                 Expires: 18000,

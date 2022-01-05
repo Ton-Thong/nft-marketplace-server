@@ -69,25 +69,25 @@ class NFTService implements INFTService {
             throw new NotFoundException(result.message);
         }
 
-        const nfts = await Promise.all(result.data.map(async (nft) => {
-            nft.fileName = await this.fileService.getSignedUrlGetObject(this.busketName, nft.fileName);
-            return nft;
-        }));
+        const nfts: Array<NFTDto> = result.data;
+        const signedUrls: Array<string> = await Promise.all(nfts.map((nft) => this.fileService.getSignedUrlGetObject(this.busketName, nft.fileName)));
 
-        return nfts.sort((a, b) => (a.createdDate > b.createdDate ? -1 : 1));
+        return nfts.map((nft) => {
+                nft.fileName = signedUrls.find(signedUrl => signedUrl.includes(nft.fileName));
+                return nft;
+            })
+            .sort((a, b) => (a.createdDate > b.createdDate ? -1 : 1));
     }
 
     public async sellNFT(sellNftDto: SellNftDto, u: UserDto): Promise<void> {
         const { nftId, price } = sellNftDto;
-        console.log(u);
         const result: MessageLayerDtoT<NFTDto> = await this.nftDao.getNFTById(nftId);
-        console.log(result);
         if (!result.ok) {
             throw new BadRequestException(result.message);
         }
 
         const nft = result.data;
-        if(nft.owner != u.id) {
+        if (nft.owner != u.id) {
             throw new BadRequestException("");
         }
 
