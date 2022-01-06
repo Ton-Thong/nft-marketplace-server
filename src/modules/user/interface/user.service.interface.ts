@@ -6,4 +6,5 @@ export interface IUserService {
     getByKey(id: string, publicAddress: string): Promise<UserDto>;
     getByPublicAddress(publicAddress: string): Promise<UserDto>;
     updateNonce(u: UserDto): Promise<void>;
+    getUserAll();
 }

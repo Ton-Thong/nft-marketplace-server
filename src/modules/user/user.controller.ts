@@ -29,4 +29,14 @@ export class UserController {
             throw err;
         }
     }
+
+    @Get('/all')
+    public async getUserAll(){
+        try{
+            const result = await this.userService.getUserAll();
+            return {statusCode:HttpStatus.OK, data: result, message: 'success'};
+        }catch(err){
+            throw err;
+        }
+    }
 }

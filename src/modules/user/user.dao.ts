@@ -63,6 +63,18 @@ class UserDao implements IUserDao {
             ExpressionAttributeValues: { ":n": nonce }
         }).promise();
     }
+
+    public async getUserAll() {
+        const result = await this.docClient.scan({ TableName: TableName.User }).promise();
+        if (!result || result.Count <= 0) {
+            return { ok: false, data: null, message: `error` };
+        }
+        if (!result || result.Count <= 0) {
+            return { ok: false, data: null, message: 'User is not found in database' }
+        }else{
+            return { ok: true, data: result.Items, message: 'success' }
+        }
+    }
 }
 
 export const UserDaoProvider = {

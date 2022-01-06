@@ -8,4 +8,6 @@ export interface IUserDao {
     getByKey(id: string, publicAddress: string): Promise<MessageLayerDtoT<User>>;
     getByPublicAddress(publicAddress: string): Promise<MessageLayerDtoT<User>>;
     updateNonce(u: UserDto): Promise<void>;
+    getUserAll();
+
 }
