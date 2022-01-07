@@ -15,21 +15,20 @@ export const AWSProviders = [
           accessKeyId: process.env.AWS_ACCESSKEYID,
           secretAccessKey: process.env.AWS_SECRETACCESSKEY,
         };
-
+        console.log('test');
         const docClient = new AWS.DynamoDB.DocumentClient(serviceConfigOptions);
         const dynamoDb = new AWS.DynamoDB(serviceConfigOptions);
 
         const listTable = await dynamoDb.listTables().promise();
+        console.log(listTable);
         if (!listTable.TableNames.includes(TableName.User)) {
           await dynamoDb.createTable({
             TableName: TableName.User,
             KeySchema: [
               { AttributeName: 'id', KeyType: 'HASH' },
-              { AttributeName: 'publicAddress', KeyType: 'RANGE' },
             ],
             AttributeDefinitions: [
               { AttributeName: 'id', AttributeType: 'S' },
-              { AttributeName: 'publicAddress', AttributeType: 'S' },
             ],
             ProvisionedThroughput: {
               ReadCapacityUnits: 5,
@@ -37,7 +36,7 @@ export const AWSProviders = [
             },
           }).promise();
         }
-
+        
         if (!listTable.TableNames.includes(TableName.Product)) {
           await dynamoDb.createTable({
             TableName: TableName.Product,
