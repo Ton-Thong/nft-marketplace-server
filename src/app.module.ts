@@ -10,6 +10,7 @@ import { CollectionModule } from './modules/collection/collection.modules';
 import { NFTModule } from './modules/nft/nft.modules';
 import { UserModule } from './modules/user/user.modules';
 
+
 @Global()
 @Module({
   imports: [

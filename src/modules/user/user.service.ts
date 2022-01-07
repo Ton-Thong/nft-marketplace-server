@@ -29,16 +29,12 @@ class UserService implements IUserService {
         `User with publicAddress ${publicAddress} is existing in database`,
       );
     }
-
     const newUser: MessageLayerDtoT<User> = await this.userDao.createUser(user);
     return new UserDto(newUser.data);
   }
 
-  public async getByKey(id: string, publicAddress: string): Promise<UserDto> {
-    const result: MessageLayerDtoT<User> = await this.userDao.getByKey(
-      id,
-      publicAddress,
-    );
+  public async getByKey(id: string): Promise<UserDto> {
+    const result: MessageLayerDtoT<User> = await this.userDao.getByKey(id);
     if (!result.ok) {
       throw new NotFoundException(result.message);
     }
