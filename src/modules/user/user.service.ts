@@ -1,10 +1,4 @@
-import {
-  ConflictException,
-  Inject,
-  Injectable,
-  NotFoundException,
-  Scope,
-} from '@nestjs/common';
+import { ConflictException, Inject, Injectable, NotFoundException, Scope } from '@nestjs/common';
 import { MessageLayerDtoT } from 'src/dto/messageLayer.dto';
 import { DaoInterface } from 'src/helper/dao-interface';
 import { ServiceInterface } from 'src/helper/service-interface';
@@ -18,7 +12,7 @@ import { IUserService } from './interface/user.service.interface';
 class UserService implements IUserService {
   constructor(
     @Inject(DaoInterface.IUserDao) private readonly userDao: IUserDao,
-  ) {}
+  ) { }
 
   public async createUser(user: AddUserDto): Promise<UserDto> {
     const { publicAddress } = user;

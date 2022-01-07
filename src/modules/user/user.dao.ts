@@ -11,9 +11,7 @@ import * as AWS from 'aws-sdk';
 
 @Injectable({ scope: Scope.REQUEST })
 class UserDao implements IUserDao {
-  constructor(
-    @Inject('DynamoDb') private docClient: AWS.DynamoDB.DocumentClient,
-  ) {}
+  constructor(@Inject('DynamoDb') private docClient: AWS.DynamoDB.DocumentClient) { }
 
   public async createUser(u: AddUserDto): Promise<MessageLayerDtoT<User>> {
     const { publicAddress, username } = u;
@@ -33,27 +31,16 @@ class UserDao implements IUserDao {
   }
 
   public async getByKey(id: string): Promise<MessageLayerDtoT<User>> {
-    const result = await this.docClient
-      .get({
-        TableName: TableName.User,
-        Key: { id },
-      })
-      .promise();
+    const result = await this.docClient.get({ TableName: TableName.User, Key: { id } }).promise();
 
     if (Object.keys(result).length == 0) {
-      return {
-        ok: false,
-        data: null,
-        message: `User with id ${id} is not found in database`,
-      };
+      return { ok: false, data: null, message: `User with id ${id} is not found in database` };
     }
 
     return { ok: true, data: new User(result.Item), message: `success` };
   }
 
-  public async getByPublicAddress(
-    publicAddress: string,
-  ): Promise<MessageLayerDtoT<User>> {
+  public async getByPublicAddress(publicAddress: string): Promise<MessageLayerDtoT<User>> {
     const result = await this.docClient
       .scan({
         TableName: TableName.User,
@@ -67,39 +54,32 @@ class UserDao implements IUserDao {
       return { ok: true, data: new User(result.Items[0]), message: 'success' };
     } else {
       return {
-        ok: false,
-        data: null,
-        message: `User with publicAddress ${publicAddress} is not found in database`,
+        ok: false, data: null, message: `User with publicAddress ${publicAddress} is not found in database`,
       };
     }
   }
 
   public async updateNonce(u: UserDto) {
     const { id, nonce } = u;
-    await this.docClient
-      .update({
-        TableName: TableName.User,
-        Key: { id },
-        UpdateExpression: 'set #nonce = :n',
-        ExpressionAttributeNames: { '#nonce': 'nonce' },
-        ExpressionAttributeValues: { ':n': nonce },
-      })
+
+    await this.docClient.update({
+      TableName: TableName.User,
+      Key: { id },
+      UpdateExpression: 'set #nonce = :n',
+      ExpressionAttributeNames: { '#nonce': 'nonce' },
+      ExpressionAttributeValues: { ':n': nonce },
+    })
       .promise();
   }
 
   public async getUserAll() {
-    const result = await this.docClient
-      .scan({ TableName: TableName.User })
-      .promise();
+    const result = await this.docClient.scan({ TableName: TableName.User }).promise();
+
     if (!result || result.Count <= 0) {
       return { ok: false, data: null, message: `error` };
     }
     if (!result || result.Count <= 0) {
-      return {
-        ok: false,
-        data: null,
-        message: 'User is not found in database',
-      };
+      return { ok: false, data: null, message: 'User is not found in database' };
     } else {
       return { ok: true, data: result.Items, message: 'success' };
     }
