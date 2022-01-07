@@ -67,16 +67,6 @@ export class UserController {
     }
   }
 
-  @Put('/update')
-  @UseGuards(AuthGuard())
-  public async update(@Body() user:UpdateUserDto){
-    try{
-
-    }catch(err){
-        
-    }
-  }
-
   @Get('/all')
   public async getUserAll() {
     try {
