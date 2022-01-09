@@ -8,6 +8,7 @@ import {
   Put,
   Query,
   Req,
+  Scope,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -25,7 +26,7 @@ import { memoryStorage } from 'multer';
 import { imageFileFilter } from 'src/helper/file-upload-util';
 import { FastifyFileInterceptor } from 'src/interceptor/file-interceptor';
 
-@Controller('users')
+@Controller({ path: 'users', scope: Scope.REQUEST })
 @UsePipes(ValidationPipe)
 export class UserController {
   constructor(

@@ -75,8 +75,7 @@ class NFTService implements INFTService {
         return nfts.map((nft) => {
             nft.fileName = signedUrls.find(signedUrl => signedUrl.includes(nft.fileName));
             return nft;
-        })
-            .sort((a, b) => (a.createdDate > b.createdDate ? -1 : 1));
+        }).sort((a, b) => (a.createdDate > b.createdDate ? -1 : 1));
     }
 
     public async sellNFT(sellNftDto: SellNftDto, u: UserDto): Promise<void> {

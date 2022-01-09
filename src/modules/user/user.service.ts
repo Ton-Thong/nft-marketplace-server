@@ -1,5 +1,4 @@
 import { BadRequestException, ConflictException, Inject, Injectable, NotFoundException, Scope } from '@nestjs/common';
-import { IoTThingsGraph } from 'aws-sdk';
 import { MessageLayerDtoT } from 'src/dto/messageLayer.dto';
 import { DaoInterface } from 'src/helper/dao-interface';
 import { ServiceInterface } from 'src/helper/service-interface';
@@ -70,8 +69,7 @@ class UserService implements IUserService {
     }
 
     if (file) {
-      const objectName: string = await this.fileService.uploadObjectToS3(this.bucketName, file);
-      user.avatar = objectName;
+      user.avatar = await this.fileService.uploadObjectToS3(this.bucketName, file);
     }
 
     await this.userDao.updateUserProfile(user, id);

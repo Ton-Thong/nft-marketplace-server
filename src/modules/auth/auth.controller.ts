@@ -1,10 +1,10 @@
-import { BadRequestException, Body, Controller, Get, HttpStatus, Post, Req, Res, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Get, HttpStatus, Post, Req, Res, Scope, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { ResponseDto } from "src/dto/response.dto";
 import { CredentialDto } from "./dto/credential.dto";
 import { AuthService } from "./auth.service";
 
-@Controller('auth')
+@Controller({ path: 'auth', scope: Scope.REQUEST })
 @UsePipes(ValidationPipe)
 export class AuthController {
     constructor(private authService: AuthService) {}

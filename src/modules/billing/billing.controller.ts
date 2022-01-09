@@ -1,11 +1,11 @@
-import { BadRequestException, Controller, Get, HttpStatus, Inject, ParseUUIDPipe, Query, Req, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
+import { BadRequestException, Controller, Get, HttpStatus, Inject, ParseUUIDPipe, Query, Req, Scope, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { ResponseDto, ResponseDtoT } from "src/dto/response.dto";
 import { ServiceInterface } from "src/helper/service-interface";
 import { BillingDto } from "./dto/billing.dto";
 import { IBillingService } from "./interfaces/billing.service.interface";
 
-@Controller('billings')
+@Controller({ path: 'billings', scope: Scope.REQUEST })
 @UsePipes(ValidationPipe)
 export class BillingController {
     constructor(@Inject(ServiceInterface.IBillingService) private readonly billingService: IBillingService) { }

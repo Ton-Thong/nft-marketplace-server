@@ -14,8 +14,8 @@ import { UserModule } from './modules/user/user.modules';
 @Global()
 @Module({
   imports: [
-    ConfigModule.forRoot({ envFilePath: './config/.env'}),
-    UserModule, 
+    ConfigModule.forRoot({ envFilePath: './config/.env' }),
+    UserModule,
     CollectionModule,
     NFTModule,
     BillingModule,
@@ -26,4 +26,4 @@ import { UserModule } from './modules/user/user.modules';
   providers: [],
   exports: [PassportModule, JwtModule],
 })
-export class AppModule {}
+export class AppModule { }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Inject, ParseUUIDPipe, Post, Query, Req, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Get, HttpStatus, Inject, ParseUUIDPipe, Post, Query, Req, Scope, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { ResponseDtoT } from "src/dto/response.dto";
 import { ServiceInterface } from "src/helper/service-interface";
@@ -10,7 +10,7 @@ import { NFTDto } from "./dto/nft.dto";
 import { SellNftDto } from "./dto/sell-nft.dto";
 import { INFTService } from "./interface/nft.service.interface";
 
-@Controller('nfts')
+@Controller({ path: 'nfts', scope: Scope.REQUEST })
 @UsePipes(ValidationPipe)
 export class NFTController {
     constructor(@Inject(ServiceInterface.INFTService) private readonly nftService: INFTService) { }

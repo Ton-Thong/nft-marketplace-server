@@ -1,13 +1,12 @@
-import { BadRequestException, Body, Controller, Delete, Get, HttpStatus, Inject, NotFoundException, ParseUUIDPipe, Post, Put, Query, Req, Res, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Get, HttpStatus, Inject, NotFoundException, ParseUUIDPipe, Post, Put, Query, Req, Res, Scope, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { ResponseDto, ResponseDtoT } from "src/dto/response.dto";
 import { ServiceInterface } from "src/helper/service-interface";
-import { Collection } from "src/models/collection.model";
 import { AddCollectionDto } from "./dto/add-collection.dto";
 import { CollectionDto } from "./dto/collection.dto";
 import { ICollectionService } from "./interface/collection.service.interface";
 
-@Controller('collections')
+@Controller({ path: 'collections', scope: Scope.REQUEST })
 @UsePipes(ValidationPipe)
 export class CollectionController {
     constructor(@Inject(ServiceInterface.ICollectionService) private collectionService: ICollectionService) { }
