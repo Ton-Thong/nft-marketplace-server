@@ -3,10 +3,12 @@ import { User } from 'src/models/user.model';
 
 export class UserDto {
     constructor(u: User) {
-        const { id, publicAddress, username, nonce } = u;
+        const { id, publicAddress, username, avatar, description, nonce } = u;
         this.id = id;
         this.publicAddress = publicAddress;
         this.username = username;
+        this.avatar = avatar;
+        this.description = description;
         this.nonce = nonce;
     }
 
@@ -18,6 +20,12 @@ export class UserDto {
 
     @IsString()
     username: string;
+
+    @IsString()
+    avatar: string;
+
+    @IsString()
+    description: string;
 
     @IsNumber()
     nonce: number;

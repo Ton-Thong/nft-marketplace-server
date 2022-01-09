@@ -5,10 +5,11 @@ import { UserServiceProvider } from '../user/user.service';
 import { AuthJwtStrategy } from './auth.jwt.strategy';
 import { AWSModules } from 'src/infrastructure/AWS/aws.modules';
 import { UserDaoProvider } from '../user/user.dao';
+import { FileService } from '../miscellaneous/file.service';
 @Module({
     imports: [AWSModules],
     controllers: [AuthController],
-    providers: [AuthService, AuthJwtStrategy, UserDaoProvider, UserServiceProvider]
+    providers: [FileService, AuthService, AuthJwtStrategy, UserDaoProvider, UserServiceProvider]
 })
 
 export class AuthModule { } 

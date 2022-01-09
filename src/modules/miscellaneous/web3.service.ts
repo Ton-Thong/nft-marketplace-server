@@ -2,8 +2,8 @@ import { Inject, Injectable, Scope } from "@nestjs/common";
 import { ethers } from 'ethers';
 import { Provider, Signer } from "src/infrastructure/Web3/web3.provider";
 
-const MyNFT = require('../../artifacts/contracts/RuNFT.sol/RuNFT.json');
-const RuNFTMarket = require('../../artifacts/contracts/RuNFTMarket.sol/RuNFTMarket.json');
+import MyNFT from '../../artifacts/contracts/RuNFT.sol/RuNFT.json';
+import RuNFTMarket from '../../artifacts/contracts/RuNFTMarket.sol/RuNFTMarket.json';
 
 @Injectable({ scope: Scope.REQUEST })
 export class Web3Service {
@@ -23,7 +23,7 @@ export class Web3Service {
             const tx = await contract.mintNFT(publicAddress, tokenURI);
             return await tx.wait();
         } catch (err) {
-            throw err; 
+            throw err;
         }
     }
 
@@ -36,7 +36,7 @@ export class Web3Service {
             throw err;
         }
     }
-    
+
     public async getTransaction(txHash: string): Promise<ethers.providers.TransactionResponse> {
         try {
             return await this.provider.getTransaction(txHash);
@@ -58,7 +58,7 @@ export class Web3Service {
         }
     }
 
-    async sellNFT(tokenURI: number, price: number) {
+    public async sellNFT(tokenURI: number, price: number) {
         try {
             const contract: ethers.Contract = new ethers.Contract(process.env.CONTRACT_RUNFTMARKET, RuNFTMarket.abi, this.signer)
             const tx = await contract.createMarketItem(process.env.CONTRACT_RUNFTMARKET, tokenURI, price);

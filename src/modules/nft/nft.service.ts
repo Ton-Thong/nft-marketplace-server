@@ -73,9 +73,9 @@ class NFTService implements INFTService {
         const signedUrls: Array<string> = await Promise.all(nfts.map((nft) => this.fileService.getSignedUrlGetObject(this.busketName, nft.fileName)));
 
         return nfts.map((nft) => {
-                nft.fileName = signedUrls.find(signedUrl => signedUrl.includes(nft.fileName));
-                return nft;
-            })
+            nft.fileName = signedUrls.find(signedUrl => signedUrl.includes(nft.fileName));
+            return nft;
+        })
             .sort((a, b) => (a.createdDate > b.createdDate ? -1 : 1));
     }
 

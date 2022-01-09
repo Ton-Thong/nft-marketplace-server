@@ -1,18 +1,24 @@
-import { ConflictException, Inject, Injectable, NotFoundException, Scope } from '@nestjs/common';
+import { BadRequestException, ConflictException, Inject, Injectable, NotFoundException, Scope } from '@nestjs/common';
+import { IoTThingsGraph } from 'aws-sdk';
 import { MessageLayerDtoT } from 'src/dto/messageLayer.dto';
 import { DaoInterface } from 'src/helper/dao-interface';
 import { ServiceInterface } from 'src/helper/service-interface';
 import { User } from 'src/models/user.model';
 import { AddUserDto } from 'src/modules/user/dto/add-user.dto';
+import { FileService } from '../miscellaneous/file.service';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDto } from './dto/user.dto';
 import { IUserDao } from './interface/user.dao.interface';
 import { IUserService } from './interface/user.service.interface';
 
 @Injectable({ scope: Scope.REQUEST })
 class UserService implements IUserService {
+  private readonly bucketName: string;
   constructor(
     @Inject(DaoInterface.IUserDao) private readonly userDao: IUserDao,
-  ) { }
+    private readonly fileService: FileService) {
+    this.bucketName = process.env.S3_BUCKETNAME;
+  }
 
   public async createUser(user: AddUserDto): Promise<UserDto> {
     const { publicAddress } = user;
@@ -33,28 +39,50 @@ class UserService implements IUserService {
       throw new NotFoundException(result.message);
     }
 
-    return new UserDto(result.data);
+    const user = new UserDto(result.data);
+    user.avatar = await this.fileService.getSignedUrlGetObject(this.bucketName, user.avatar);
+    return user;
   }
 
   public async getByPublicAddress(publicAddress: string): Promise<UserDto> {
-    const result: MessageLayerDtoT<User> =
-      await this.userDao.getByPublicAddress(publicAddress);
+    const result: MessageLayerDtoT<User> = await this.userDao.getByPublicAddress(publicAddress);
     if (!result.ok) {
       throw new NotFoundException(result.message);
     }
-    return new UserDto(result.data);
+
+    const user = new UserDto(result.data);
+    user.avatar = await this.fileService.getSignedUrlGetObject(this.bucketName, user.avatar);
+    return user;
   }
 
-  public async updateNonce(user: UserDto): Promise<void> {
-    await this.userDao.updateNonce(user);
+  public async updateNonce(u: UserDto): Promise<void> {
+    await this.userDao.updateNonce(u);
   }
 
-  public async getUserAll() {
-    const result = await this.userDao.getUserAll();
+  public async updateUserProfile(user: UpdateUserDto, file: Express.Multer.File, id: string): Promise<void> {
+    if (!user) {
+      throw new BadRequestException("An error occurred.");
+    }
+
+    const result: MessageLayerDtoT<User> = await this.userDao.getByKey(id);
     if (!result.ok) {
       throw new NotFoundException(result.message);
     }
-    return result.data;
+
+    if (file) {
+      const objectName: string = await this.fileService.uploadObjectToS3(this.bucketName, file);
+      user.avatar = objectName;
+    }
+
+    await this.userDao.updateUserProfile(user, id);
+  }
+
+  public async getUserAll(): Promise<Array<UserDto>> {
+    const result: MessageLayerDtoT<Array<User>> = await this.userDao.getUserAll();
+    if (!result.ok) {
+      throw new NotFoundException(result.message);
+    }
+    return result.data.map(user => new UserDto(user));
   }
 }
 

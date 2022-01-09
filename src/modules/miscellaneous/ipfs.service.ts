@@ -9,7 +9,7 @@ export class IpfsService {
         this.basicAuth = 'Basic ' + Buffer.from(process.env.IPFS_INFURA_ACCESSKEYID + ':' + process.env.IPFS_INFURA_SECRETACCESSKEY).toString('base64');
     }
 
-    async pinCid(cid: Array<string>): Promise<any> {
+    public async pinCid(cid: Array<string>): Promise<any> {
         return cid.map(async e =>
             await axios({
                 method: 'post',

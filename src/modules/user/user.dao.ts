@@ -8,6 +8,7 @@ import { IUserDao } from './interface/user.dao.interface';
 import { User } from 'src/models/user.model';
 import { TableName } from 'src/helper/table-name';
 import * as AWS from 'aws-sdk';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable({ scope: Scope.REQUEST })
 class UserDao implements IUserDao {
@@ -61,24 +62,37 @@ class UserDao implements IUserDao {
 
   public async updateNonce(u: UserDto) {
     const { id, nonce } = u;
-
     await this.docClient.update({
       TableName: TableName.User,
       Key: { id },
       UpdateExpression: 'set #nonce = :n',
-      ExpressionAttributeNames: { '#nonce': 'nonce' },
-      ExpressionAttributeValues: { ':n': nonce },
-    })
-      .promise();
+      ExpressionAttributeNames: {
+        '#nonce': 'nonce'
+      },
+      ExpressionAttributeValues: {
+        ':n': nonce
+      },
+    }).promise();
+  }
+
+  public async updateUserProfile(u: UpdateUserDto, id: string): Promise<void> {
+    const { username, description, avatar } = u;
+    await this.docClient.update({
+      TableName: TableName.User,
+      Key: { id },
+      UpdateExpression: "set username = :u, description = :d, avatar = :a",
+      ExpressionAttributeValues: {
+        ":u": username,
+        ":d": description,
+        ":a": avatar
+      }
+    }).promise();
   }
 
   public async getUserAll() {
     const result = await this.docClient.scan({ TableName: TableName.User }).promise();
 
-    if (!result || result.Count <= 0) {
-      return { ok: false, data: null, message: `error` };
-    }
-    if (!result || result.Count <= 0) {
+    if (!result || result.Items.length <= 0) {
       return { ok: false, data: null, message: 'User is not found in database' };
     } else {
       return { ok: true, data: result.Items, message: 'success' };
