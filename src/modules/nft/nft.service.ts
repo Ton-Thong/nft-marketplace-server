@@ -70,7 +70,7 @@ class NFTService implements INFTService {
         }
 
         const nfts: Array<NFTDto> = result.data;
-        const signedUrls: Array<string> = await Promise.all(nfts.map((nft) => this.fileService.getSignedUrlGetObject(this.busketName, nft.fileName)));
+        const signedUrls: Array<string> = await Promise.all(nfts.filter(nft => nft.fileName).map((nft) => this.fileService.getSignedUrlGetObject(this.busketName, nft.fileName)));
 
         return nfts.map((nft) => {
             nft.fileName = signedUrls.find(signedUrl => signedUrl.includes(nft.fileName));

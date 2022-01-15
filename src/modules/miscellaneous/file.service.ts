@@ -15,12 +15,12 @@ export class FileService {
         }) : objectName;
     }
 
-    public async getSignedUrlGetObject(bucketName: string, objectName: string): Promise<string> {   
+    public async getSignedUrlGetObject(bucketName: string, objectName: string): Promise<string> {
         return objectName ? this.s3.getSignedUrlPromise('getObject', {
             Bucket: bucketName,
             Key: `${objectName}`,
             Expires: 18000,
-        }) : objectName;
+        }) : null;
     }
 
     public async uploadObjectToS3(bucketName: string, file: Express.Multer.File): Promise<string> {

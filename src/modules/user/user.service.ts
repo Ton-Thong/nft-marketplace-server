@@ -1,4 +1,5 @@
 import { BadRequestException, ConflictException, Inject, Injectable, NotFoundException, Scope } from '@nestjs/common';
+import { stringify } from 'querystring';
 import { MessageLayerDtoT } from 'src/dto/messageLayer.dto';
 import { DaoInterface } from 'src/helper/dao-interface';
 import { ServiceInterface } from 'src/helper/service-interface';
@@ -68,10 +69,7 @@ class UserService implements IUserService {
       throw new NotFoundException(result.message);
     }
 
-    if (file) {
-      user.avatar = await this.fileService.uploadObjectToS3(this.bucketName, file);
-    }
-
+    user.avatar = file ? await this.fileService.uploadObjectToS3(this.bucketName, file) : null;
     await this.userDao.updateUserProfile(user, id);
   }
 
@@ -80,7 +78,14 @@ class UserService implements IUserService {
     if (!result.ok) {
       throw new NotFoundException(result.message);
     }
-    return result.data.map(user => new UserDto(user));
+
+    const users: Array<UserDto> = result.data;
+    const signedUrls: Array<string> = await Promise.all(users.filter(user => user.avatar).map((user) => this.fileService.getSignedUrlGetObject(this.bucketName, user.avatar)));
+
+    return users.map((user) => {
+      user.avatar = signedUrls.find(signedUrl => signedUrl.includes(user.avatar));
+      return user;
+    });
   }
 }
 

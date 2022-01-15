@@ -2,8 +2,11 @@ import { Inject, Injectable, Scope } from "@nestjs/common";
 import { ethers } from 'ethers';
 import { Provider, Signer } from "src/infrastructure/Web3/web3.provider";
 
-import MyNFT from '../../artifacts/contracts/RuNFT.sol/RuNFT.json';
-import RuNFTMarket from '../../artifacts/contracts/RuNFTMarket.sol/RuNFTMarket.json';
+//import MyNFT from '../../artifacts/contracts/RuNFT.sol/RuNFT.json';
+//import RuNFTMarket from '../../artifacts/contracts/RuNFTMarket.sol/RuNFTMarket.json';
+
+const MyNFT = require('../../artifacts/contracts/RuNFT.sol/RuNFT.json');
+const RuNFTMarket = require('../../artifacts/contracts/RuNFTMarket.sol/RuNFTMarket.json');
 
 @Injectable({ scope: Scope.REQUEST })
 export class Web3Service {

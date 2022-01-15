@@ -40,11 +40,7 @@ contract RuNFT is ERC721URIStorage, Ownable {
         return newItemId;
     }
 
-    function sellNFT(
-        address nftContract,
-        uint256 itemId,
-        uint256 listingPrice
-    ) public payable {
+    function sellNFT(address nftContract, uint256 itemId, uint256 listingPrice) public payable {
         uint256 price = idMarketItem[itemId].price;
         uint256 tokenId = idMarketItem[itemId].tokenId;
 
