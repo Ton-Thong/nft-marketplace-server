@@ -2,27 +2,19 @@ import { Inject, Injectable, Scope } from "@nestjs/common";
 import { ethers } from 'ethers';
 import { Provider, Signer } from "src/infrastructure/Web3/web3.provider";
 
-//import MyNFT from '../../artifacts/contracts/RuNFT.sol/RuNFT.json';
-//import RuNFTMarket from '../../artifacts/contracts/RuNFTMarket.sol/RuNFTMarket.json';
-
-const MyNFT = require('../../artifacts/contracts/RuNFT.sol/RuNFT.json');
-const RuNFTMarket = require('../../artifacts/contracts/RuNFTMarket.sol/RuNFTMarket.json');
+import RuNFT from '../../artifacts/contracts/RuNFT.sol/RuNFT.json';
+// import NFTMarket from '../../artifacts/contracts/Market.sol/NFTMarket.json';
 
 @Injectable({ scope: Scope.REQUEST })
 export class Web3Service {
     constructor(
         @Inject(Signer.Alchemy) private signer: ethers.Wallet,
-        @Inject(Provider.Alchemy) private provider: ethers.providers.AlchemyProvider) { }
+        @Inject(Provider.Alchemy) private provider: ethers.providers.AlchemyProvider
+    ) { }
 
-    /**
-    @Dev
-    * Parameter:
-    * `tokenURI` is cid of ipfs protocol must not exist.
-    * `publicAddress` is to address cannot be the zero address.
-    */
     public async mintNFT(publicAddress: string, tokenURI: string) {
         try {
-            const contract: ethers.Contract = new ethers.Contract(process.env.CONTRACT_RUNFT, MyNFT.abi, this.signer)
+            const contract: ethers.Contract = new ethers.Contract(process.env.CONTRACT_RUNFT, RuNFT.abi, this.signer)
             const tx = await contract.mintNFT(publicAddress, tokenURI);
             return await tx.wait();
         } catch (err) {
@@ -50,10 +42,9 @@ export class Web3Service {
 
     public async getMintBilling(publicAddress: string, tokenURI): Promise<string> {
         try {
-            const contract: ethers.Contract = new ethers.Contract(process.env.CONTRACT_RUNFT, MyNFT.abi, this.signer)
+            const contract: ethers.Contract = new ethers.Contract(process.env.CONTRACT_RUNFT, RuNFT.abi, this.signer)
             const estimateGas: ethers.BigNumber = await contract.estimateGas.mintNFT(publicAddress, tokenURI);
             const gasFee: ethers.providers.FeeData = await this.provider.getFeeData();
-
             return ethers.utils.formatEther(estimateGas.mul(gasFee.maxFeePerGas));
         }
         catch (err) {
@@ -61,10 +52,13 @@ export class Web3Service {
         }
     }
 
-    public async sellNFT(tokenURI: number, price: number) {
+    public async sellNFT(seller: string, tokenURI: number, price: number) {
         try {
-            const contract: ethers.Contract = new ethers.Contract(process.env.CONTRACT_RUNFTMARKET, RuNFTMarket.abi, this.signer)
-            const tx = await contract.createMarketItem(process.env.CONTRACT_RUNFTMARKET, tokenURI, price);
+            const contract: ethers.Contract = new ethers.Contract(process.env.RuNFT, RuNFT.abi, this.signer);
+            let listingPrice = await contract.getListingPrice();
+            listingPrice = listingPrice.toString();
+            console.log(process.env.CONTRACT_RUNFT)
+            const tx = await contract.createMarketItem(process.env.CONTRACT_RUNFT, seller, tokenURI, price, { gasLimit: 850000, value: listingPrice });
             return await tx.wait();
         } catch (err) {
             throw err;

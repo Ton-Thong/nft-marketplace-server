@@ -1,60 +1,45 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
-import '@openzeppelin/contracts/utils/Counters.sol';
-import '@openzeppelin/contracts/access/Ownable.sol';
-import '@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol';
+import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 contract RuNFT is ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
-
     Counters.Counter private _tokenIds;
-    Counters.Counter private _itemsSold;
-
-    address payable owner;
-    mapping(uint256 => MarketItem) private idMarketItem;
 
     struct MarketItem {
-        uint256 itemId;
-        address nftContract;
-        uint256 tokenId;
-        address payable seller;
+        uint itemId;
+        string tokenURI;
         address payable owner;
         uint256 price;
+        bool sell;
         bool sold;
     }
 
-    constructor() ERC721('RuNFT', 'NFT') {}
+    mapping (uint256 => MarketItem) public idToMarketItem;
 
-    function mintNFT(address recipient, string memory tokenURI)
-        public
-        onlyOwner
-        returns (uint256)
+    constructor() ERC721("RuNFT", "NFT") {}
+
+    function mintNFT(address recipient, string memory tokenURI) public onlyOwner returns (uint256)
     {
         _tokenIds.increment();
         uint256 newItemId = _tokenIds.current();
         _mint(recipient, newItemId);
         _setTokenURI(newItemId, tokenURI);
 
+        idToMarketItem[newItemId] = MarketItem(newItemId, tokenURI, payable(recipient), 0, false, false);
         return newItemId;
     }
 
-    function sellNFT(address nftContract, uint256 itemId, uint256 listingPrice) public payable {
-        uint256 price = idMarketItem[itemId].price;
-        uint256 tokenId = idMarketItem[itemId].tokenId;
+    function sellNFT(address to, uint256 tokenId, uint256 price) public {
+        require(msg.sender == ownerOf(tokenId), 'Not owner of this token');
+        require(price > 0, 'Price zero');
+        idToMarketItem[tokenId].sell = true;
+        idToMarketItem[tokenId].price = price;
 
-        require(
-            msg.value == price,
-            'Please submit the asking price in order to complete purchase'
-        );
-
-        idMarketItem[itemId].seller.transfer(msg.value);
-        IERC721(nftContract).transferFrom(address(this), msg.sender, tokenId);
-
-        idMarketItem[itemId].owner = payable(msg.sender);
-        idMarketItem[itemId].sold = true;
-        _itemsSold.increment();
-        payable(owner).transfer(listingPrice);
+        _transfer(msg.sender, to, tokenId);
     }
 }

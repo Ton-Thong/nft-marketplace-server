@@ -32,17 +32,15 @@ class BillingDao implements IBillingDao {
     public async getMintBilling(txFee: string, callerAddress: string, blockTimeStamp: number): Promise<MessageLayerDtoT<BillingDto>> {
         const result = await this.docClient.scan({
             TableName: TableName.Billing,
-            FilterExpression: '#callerAddress = :callerAddress and #txFee = :txFee and #timeStamp <= :blockTimeStamp and #status = :status',
+            FilterExpression: '#callerAddress = :callerAddress and #txFee = :txFee and #status = :status',
             ExpressionAttributeNames: {
                 '#callerAddress': 'callerAddress',
                 '#txFee': 'txFee',
-                '#timeStamp': 'timeStamp',
                 '#status': 'status'
             },
             ExpressionAttributeValues: {
                 ':callerAddress': callerAddress,
                 ':txFee': txFee,
-                ':blockTimeStamp': blockTimeStamp,
                 ':status': BillingStatus.Pending,
             }
         }).promise();

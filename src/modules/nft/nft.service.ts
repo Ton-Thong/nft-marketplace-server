@@ -90,7 +90,8 @@ class NFTService implements INFTService {
             throw new BadRequestException("");
         }
 
-        await this.web3service.sellNFT(nft.tokenId, price);
+        await this.web3service.sellNFT(u.publicAddress, nft.tokenId, price);
+        return;
         await this.nftDao.updateSellStatus(u);
     }
 }

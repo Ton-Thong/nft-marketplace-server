@@ -1,17 +1,16 @@
 async function main() {
-   const RuNFT = await ethers.getContractFactory("RuNFT")
-   const ruNFT = await RuNFT.deploy()
-   console.log("Contract deployed to address:", ruNFT.address)
+  const NFT = await ethers.getContractFactory('RuNFT');
+  const nFT = await NFT.deploy();
+  console.log('Contract RuNFT deployed to address:', nFT.address);
 
-   const RuNFTMarket = await ethers.getContractFactory("RuNFTMarket")
-   const ruNFTMarket = await RuNFTMarket.deploy()
-   console.log("Contract deployed to address:", ruNFTMarket.address)
- }
- 
- main()
-   .then(() => process.exit(0))
-   .catch((error) => {
-     console.error(error)
-     process.exit(1)
-   })
- 
+  // const NFTMarket = await ethers.getContractFactory('NFTMarket');
+  // const nFTMarket = await NFTMarket.deploy();
+  // console.log('Contract NFTMarket deployed to address:', nFTMarket.address);
+}
+
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
