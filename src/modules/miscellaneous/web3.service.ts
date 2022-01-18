@@ -51,17 +51,4 @@ export class Web3Service {
             throw err;
         }
     }
-
-    public async sellNFT(seller: string, tokenURI: number, price: number) {
-        try {
-            const contract: ethers.Contract = new ethers.Contract(process.env.RuNFT, RuNFT.abi, this.signer);
-            let listingPrice = await contract.getListingPrice();
-            listingPrice = listingPrice.toString();
-            console.log(process.env.CONTRACT_RUNFT)
-            const tx = await contract.createMarketItem(process.env.CONTRACT_RUNFT, seller, tokenURI, price, { gasLimit: 850000, value: listingPrice });
-            return await tx.wait();
-        } catch (err) {
-            throw err;
-        }
-    }
 }

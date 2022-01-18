@@ -9,5 +9,4 @@ export interface INFTService {
     createNFT(p: AddNFTDto, u: UserDto): Promise<AddNFTResponseDto>;
     getNFT(id: string): Promise<NFTDto>;
     getNFTAll(): Promise<Array<NFTDto>>;
-    sellNFT(sellNftDto: SellNftDto, u: UserDto): Promise<void>;
 }

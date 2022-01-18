@@ -47,7 +47,7 @@ class UserDao implements IUserDao {
         TableName: TableName.User,
         FilterExpression: '#publicAddress = :publicAddress',
         ExpressionAttributeNames: { '#publicAddress': 'publicAddress' },
-        ExpressionAttributeValues: { ':publicAddress': publicAddress },
+        ExpressionAttributeValues: { ':publicAddress': publicAddress.toLowerCase() },
       })
       .promise();
 

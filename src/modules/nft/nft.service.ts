@@ -16,7 +16,6 @@ import { INFTDao } from "./interface/nft.dao.interface";
 import { INFTService } from "./interface/nft.service.interface";
 import { BillingDto } from "../billing/dto/billing.dto";
 import { AddNFTDto } from "./dto/add-nft.dto";
-import { SellNftDto } from "./dto/sell-nft.dto";
 
 @Injectable({ scope: Scope.REQUEST })
 class NFTService implements INFTService {
@@ -58,6 +57,7 @@ class NFTService implements INFTService {
         if (!result.ok) {
             throw new NotFoundException(result.message);
         }
+
         const nft: NFT = result.data;
         nft.fileName = await this.fileService.getSignedUrlGetObject(this.busketName, nft.fileName);
         return nft
@@ -71,28 +71,10 @@ class NFTService implements INFTService {
 
         const nfts: Array<NFTDto> = result.data;
         const signedUrls: Array<string> = await Promise.all(nfts.filter(nft => nft.fileName).map((nft) => this.fileService.getSignedUrlGetObject(this.busketName, nft.fileName)));
-
         return nfts.map((nft) => {
             nft.fileName = signedUrls.find(signedUrl => signedUrl.includes(nft.fileName));
             return nft;
         }).sort((a, b) => (a.createdDate > b.createdDate ? -1 : 1));
-    }
-
-    public async sellNFT(sellNftDto: SellNftDto, u: UserDto): Promise<void> {
-        const { nftId, price } = sellNftDto;
-        const result: MessageLayerDtoT<NFTDto> = await this.nftDao.getNFTById(nftId);
-        if (!result.ok) {
-            throw new BadRequestException(result.message);
-        }
-
-        const nft = result.data;
-        if (nft.owner != u.id) {
-            throw new BadRequestException("");
-        }
-
-        await this.web3service.sellNFT(u.publicAddress, nft.tokenId, price);
-        return;
-        await this.nftDao.updateSellStatus(u);
     }
 }
 
