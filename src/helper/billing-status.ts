@@ -1,4 +1,10 @@
 export enum BillingStatus {
     Pending = 'pending',
-    Success = 'success'
+    Success = 'success',
+    Failed = 'failed'
+}
+
+export enum BillingCategory {
+    Mint = 'mint',
+    Buy = 'but',
 }

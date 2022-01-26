@@ -16,7 +16,6 @@ contract RuNFT is ERC721URIStorage, Ownable {
         address payable owner;
         uint256 price;
         bool sell;
-        bool sold;
     }
 
     mapping (uint256 => MarketItem) public idToMarketItem;
@@ -30,16 +29,37 @@ contract RuNFT is ERC721URIStorage, Ownable {
         _mint(recipient, newItemId);
         _setTokenURI(newItemId, tokenURI);
 
-        idToMarketItem[newItemId] = MarketItem(newItemId, tokenURI, payable(recipient), 0, false, false);
+        idToMarketItem[newItemId] = MarketItem(newItemId, tokenURI, payable(recipient), 0, false);
         return newItemId;
     }
 
     function sellNFT(address to, uint256 tokenId, uint256 price) public {
         require(msg.sender == ownerOf(tokenId), 'Not owner of this token');
         require(price > 0, 'Price zero');
+
         idToMarketItem[tokenId].sell = true;
         idToMarketItem[tokenId].price = price;
 
         _transfer(msg.sender, to, tokenId);
+    }
+
+    function buyNFT(address buyer, uint256 tokenId) public onlyOwner {
+        string memory errMsg = 'Not allowed to buy this token.';
+
+        require(buyer != ownerOf(tokenId), errMsg);
+        require(idToMarketItem[tokenId].sell == true, errMsg);
+
+        uint256 price = idToMarketItem[tokenId].price;
+        address payable seller = idToMarketItem[tokenId].owner;
+
+        seller.transfer(price);
+        _transfer(msg.sender, buyer, tokenId);
+        
+        address ownerOfToken = ownerOf(tokenId);
+        require(ownerOfToken == buyer, errMsg);
+
+        idToMarketItem[tokenId].sell = false;
+        idToMarketItem[tokenId].price = 0;
+        idToMarketItem[tokenId].owner = payable(buyer);
     }
 }

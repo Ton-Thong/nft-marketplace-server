@@ -12,9 +12,9 @@ export class BillingController {
 
     @Get()
     @UseGuards(AuthGuard())
-    public async getMintBillingById(@Query('id', ParseUUIDPipe) id: string): Promise<ResponseDtoT<BillingDto>> {
+    public async getBillingById(@Query('id', ParseUUIDPipe) id: string): Promise<ResponseDtoT<BillingDto>> {
         try {
-            const result: BillingDto = await this.billingService.getMintBillingById(id);
+            const result: BillingDto = await this.billingService.getBillingById(id);
             if (!result) throw new BadRequestException();
 
             return { statusCode: HttpStatus.OK, data: result, message: 'success' }

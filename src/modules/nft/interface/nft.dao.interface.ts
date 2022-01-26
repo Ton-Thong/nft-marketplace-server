@@ -1,3 +1,4 @@
+import { DynamoExpression } from "src/dto/dynamoExpression.dto";
 import { MessageLayerDtoT } from "src/dto/messageLayer.dto";
 import { UserDto } from "src/modules/user/dto/user.dto";
 import { AddNFTDto } from "../dto/add-nft.dto";

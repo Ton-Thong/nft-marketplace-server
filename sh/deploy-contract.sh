@@ -1,1 +1,1 @@
-npx hardhat compile && npx hardhat --network ropsten run scripts/deploy.js
+cd ../src && npx hardhat compile && npx hardhat --network ropsten run scripts/deploy.js

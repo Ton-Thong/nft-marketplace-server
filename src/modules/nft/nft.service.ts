@@ -1,7 +1,7 @@
 import { BadRequestException, Inject, Injectable, NotFoundException, Scope } from "@nestjs/common";
 import { v4 as uuid } from 'uuid';
 import { MessageLayerDtoT } from "src/dto/messageLayer.dto";
-import { BillingStatus } from "src/helper/billing-status";
+import { BillingCategory, BillingStatus } from "src/helper/billing-status";
 import { DaoInterface } from "src/helper/dao-interface";
 import { ServiceInterface } from "src/helper/service-interface";
 import { NFT } from "src/models/nft.model";
@@ -16,6 +16,7 @@ import { INFTDao } from "./interface/nft.dao.interface";
 import { INFTService } from "./interface/nft.service.interface";
 import { BillingDto } from "../billing/dto/billing.dto";
 import { AddNFTDto } from "./dto/add-nft.dto";
+import { BuyNftDto } from "./dto/buy-nft.dto";
 
 @Injectable({ scope: Scope.REQUEST })
 class NFTService implements INFTService {
@@ -30,11 +31,9 @@ class NFTService implements INFTService {
     }
 
     public async createNFT(n: AddNFTDto, u: UserDto): Promise<AddNFTResponseDto> {
+        let billingId;
         if (!n.forceTest) {
-            const verified: MessageLayerDtoT<BillingDto> = await this.billingService.verifyBilling(n.txHash, u.publicAddress);
-            if (!verified.ok) throw new BadRequestException("Transaction is not valid.");
-
-            await this.billingService.updateMintBilling(verified.data.id, BillingStatus.Success);
+            billingId = this.verifyBilling(n.txHash, u.publicAddress, BillingCategory.Mint);
         }
 
         n.fileName = `${uuid()}-${n.fileName}`;
@@ -48,8 +47,19 @@ class NFTService implements INFTService {
         const value = event.args[2];
         const tokenId: number = value.toNumber();
         const nft: MessageLayerDtoT<string> = await this.nftDao.createNFT(n, u, minted.transactionHash, tokenId);
+        await this.billingService.updateTokenIdBilling(billingId, tokenId);
 
         return { id: nft.data, s3Url: signedUrl };
+    }
+
+    public async buyNFT(n: BuyNftDto, u: UserDto): Promise<void> {
+        let billingId;
+        if (!n.forceTest) {
+            billingId = this.verifyBilling(n.txHash, u.publicAddress, BillingCategory.Buy);
+        }
+
+        await this.web3service.buyNFT(u.publicAddress, n.tokenId);
+        await this.billingService.updateTokenIdBilling(billingId, n.tokenId);
     }
 
     public async getNFT(id: string): Promise<NFTDto> {
@@ -75,6 +85,16 @@ class NFTService implements INFTService {
             nft.fileName = signedUrls.find(signedUrl => signedUrl.includes(nft.fileName));
             return nft;
         }).sort((a, b) => (a.createdDate > b.createdDate ? -1 : 1));
+    }
+
+    private async verifyBilling(txHash: string, publicAddress: string, billingCategory: BillingCategory) {
+        const verified: MessageLayerDtoT<BillingDto> = await this.billingService.verifyBilling(txHash, publicAddress, billingCategory);
+        if (!verified.ok) {
+            await this.billingService.updateBilling(verified.data.id, BillingStatus.Failed);
+            throw new BadRequestException("Transaction is not valid.");
+        }
+        await this.billingService.updateBilling(verified.data.id, BillingStatus.Success);
+        return verified.data.id;
     }
 }
 

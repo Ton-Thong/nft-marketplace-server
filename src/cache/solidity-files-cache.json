@@ -1,37 +1,6 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/home/ton/nft-marketplace-server/src/contracts/Market.sol": {
-      "lastModificationDate": 1642520282442,
-      "contentHash": "4e60a6af2ab43681af9050ac4d37d901",
-      "sourceName": "contracts/Market.sol",
-      "solcConfig": {
-        "version": "0.8.0",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [],
-      "artifacts": []
-    },
     "/home/ton/nft-marketplace-server/node_modules/@openzeppelin/contracts/utils/Counters.sol": {
       "lastModificationDate": 1640423780792,
       "contentHash": "a21834c04c11733a9018196d6b1b0e89",
@@ -504,8 +473,8 @@
       ]
     },
     "/home/ton/nft-marketplace-server/src/contracts/RuNFT.sol": {
-      "lastModificationDate": 1642522671602,
-      "contentHash": "f5bac2ad9b09d55534294692c1a9d9ca",
+      "lastModificationDate": 1643174128723,
+      "contentHash": "43c0d8ac714f7c978b7df40f95748a20",
       "sourceName": "contracts/RuNFT.sol",
       "solcConfig": {
         "version": "0.8.0",
@@ -578,41 +547,6 @@
       ],
       "artifacts": [
         "Ownable"
-      ]
-    },
-    "/home/ton/nft-marketplace-server/src/contracts/Migrations.sol": {
-      "lastModificationDate": 1642267836856,
-      "contentHash": "b3e46d381b22fa474f6e593c0cb620bc",
-      "sourceName": "contracts/Migrations.sol",
-      "solcConfig": {
-        "version": "0.8.0",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        ">=0.4.22 <0.9.0"
-      ],
-      "artifacts": [
-        "Migrations"
       ]
     }
   }
