@@ -4,7 +4,6 @@ import compression from 'fastify-compress';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
 import { contentParser } from 'fastify-multer';
-import { join } from 'path';
 
 async function bootstrap() {
   try {

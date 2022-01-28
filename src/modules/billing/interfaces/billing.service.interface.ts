@@ -4,6 +4,7 @@ import { UserDto } from "src/modules/user/dto/user.dto";
 import { BillingDto } from "../dto/billing.dto";
 
 export interface IBillingService {
+    createBuyBilling(id: string, user: UserDto): Promise<string>;
     createMintBilling(cid: string, u: UserDto): Promise<string>;
     verifyBilling(txHash: string, callerAddress: string, billingCate: BillingCategory): Promise<MessageLayerDtoT<BillingDto>>;
     getBillingById(id: string): Promise<BillingDto>;

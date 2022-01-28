@@ -21,8 +21,7 @@ class UserService implements IUserService {
 
   public async createUser(user: AddUserDto): Promise<UserDto> {
     const { publicAddress } = user;
-    const result: MessageLayerDtoT<User> =
-      await this.userDao.getByPublicAddress(publicAddress);
+    const result: MessageLayerDtoT<User> = await this.userDao.getByPublicAddress(publicAddress);
     if (result.ok) {
       throw new ConflictException(
         `User with publicAddress ${publicAddress} is existing in database`,

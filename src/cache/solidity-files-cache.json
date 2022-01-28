@@ -473,8 +473,8 @@
       ]
     },
     "/home/ton/nft-marketplace-server/src/contracts/RuNFT.sol": {
-      "lastModificationDate": 1643174128723,
-      "contentHash": "43c0d8ac714f7c978b7df40f95748a20",
+      "lastModificationDate": 1643201121053,
+      "contentHash": "677f415eba6c1bd74a9b0122fdfaf85e",
       "sourceName": "contracts/RuNFT.sol",
       "solcConfig": {
         "version": "0.8.0",
@@ -503,7 +503,8 @@
         "@openzeppelin/contracts/utils/Counters.sol",
         "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol",
         "@openzeppelin/contracts/access/Ownable.sol",
-        "@openzeppelin/contracts/token/ERC721/ERC721.sol"
+        "@openzeppelin/contracts/token/ERC721/ERC721.sol",
+        "@openzeppelin/contracts/utils/Strings.sol"
       ],
       "versionPragmas": [
         "^0.8.0"

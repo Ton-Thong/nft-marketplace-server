@@ -7,6 +7,4 @@ export class BuyNftDto {
     public buyyer: string;
     @IsString()
     public txHash: string;
-    @IsBoolean()
-    public forceTest: boolean;
 }

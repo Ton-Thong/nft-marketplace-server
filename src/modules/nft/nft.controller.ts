@@ -1,9 +1,7 @@
-import { Body, Controller, Get, HttpStatus, Inject, ParseUUIDPipe, Post, Query, Req, Scope, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Get, HttpStatus, Inject, ParseUUIDPipe, Post, Put, Query, Req, Scope, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import { ResponseDto, ResponseDtoT } from "src/dto/response.dto";
+import { ResponseDtoT } from "src/dto/response.dto";
 import { ServiceInterface } from "src/helper/service-interface";
-import { resourceLimits } from "worker_threads";
-import { UserDto } from "../user/dto/user.dto";
 import { AddNFTResponseDto } from "./dto/add-nft-response.dto";
 import { AddNFTDto } from "./dto/add-nft.dto";
 import { BuyNftDto } from "./dto/buy-nft.dto";
@@ -23,11 +21,18 @@ export class NFTController {
         return { statusCode: HttpStatus.CREATED, data: result, message: 'success' }
     }
 
-    @Post()
+    @Post('/buyNFT')
     @UseGuards(AuthGuard())
     public async buyNFT(@Body() buyNFT: BuyNftDto, @Req() req): Promise<ResponseDtoT<boolean>> {
         await this.nftService.buyNFT(buyNFT, req.user);
         return { statusCode: HttpStatus.CREATED, data: null, message: 'success' }
+    }
+
+    @Put('/sellNFT')
+    @UseGuards(AuthGuard())
+    public async sellNFT(@Body() sellNFT: SellNftDto): Promise<ResponseDtoT<boolean>> {
+        await this.nftService.sellNFT(sellNFT);
+        return { statusCode: HttpStatus.OK, data: true, message: 'success' }
     }
 
     @Get()

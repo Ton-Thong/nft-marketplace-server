@@ -17,6 +17,7 @@ import { INFTService } from "./interface/nft.service.interface";
 import { BillingDto } from "../billing/dto/billing.dto";
 import { AddNFTDto } from "./dto/add-nft.dto";
 import { BuyNftDto } from "./dto/buy-nft.dto";
+import { SellNftDto } from "./dto/sell-nft.dto";
 
 @Injectable({ scope: Scope.REQUEST })
 class NFTService implements INFTService {
@@ -31,10 +32,7 @@ class NFTService implements INFTService {
     }
 
     public async createNFT(n: AddNFTDto, u: UserDto): Promise<AddNFTResponseDto> {
-        let billingId;
-        if (!n.forceTest) {
-            billingId = this.verifyBilling(n.txHash, u.publicAddress, BillingCategory.Mint);
-        }
+        const billingId = await this.verifyBilling(n.txHash, u.publicAddress, BillingCategory.Mint);
 
         n.fileName = `${uuid()}-${n.fileName}`;
         const [signedUrl, _, minted] = await Promise.all([
@@ -52,14 +50,14 @@ class NFTService implements INFTService {
         return { id: nft.data, s3Url: signedUrl };
     }
 
-    public async buyNFT(n: BuyNftDto, u: UserDto): Promise<void> {
-        let billingId;
-        if (!n.forceTest) {
-            billingId = this.verifyBilling(n.txHash, u.publicAddress, BillingCategory.Buy);
-        }
+    public async sellNFT(sellNft: SellNftDto): Promise<void> {
+        await this.nftDao.updateSellNFT(sellNft);
+    }
 
-        await this.web3service.buyNFT(u.publicAddress, n.tokenId);
-        await this.billingService.updateTokenIdBilling(billingId, n.tokenId);
+    public async buyNFT(buyNft: BuyNftDto, u: UserDto): Promise<void> {
+        const billingId = await this.verifyBilling(buyNft.txHash, u.publicAddress, BillingCategory.Buy)
+        await this.web3service.buyNFT(u.publicAddress, buyNft.tokenId);
+        await this.billingService.updateTokenIdBilling(billingId, buyNft.tokenId);
     }
 
     public async getNFT(id: string): Promise<NFTDto> {
@@ -90,7 +88,6 @@ class NFTService implements INFTService {
     private async verifyBilling(txHash: string, publicAddress: string, billingCategory: BillingCategory) {
         const verified: MessageLayerDtoT<BillingDto> = await this.billingService.verifyBilling(txHash, publicAddress, billingCategory);
         if (!verified.ok) {
-            await this.billingService.updateBilling(verified.data.id, BillingStatus.Failed);
             throw new BadRequestException("Transaction is not valid.");
         }
         await this.billingService.updateBilling(verified.data.id, BillingStatus.Success);

@@ -1,4 +1,4 @@
 export class SellNftDto {
-    public nftId: string;
+    public id: string;
     public price: number;
 }

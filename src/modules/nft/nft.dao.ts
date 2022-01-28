@@ -8,6 +8,7 @@ import { INFTDao } from "./interface/nft.dao.interface";
 import { v4 as uuid } from 'uuid';
 import { TableName } from "src/helper/table-name";
 import { NFTDto } from "./dto/nft.dto";
+import { SellNftDto } from "./dto/sell-nft.dto";
 
 @Injectable({ scope: Scope.REQUEST })
 class NFTDao implements INFTDao {
@@ -71,14 +72,14 @@ class NFTDao implements INFTDao {
         }
     }
 
-    public async updateSellStatus(u: UserDto): Promise<void> {
-        const { id, publicAddress } = u;
+    public async updateSellNFT(sellNFT: SellNftDto): Promise<void> {
+        const { id, price } = sellNFT;
         await this.docClient.update({
-            TableName: TableName.User,
-            Key: { id, publicAddress },
-            UpdateExpression: "set #sellStatus = :s",
-            ExpressionAttributeNames: { '#sellStatus': 'sellStatus' },
-            ExpressionAttributeValues: { ":s": true }
+            TableName: TableName.Product,
+            Key: { id },
+            UpdateExpression: "set #sellStatus = :s and #price = :p",
+            ExpressionAttributeNames: { '#sellStatus': 'sellStatus', '#price': 'price' },
+            ExpressionAttributeValues: { ":s": true, ":p": price }
         });
     }
 }
