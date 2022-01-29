@@ -5,5 +5,5 @@ export enum BillingStatus {
 
 export enum BillingCategory {
     Mint = 'mint',
-    Buy = 'but',
+    Buy = 'buy',
 }

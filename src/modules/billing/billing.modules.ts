@@ -13,7 +13,7 @@ import { IpfsService } from '../miscellaneous/ipfs.service';
 @Module({
   imports: [AWSModules, Web3Modules],
   controllers: [BillingController],
-  providers: [FileService, IpfsService, Web3Service, BillingServiceProvider, BillingDaoProvider, NFTServiceProvider, NFTDaoProvider]
+  providers: [FileService, IpfsService, Web3Service, BillingServiceProvider, BillingDaoProvider, NFTDaoProvider]
 })
 
 export class BillingModule { }

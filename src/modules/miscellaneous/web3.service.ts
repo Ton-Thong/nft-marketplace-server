@@ -21,8 +21,6 @@ export class Web3Service {
         const contract: ethers.Contract = new ethers.Contract(process.env.CONTRACT_RUNFT, RuNFT.abi, this.signer);
         const tx = await contract.buyNFT(to, tokenId, { gasLimit: 1000000 });
         return await tx.wait();
-        // const tx = await contract.testTransfer({ gasLimit: 1000000 });
-        // return await tx.wait();
     }
 
     public async getBlock(txHash: string): Promise<number> {
@@ -43,7 +41,7 @@ export class Web3Service {
 
     public async getBuyBilling(publicAddress: string, tokenId: number): Promise<string> {
         const contract: ethers.Contract = new ethers.Contract(process.env.CONTRACT_RUNFT, RuNFT.abi, this.signer)
-        const estimateGas: ethers.BigNumber = await contract.estimateGas.buyNFT(publicAddress, tokenId);
+        const estimateGas: ethers.BigNumber = await contract.estimateGas.buyNFT(publicAddress, tokenId, { gasLimit: 1000000 });
         return await this.getEsimateGasFee(estimateGas);
     }
 

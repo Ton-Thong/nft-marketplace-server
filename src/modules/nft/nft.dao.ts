@@ -77,10 +77,10 @@ class NFTDao implements INFTDao {
         await this.docClient.update({
             TableName: TableName.Product,
             Key: { id },
-            UpdateExpression: "set #sellStatus = :s and #price = :p",
-            ExpressionAttributeNames: { '#sellStatus': 'sellStatus', '#price': 'price' },
+            UpdateExpression: "set #sellStatus = :s, #currentPrice = :p",
+            ExpressionAttributeNames: { '#sellStatus': 'sellStatus', '#currentPrice': 'currentPrice' },
             ExpressionAttributeValues: { ":s": true, ":p": price }
-        });
+        }).promise();
     }
 }
 

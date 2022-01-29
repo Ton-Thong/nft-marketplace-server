@@ -14,7 +14,7 @@ import { DynamoExpression } from "src/dto/dynamoExpression.dto";
 class BillingDao implements IBillingDao {
     constructor(@Inject('DynamoDb') private docClient: AWS.DynamoDB.DocumentClient) { }
 
-    public async createBilling(txFee: string, billingCate: BillingCategory, user: UserDto): Promise<MessageLayerDtoT<BillingDto>> {
+    public async createBilling(txFee: string, tokenId: number, billingCate: BillingCategory, user: UserDto): Promise<MessageLayerDtoT<BillingDto>> {
         const id = uuid();
         const newBilling = {
             id,
@@ -24,7 +24,7 @@ class BillingDao implements IBillingDao {
             createdDate: new Date().toLocaleString("en-US", { timeZone: "Asia/Bangkok" }),
             timeStamp: Math.floor(Date.now() / 1000),
             status: BillingStatus.Pending,
-            tokenId: null,
+            tokenId: tokenId,
             category: billingCate
         }
 

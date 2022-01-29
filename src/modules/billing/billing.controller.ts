@@ -19,7 +19,7 @@ export class BillingController {
 
     @Get('/createBuyBilling')
     @UseGuards(AuthGuard())
-    public async createBuyBilling(@Query('id') id: string, @Req() req) : Promise<ResponseDtoT<string>> {
+    public async createBuyBilling(@Query('id') id: string, @Req() req): Promise<ResponseDtoT<string>> {
         const result: string = await this.billingService.createBuyBilling(id, req.user);
         return { statusCode: HttpStatus.OK, data: result, message: 'success' }
     }

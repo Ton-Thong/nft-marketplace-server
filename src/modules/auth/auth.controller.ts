@@ -7,19 +7,19 @@ import { AuthService } from "./auth.service";
 @Controller({ path: 'auth', scope: Scope.REQUEST })
 @UsePipes(ValidationPipe)
 export class AuthController {
-    constructor(private authService: AuthService) {}
-    
+    constructor(private authService: AuthService) { }
+
     @Post()
     async signin(@Body() credentialDto: CredentialDto): Promise<ResponseDto> {
         try {
             const result: string = await this.authService.createToken(credentialDto);
             return { statusCode: HttpStatus.CREATED, data: result, message: 'success' };
-        } catch(err) {
+        } catch (err) {
             throw err;
         }
     }
-    
-    @Get('')
+
+    @Get()
     @UseGuards(AuthGuard())
     async get() {
         return 'Hello World';

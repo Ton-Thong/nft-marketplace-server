@@ -5,7 +5,7 @@ import { UserDto } from "src/modules/user/dto/user.dto";
 import { BillingDto } from "../dto/billing.dto";
 
 export interface IBillingDao {
-    createBilling(txFee: string, billingCate: BillingCategory, user: UserDto): Promise<MessageLayerDtoT<BillingDto>>;
+    createBilling(txFee: string, tokenId: number, billingCate: BillingCategory, user: UserDto): Promise<MessageLayerDtoT<BillingDto>>;
     getBilling(txFee: string, callerAddress: string, billingCate: BillingCategory): Promise<MessageLayerDtoT<BillingDto>>;
     getBillingById(id: string): Promise<MessageLayerDtoT<BillingDto>>;
     updateBillingByExpression(id: string, expression: DynamoExpression): Promise<void>;

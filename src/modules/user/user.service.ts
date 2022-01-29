@@ -58,24 +58,18 @@ class UserService implements IUserService {
   }
 
   public async updateUserProfile(user: UpdateUserDto, file: Express.Multer.File, id: string): Promise<void> {
-    if (!user) {
-      throw new BadRequestException("An error occurred.");
-    }
+    if (!user) throw new BadRequestException("An error occurred.");
 
     const result: MessageLayerDtoT<User> = await this.userDao.getByKey(id);
-    if (!result.ok) {
-      throw new NotFoundException(result.message);
-    }
+    if (!result || !result.data) throw new NotFoundException(result);
 
-    user.avatar = file ? await this.fileService.uploadObjectToS3(this.bucketName, file) : null;
+    user.avatar = user.updateAvatar ? await this.fileService.uploadObjectToS3(this.bucketName, file) : result.data.avatar;
     await this.userDao.updateUserProfile(user, id);
   }
 
   public async getUserAll(): Promise<Array<UserDto>> {
     const result: MessageLayerDtoT<Array<User>> = await this.userDao.getUserAll();
-    if (!result.ok) {
-      throw new NotFoundException(result.message);
-    }
+    if (!result.ok) throw new NotFoundException(result.message);
 
     const users: Array<UserDto> = result.data;
     const signedUrls: Array<string> = await Promise.all(users.filter(user => user.avatar).map((user) => this.fileService.getSignedUrlGetObject(this.bucketName, user.avatar)));

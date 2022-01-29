@@ -64,7 +64,7 @@ contract RuNFT is ERC721URIStorage, Ownable {
 
         (bool success,) = seller.call{ value: price }("");
         require(success, errMsg);
-        _transfer(msg.sender, buyer, tokenId);
+        _transfer(address(this), buyer, tokenId);
         
         address ownerOfToken = ownerOf(tokenId);
         require(ownerOfToken == buyer, errMsg);

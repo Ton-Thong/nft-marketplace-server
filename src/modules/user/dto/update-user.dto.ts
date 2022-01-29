@@ -4,4 +4,5 @@ export class UpdateUserDto {
     avatar: string;
     username: string;
     description: string;
+    updateAvatar: boolean;
 }
